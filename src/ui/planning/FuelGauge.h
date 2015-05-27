@@ -9,7 +9,7 @@ class FuelGauge : public QcGaugeWidget
 	Q_OBJECT
 
 public:
-	//! Constructor
+	//! Constructor. Set dCapacity in gallons
 	FuelGauge(double dCapacity, QWidget* pParent = 0);
 	//! Destructor
 	~FuelGauge();

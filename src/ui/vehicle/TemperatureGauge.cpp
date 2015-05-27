@@ -106,7 +106,7 @@ void TemperatureGauge::SetTemperature(double dTemp)
 		m_pNeedle->setCurrentValue(dTemp);
 		update();
 	}	else {
-		qWarning() << "TemperatureGauge not initialized! Call TemperatureGauge::Init method after construction";
+		qWarning() << "TemperatureGauge not initialized! Call TemperatureGauge::Init method after constructor";
 	}
 }
 

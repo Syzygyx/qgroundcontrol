@@ -9,7 +9,7 @@ class WeightGauge : public QcGaugeWidget
 	Q_OBJECT
 
 public:
-	//! Constructor
+	//! Constructor. Set dMaxWeight in [kg]
 	WeightGauge(double dMaxWeight, bool bLabels = true, QWidget* pParent = 0);
 	//! Destructor
 	~WeightGauge();

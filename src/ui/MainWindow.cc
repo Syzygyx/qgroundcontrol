@@ -71,6 +71,7 @@ This file is part of the QGROUNDCONTROL project
 #include "vehicle/VehicleWidget.h"
 #include "vehicle/TemperatureGauge.h"
 #include "planning/MissionPlannerWidget.h"
+#include "flightindicators/AirspeedIndicator.h"
 
 #ifdef UNITTEST_BUILD
 #include "QmlControls/QmlTestWidget.h"
@@ -122,6 +123,9 @@ const char* MainWindow::_hudDockWidgetName = "HEAD_UP_DISPLAY_DOCKWIDGET";
 const char* MainWindow::_uasInfoViewDockWidgetName = "UAS_INFO_INFOVIEW_DOCKWIDGET";
 const char* MainWindow::_vehicleWidgetName = "VEHICLE_DOCKWIDGET";
 const char* MainWindow::_missionPlanningWidgetName = "MISSION_PLANNING_DOCKWIDGET";
+const char* MainWindow::_fuelGaugeWidgetName = "FUEL_GAUGE_DOCKWIDGET";
+const char* MainWindow::_weightGaugeWidgetName = "WEIGHT_GAUGE_DOCKWIDGET";
+const char* MainWindow::_airspeedIndicatorWidgetName = "AIRSPEED_INDICATOR_DOCKWIDGET";
 
 static MainWindow* _instance = NULL;   ///< @brief MainWindow singleton
 
@@ -446,8 +450,11 @@ void MainWindow::_buildCommonWidgets(void)
         { _hudDockWidgetName,               "Video Downlink",           Qt::RightDockWidgetArea },
         { _uasInfoViewDockWidgetName,       "Info View",                Qt::LeftDockWidgetArea },
 		  { _vehicleWidgetName,               "Vehicle view",             Qt::LeftDockWidgetArea},
-		  { _missionPlanningWidgetName,       "Mission planning",         Qt::RightDockWidgetArea}
-    };
+		  { _missionPlanningWidgetName,       "Mission planning",         Qt::RightDockWidgetArea},
+		  { _fuelGaugeWidgetName,             "Fuel indicator",           Qt::LeftDockWidgetArea},
+		  { _weightGaugeWidgetName,           "Total weight indicator",   Qt::LeftDockWidgetArea},
+		  { _airspeedIndicatorWidgetName,     "Airspeed indicator",       Qt::RightDockWidgetArea},
+	 };
     static const size_t cDockWidgetInfo = sizeof(rgDockWidgetInfo) / sizeof(rgDockWidgetInfo[0]);
 
     for (size_t i=0; i<cDockWidgetInfo; i++) {
@@ -589,9 +596,21 @@ void MainWindow::_createInnerDockWidget(const QString& widgetName)
 		 }
 		 widget = pVW;
 	 } else if (widgetName == _missionPlanningWidgetName) {
-		 widget = new MissionPlannerWidget(this);
-	 }
-	 else {
+		widget = new MissionPlannerWidget(this);
+	 } else if (widgetName == _fuelGaugeWidgetName) {
+		widget = new FuelGauge(6, this);
+	 } else if (widgetName == _weightGaugeWidgetName) {
+		widget = new WeightGauge(200, true, this);
+	 } else if (widgetName == _airspeedIndicatorWidgetName) {
+		 AirspeedIndicator* pAI = new AirspeedIndicator(
+					 40,
+					 200,
+					 AirspeedIndicator::auKnots,
+					 this
+					 );
+		 pAI->Init();
+		 widget = pAI;
+	 } else {
         qWarning() << "Attempt to create unknown Inner Dock Widget" << widgetName;
     }
 
