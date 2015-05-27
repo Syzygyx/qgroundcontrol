@@ -131,7 +131,9 @@ include(QGCInstaller.pri)
 # Main QGroundControl portion of project file
 #
 
-RESOURCES += qgroundcontrol.qrc resources/vehicle/Files.qrc
+RESOURCES += qgroundcontrol.qrc \
+	     resources/vehicle/Files.qrc \
+	     resources/planning/MissionPlanner.qrc
 
 DEPENDPATH += \
     . \
@@ -352,6 +354,14 @@ HEADERS += \
     src/ui/vehicle/VehicleWidget.h \
     src/ui/vehicle/TemperatureGauge.h \
     src/ui/gauge/qcgaugewidget.h \
+    src/ui/planning/DurationGauge.h \
+    src/ui/planning/FuelGauge.h \
+    src/ui/planning/MissionPlannerDataWidget.h \
+    src/ui/planning/MissionPlannerGauges.h \
+    src/ui/planning/MissionPlannerWidget.h \
+    src/ui/planning/QcPixmapItem.h \
+    src/ui/planning/QuantityScrollBar.h \
+    src/ui/planning/WeightGauge.h \
 
 !AndroidBuild {
 HEADERS += \
@@ -481,6 +491,15 @@ SOURCES += \
     src/ui/vehicle/VehicleWidget.cpp \
     src/ui/vehicle/TemperatureGauge.cpp \
     src/ui/gauge/qcgaugewidget.cpp \
+    src/ui/planning/DurationGauge.cpp \
+    src/ui/planning/FuelGauge.cpp \
+    src/ui/planning/MissionPlannerDataWidget.cpp \
+    src/ui/planning/MissionPlannerGauges.cpp \
+    src/ui/planning/MissionPlannerWidget.cpp \
+    src/ui/planning/QcPixmapItem.cpp \
+    src/ui/planning/QuantityScrollBar.cpp \
+    src/ui/planning/WeightGauge.cpp \
+
 
 !AndroidBuild {
 SOURCES += \

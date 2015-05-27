@@ -70,6 +70,7 @@ This file is part of the QGROUNDCONTROL project
 #include "CustomCommandWidget.h"
 #include "vehicle/VehicleWidget.h"
 #include "vehicle/TemperatureGauge.h"
+#include "planning/MissionPlannerWidget.h"
 
 #ifdef UNITTEST_BUILD
 #include "QmlControls/QmlTestWidget.h"
@@ -120,6 +121,7 @@ const char* MainWindow::_pfdDockWidgetName = "PRIMARY_FLIGHT_DISPLAY_DOCKWIDGET"
 const char* MainWindow::_hudDockWidgetName = "HEAD_UP_DISPLAY_DOCKWIDGET";
 const char* MainWindow::_uasInfoViewDockWidgetName = "UAS_INFO_INFOVIEW_DOCKWIDGET";
 const char* MainWindow::_vehicleWidgetName = "VEHICLE_DOCKWIDGET";
+const char* MainWindow::_missionPlanningWidgetName = "MISSION_PLANNING_DOCKWIDGET";
 
 static MainWindow* _instance = NULL;   ///< @brief MainWindow singleton
 
@@ -432,8 +434,8 @@ void MainWindow::_buildCommonWidgets(void)
         { _uasListDockWidgetName,           "Unmanned Systems",         Qt::RightDockWidgetArea },
         { _waypointsDockWidgetName,         "Mission Plan",             Qt::BottomDockWidgetArea },
         { _mavlinkDockWidgetName,           "MAVLink Inspector",        Qt::RightDockWidgetArea },
-        { _parametersDockWidgetName,        "Parameter Editor",			Qt::RightDockWidgetArea },
-        { _customCommandWidgetName,         "Custom Command",			Qt::RightDockWidgetArea },
+		  { _parametersDockWidgetName,        "Parameter Editor",         Qt::RightDockWidgetArea },
+		  { _customCommandWidgetName,         "Custom Command",           Qt::RightDockWidgetArea },
         { _filesDockWidgetName,             "Onboard Files",            Qt::RightDockWidgetArea },
         { _uasStatusDetailsDockWidgetName,  "Status Details",           Qt::RightDockWidgetArea },
         { _mapViewDockWidgetName,           "Map view",                 Qt::RightDockWidgetArea },
@@ -443,7 +445,8 @@ void MainWindow::_buildCommonWidgets(void)
         { _pfdDockWidgetName,               "Primary Flight Display",   Qt::RightDockWidgetArea },
         { _hudDockWidgetName,               "Video Downlink",           Qt::RightDockWidgetArea },
         { _uasInfoViewDockWidgetName,       "Info View",                Qt::LeftDockWidgetArea },
-		  { _vehicleWidgetName,               "Vehicle view",					Qt::LeftDockWidgetArea}
+		  { _vehicleWidgetName,               "Vehicle view",             Qt::LeftDockWidgetArea},
+		  { _missionPlanningWidgetName,       "Mission planning",         Qt::RightDockWidgetArea}
     };
     static const size_t cDockWidgetInfo = sizeof(rgDockWidgetInfo) / sizeof(rgDockWidgetInfo[0]);
 
@@ -580,13 +583,15 @@ void MainWindow::_createInnerDockWidget(const QString& widgetName)
 	 } else if (widgetName == _vehicleWidgetName) {
 		 VehicleWidget* pVW = new VehicleWidget(this);
 		 for (int i = 0; i < 7; i++) {
-			 TemperatureGauge* pTG = new TemperatureGauge(0, 400);
-			 pTG->Init();
-			 pVW->SetGauge(i, pTG);
+			TemperatureGauge* pTG = new TemperatureGauge(0, 400);
+			pTG->Init();
+			pVW->SetGauge(i, pTG);
 		 }
 		 widget = pVW;
-	 } else
-	 {
+	 } else if (widgetName == _missionPlanningWidgetName) {
+		 widget = new MissionPlannerWidget(this);
+	 }
+	 else {
         qWarning() << "Attempt to create unknown Inner Dock Widget" << widgetName;
     }
 

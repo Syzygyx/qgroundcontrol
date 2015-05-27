@@ -332,6 +332,7 @@ private:
     static const char* _hudDockWidgetName;
     static const char* _uasInfoViewDockWidgetName;
 	 static const char* _vehicleWidgetName;
+	 static const char* _missionPlanningWidgetName;
 
     QMap<QString, QDockWidget*>     _mapName2DockWidget;
     QMap<int, QDockWidget*>         _mapUasId2HilDockWidget;
