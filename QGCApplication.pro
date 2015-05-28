@@ -362,7 +362,8 @@ HEADERS += \
     src/ui/planning/QcPixmapItem.h \
     src/ui/planning/QuantityScrollBar.h \
     src/ui/planning/WeightGauge.h \
-    src/ui/flightindicators/AirspeedIndicator.h
+    src/ui/flightindicators/AirspeedIndicator.h \
+    src/ui/flightindicators/VerticalSpeedIndicator.h
 
 !AndroidBuild {
 HEADERS += \
@@ -500,7 +501,8 @@ SOURCES += \
     src/ui/planning/QcPixmapItem.cpp \
     src/ui/planning/QuantityScrollBar.cpp \
     src/ui/planning/WeightGauge.cpp \
-    src/ui/flightindicators/AirspeedIndicator.cpp
+    src/ui/flightindicators/AirspeedIndicator.cpp \
+    src/ui/flightindicators/VerticalSpeedIndicator.cpp
 
 
 !AndroidBuild {

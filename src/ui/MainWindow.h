@@ -336,6 +336,7 @@ private:
 	 static const char* _fuelGaugeWidgetName;
 	 static const char* _weightGaugeWidgetName;
 	 static const char* _airspeedIndicatorWidgetName;
+	 static const char* _verticalSpeedIndicatorWidgetName;
 
     QMap<QString, QDockWidget*>     _mapName2DockWidget;
     QMap<int, QDockWidget*>         _mapUasId2HilDockWidget;

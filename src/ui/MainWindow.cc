@@ -72,6 +72,7 @@ This file is part of the QGROUNDCONTROL project
 #include "vehicle/TemperatureGauge.h"
 #include "planning/MissionPlannerWidget.h"
 #include "flightindicators/AirspeedIndicator.h"
+#include "flightindicators/VerticalSpeedIndicator.h"
 
 #ifdef UNITTEST_BUILD
 #include "QmlControls/QmlTestWidget.h"
@@ -126,6 +127,7 @@ const char* MainWindow::_missionPlanningWidgetName = "MISSION_PLANNING_DOCKWIDGE
 const char* MainWindow::_fuelGaugeWidgetName = "FUEL_GAUGE_DOCKWIDGET";
 const char* MainWindow::_weightGaugeWidgetName = "WEIGHT_GAUGE_DOCKWIDGET";
 const char* MainWindow::_airspeedIndicatorWidgetName = "AIRSPEED_INDICATOR_DOCKWIDGET";
+const char* MainWindow::_verticalSpeedIndicatorWidgetName = "VERTICAL_SPEED_INDICATOR_DOCKWIDGET";
 
 static MainWindow* _instance = NULL;   ///< @brief MainWindow singleton
 
@@ -449,11 +451,12 @@ void MainWindow::_buildCommonWidgets(void)
         { _pfdDockWidgetName,               "Primary Flight Display",   Qt::RightDockWidgetArea },
         { _hudDockWidgetName,               "Video Downlink",           Qt::RightDockWidgetArea },
         { _uasInfoViewDockWidgetName,       "Info View",                Qt::LeftDockWidgetArea },
-		  { _vehicleWidgetName,               "Vehicle view",             Qt::LeftDockWidgetArea},
-		  { _missionPlanningWidgetName,       "Mission planning",         Qt::RightDockWidgetArea},
-		  { _fuelGaugeWidgetName,             "Fuel indicator",           Qt::LeftDockWidgetArea},
-		  { _weightGaugeWidgetName,           "Total weight indicator",   Qt::LeftDockWidgetArea},
-		  { _airspeedIndicatorWidgetName,     "Airspeed indicator",       Qt::RightDockWidgetArea},
+		  { _vehicleWidgetName,               "Vehicle View",             Qt::LeftDockWidgetArea},
+		  { _missionPlanningWidgetName,       "Mission Planning",         Qt::RightDockWidgetArea},
+		  { _fuelGaugeWidgetName,             "Fuel Indicator",           Qt::LeftDockWidgetArea},
+		  { _weightGaugeWidgetName,           "Total Weight Indicator",   Qt::LeftDockWidgetArea},
+		  { _airspeedIndicatorWidgetName,     "Airspeed Indicator",       Qt::RightDockWidgetArea},
+		  { _verticalSpeedIndicatorWidgetName,"Vertical Speed Indicator", Qt::RightDockWidgetArea},
 	 };
     static const size_t cDockWidgetInfo = sizeof(rgDockWidgetInfo) / sizeof(rgDockWidgetInfo[0]);
 
@@ -610,6 +613,10 @@ void MainWindow::_createInnerDockWidget(const QString& widgetName)
 					 );
 		 pAI->Init();
 		 widget = pAI;
+	 } else if (widgetName == _verticalSpeedIndicatorWidgetName) {
+		 VerticalSpeedIndicator* pVSI = new VerticalSpeedIndicator(20.0, this);
+		 pVSI->Init();
+		 widget = pVSI;
 	 } else {
         qWarning() << "Attempt to create unknown Inner Dock Widget" << widgetName;
     }

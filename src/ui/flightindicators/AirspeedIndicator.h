@@ -33,7 +33,7 @@ public:
 	virtual void Init();
 
 public slots:
-	//! Sets the current speed
+	//! Sets the current speed in units given at constructor
 	void SetSpeed(double dSpeed);
 
 protected:
