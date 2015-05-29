@@ -32,6 +32,8 @@ AirspeedIndicator::AirspeedIndicator(
 	pbg->addColor(0.1, QColor(32, 32, 32));
 	pbg->addColor(1.0, QColor(64, 64, 64));
 
+	// set the needle to 0, so that we can check if Init was called
+	// and prevent the application from crashing
 	m_pNeedle = 0;
 }
 
@@ -145,11 +147,12 @@ void AirspeedIndicator::Init()
 	// needle covering button
 	QcBackgroundItem* pbg = addBackground(8);
 	pbg->clearrColors();
-	pbg->addColor(0.9, QColor(32, 32, 32));
-	pbg->addColor(1.0, Qt::black);
+	pbg->addColor(0.2, QColor(0, 0, 128));
+	pbg->addColor(0.5, QColor(0, 0, 64));
+	pbg->addColor(0.8, Qt::black);
 
 	// and finally a cool glass effect
-	addGlass(80);
+	addGlass(88);
 }
 
 //-----------------------------------------------------------------------------

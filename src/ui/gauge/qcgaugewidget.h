@@ -200,11 +200,20 @@ public:
     QString text();
     void setColor(const QColor& color);
     QColor color();
+	 //! Sets font size adjustment
+	 void setFont(int iF = 0);
+	 //! Sets the font weight
+	 void setFontWeight(QFont::Weight eW);
+	 //! Sets the rotation
+	 void setRotation(qreal a);
 
 private:
     float mAngle;
     QString mText;
     QColor mColor;
+	 int miFont;
+	 QFont::Weight meWeight;
+	 qreal mrRotation;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -277,22 +286,33 @@ public:
     float currentValue();
     void setColor(const QColor & color);
     QColor color();
+	 void setOutline(const QColor& color);
+	 QColor outlineColor() const;
 
     void setLabel(QcLabelItem*);
     QcLabelItem * label();
 
-    enum NeedleType{DiamonNeedle,TriangleNeedle,FeatherNeedle,AttitudeMeterNeedle,CompassNeedle};//#
+	 enum NeedleType{
+		 DiamonNeedle,
+		 TriangleNeedle,
+		 FeatherNeedle,
+		 AttitudeMeterNeedle,
+		 CompassNeedle,
+		 SwordNeedle
+	 };//#
 
     void setNeedle(QcNeedleItem::NeedleType needleType);
 private:
     QPolygonF mNeedlePoly;
     float mCurrentValue;
     QColor mColor;
+	 QColor mOutline;
     void createDiamonNeedle(float r);
     void createTriangleNeedle(float r);
     void createFeatherNeedle(float r);
     void createAttitudeNeedle(float r);
     void createCompassNeedle(float r);
+	 void createSwordNeedle(float r);
     NeedleType mNeedleType;
     QcLabelItem *mLabel;
 };

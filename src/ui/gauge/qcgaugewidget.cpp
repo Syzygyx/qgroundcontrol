@@ -394,7 +394,10 @@ QcLabelItem::QcLabelItem(QObject *parent) :
     setPosition(50);
     mAngle = 270;
     mText = "%";
-    mColor = Qt::black;
+	 mColor = Qt::black;
+	 miFont = 0;
+	 meWeight = QFont::Bold;
+	 mrRotation = 0.0f;
 }
 
 void QcLabelItem::draw(QPainter *painter)
@@ -402,18 +405,22 @@ void QcLabelItem::draw(QPainter *painter)
     resetRect();
     QRectF tmpRect = adjustRect(position());
     float r = getRadius(rect());
-    QFont font("Meiryo UI", r/10.0, QFont::Bold);
+	 QFont font("Meiryo UI", r/10.0 + miFont, meWeight);
     painter->setFont(font);
     painter->setPen(QPen(mColor));
 
     QPointF txtCenter = getPoint(mAngle,tmpRect);
     QFontMetrics fMetrics = painter->fontMetrics();
     QSize sz = fMetrics.size( Qt::TextSingleLine, mText );
-    QRectF txtRect(QPointF(0,0), sz );
-    txtRect.moveCenter(txtCenter);
+	 QRectF txtRect(QPointF(-sz.width()/2.0, -sz.height()/2.0), sz );
+	 //txtRect.moveCenter(txtCenter);
 
-    painter->drawText( txtRect, Qt::TextSingleLine,mText );
-
+	 painter->save();
+	 painter->setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing);
+	 painter->translate(txtCenter);
+	 painter->rotate(mrRotation);
+	 painter->drawText( txtRect, Qt::TextSingleLine,mText );
+	 painter->restore();
 }
 
 void QcLabelItem::setAngle(float a)
@@ -448,6 +455,24 @@ void QcLabelItem::setColor(const QColor &color)
 QColor QcLabelItem::color()
 {
     return mColor;
+}
+
+void QcLabelItem::setFont(int iF)
+{
+	miFont = iF;
+	update();
+}
+
+void QcLabelItem::setFontWeight(QFont::Weight eW)
+{
+	meWeight = eW;
+	update();
+}
+
+void QcLabelItem::setRotation(qreal a)
+{
+	mrRotation = a;
+	update();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -615,6 +640,7 @@ QcNeedleItem::QcNeedleItem(QObject *parent) :
 {
     mCurrentValue = 0;
     mColor = Qt::black;
+	 mOutline = Qt::transparent;
     mLabel = NULL;
     mNeedleType = FeatherNeedle;
 }
@@ -628,7 +654,7 @@ void QcNeedleItem::draw(QPainter *painter)
     float deg = getDegFromValue( mCurrentValue);
     painter->rotate(deg+90.0);
     painter->setBrush(QBrush(mColor));
-    painter->setPen(Qt::NoPen);
+	 painter->setPen(mOutline);
 
     QLinearGradient grad;
 
@@ -652,8 +678,10 @@ void QcNeedleItem::draw(QPainter *painter)
         grad.setColorAt(0.9,Qt::red);
         grad.setColorAt(1,Qt::blue);
         painter->setBrush(grad);
-
         break;
+	 case QcNeedleItem::SwordNeedle:
+		  createSwordNeedle(getRadius(tmpRect));
+		  break;
 
     default:
         break;
@@ -689,6 +717,17 @@ void QcNeedleItem::setColor(const QColor &color)
 QColor QcNeedleItem::color()
 {
     return mColor;
+}
+
+void QcNeedleItem::setOutline(const QColor& color)
+{
+	mOutline = color;
+	update();
+}
+
+QColor QcNeedleItem::outlineColor() const
+{
+	 return mOutline;
 }
 
 void QcNeedleItem::setLabel(QcLabelItem *label)
@@ -757,6 +796,19 @@ void QcNeedleItem::createCompassNeedle(float r)
     tmpPoints.append(QPointF(0.0, -r));
     tmpPoints.append(QPointF(r/15.0,0.0));
     mNeedlePoly = tmpPoints;
+}
+
+void QcNeedleItem::createSwordNeedle(float r)
+{
+	QVector<QPointF> tmpPoints;
+	tmpPoints.append(QPointF(0.0, r));
+	tmpPoints.append(QPointF(-r/10.0, 2*r/3));
+	tmpPoints.append(QPointF(-r/20.0, -r/10.0));
+	tmpPoints.append(QPointF(-r/15.0, -r/4.0));
+	tmpPoints.append(QPointF(r/15.0, -r/4.0));
+	tmpPoints.append(QPointF(r/20.0, -r/10.0));
+	tmpPoints.append(QPointF(r/10, 2*r/3));
+	mNeedlePoly = tmpPoints;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////

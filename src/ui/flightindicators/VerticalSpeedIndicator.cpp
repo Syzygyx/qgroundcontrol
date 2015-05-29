@@ -9,6 +9,7 @@ VerticalSpeedIndicator::VerticalSpeedIndicator(double dMaxVS, QWidget *pParent) 
 {
 	m_dMaxVS = dMaxVS;
 
+	setMinimumSize(150, 150);
 	// create some background
 	QcBackgroundItem* pbg = addBackground(99);
 	pbg->clearrColors();
