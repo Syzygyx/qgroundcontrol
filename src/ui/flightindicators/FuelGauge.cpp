@@ -1,4 +1,3 @@
-#include "QcPixmapItem.h"
 #include "FuelGauge.h"
 
 //-----------------------------------------------------------------------------
@@ -69,7 +68,7 @@ FuelGauge::FuelGauge(double dCapacity, QWidget *pParent) :
 	addItem(ppi, 45);
 
 	// a cool glass effect
-	QcGlassItem* pgi = addGlass(88);
+	addGlass(88);
 
 	// needle
 	m_pNeedle = addNeedle(60);

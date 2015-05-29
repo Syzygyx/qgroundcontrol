@@ -354,14 +354,14 @@ HEADERS += \
     src/ui/vehicle/VehicleWidget.h \
     src/ui/vehicle/TemperatureGauge.h \
     src/ui/gauge/qcgaugewidget.h \
-    src/ui/planning/DurationGauge.h \
-    src/ui/planning/FuelGauge.h \
+    src/ui/flightindicators/DurationGauge.h \
+    src/ui/flightindicators/FuelGauge.h \
     src/ui/planning/MissionPlannerDataWidget.h \
     src/ui/planning/MissionPlannerGauges.h \
     src/ui/planning/MissionPlannerWidget.h \
-    src/ui/planning/QcPixmapItem.h \
+    src/ui/gauge/QcPixmapItem.h \
     src/ui/planning/QuantityScrollBar.h \
-    src/ui/planning/WeightGauge.h \
+    src/ui/flightindicators/WeightGauge.h \
     src/ui/flightindicators/AirspeedIndicator.h \
     src/ui/flightindicators/VerticalSpeedIndicator.h \
     src/ui/flightindicators/AltitudeIndicator.h \
@@ -497,14 +497,14 @@ SOURCES += \
     src/ui/vehicle/VehicleWidget.cpp \
     src/ui/vehicle/TemperatureGauge.cpp \
     src/ui/gauge/qcgaugewidget.cpp \
-    src/ui/planning/DurationGauge.cpp \
-    src/ui/planning/FuelGauge.cpp \
+    src/ui/flightindicators/DurationGauge.cpp \
+    src/ui/flightindicators/FuelGauge.cpp \
     src/ui/planning/MissionPlannerDataWidget.cpp \
     src/ui/planning/MissionPlannerGauges.cpp \
     src/ui/planning/MissionPlannerWidget.cpp \
-    src/ui/planning/QcPixmapItem.cpp \
+    src/ui/gauge/QcPixmapItem.cpp \
     src/ui/planning/QuantityScrollBar.cpp \
-    src/ui/planning/WeightGauge.cpp \
+    src/ui/flightindicators/WeightGauge.cpp \
     src/ui/flightindicators/AirspeedIndicator.cpp \
     src/ui/flightindicators/VerticalSpeedIndicator.cpp \
     src/ui/flightindicators/AltitudeIndicator.cpp \
