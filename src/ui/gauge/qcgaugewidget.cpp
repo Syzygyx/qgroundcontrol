@@ -152,6 +152,7 @@ QcItem::QcItem(QObject *parent) :
 
     parentWidget = qobject_cast<QWidget*>(parent);
     mPosition = 50;
+	 m_bRotate = false;
 }
 
 int QcItem::type()

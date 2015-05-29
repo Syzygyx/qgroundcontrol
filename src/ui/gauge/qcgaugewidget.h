@@ -107,6 +107,12 @@ public:
     QRectF rect();
     enum Error{InvalidValueRange,InvalidDegreeRange,InvalidStep};
 
+	 //! Returns true, if item can be rotated
+	 bool canRotate() const
+	 {	return m_bRotate; }
+	 //! Sets the rotation flag to bVal
+	 void setRotate(bool bVal = true)
+	 {	m_bRotate = bVal; }
 
 protected:
     QRectF adjustRect(float percentage);
@@ -120,6 +126,8 @@ private:
     QRectF mRect;
     QWidget *parentWidget;
     float mPosition;
+	 //! Indicates whether the item can be rotated as background or not
+	 bool m_bRotate;
 };
 ///////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////

@@ -74,6 +74,7 @@ This file is part of the QGROUNDCONTROL project
 #include "flightindicators/AirspeedIndicator.h"
 #include "flightindicators/VerticalSpeedIndicator.h"
 #include "flightindicators/AltitudeIndicator.h"
+#include "flightindicators/HeadingIndicator.h"
 
 #ifdef UNITTEST_BUILD
 #include "QmlControls/QmlTestWidget.h"
@@ -130,6 +131,7 @@ const char* MainWindow::_weightGaugeWidgetName = "WEIGHT_GAUGE_DOCKWIDGET";
 const char* MainWindow::_airspeedIndicatorWidgetName = "AIRSPEED_INDICATOR_DOCKWIDGET";
 const char* MainWindow::_verticalSpeedIndicatorWidgetName = "VERTICAL_SPEED_INDICATOR_DOCKWIDGET";
 const char* MainWindow::_altitudeIndicatorWidgetName = "ALTITDE_INDICATOR_DOCKWIDGET";
+const char* MainWindow::_headingIndicatorWidgetName = "HEADING_INDICATOR_DOCKWIDGET";
 
 static MainWindow* _instance = NULL;   ///< @brief MainWindow singleton
 
@@ -460,6 +462,7 @@ void MainWindow::_buildCommonWidgets(void)
 		  { _airspeedIndicatorWidgetName,     "Airspeed Indicator",       Qt::RightDockWidgetArea},
 		  { _verticalSpeedIndicatorWidgetName,"Vertical Speed Indicator", Qt::RightDockWidgetArea},
 		  { _altitudeIndicatorWidgetName,     "Altitude Indicator",       Qt::RightDockWidgetArea},
+		  { _headingIndicatorWidgetName,      "Heading Indicator",        Qt::RightDockWidgetArea},
 	 };
     static const size_t cDockWidgetInfo = sizeof(rgDockWidgetInfo) / sizeof(rgDockWidgetInfo[0]);
 
@@ -624,6 +627,10 @@ void MainWindow::_createInnerDockWidget(const QString& widgetName)
 		 AltitudeIndicator* pAI = new AltitudeIndicator(this);
 		 pAI->Init();
 		 widget = pAI;
+	 } else if (widgetName == _headingIndicatorWidgetName) {
+		 HeadingIndicator* pHI = new HeadingIndicator(this);
+		 pHI->Init();
+		 widget = pHI;
 	 } else {
         qWarning() << "Attempt to create unknown Inner Dock Widget" << widgetName;
     }

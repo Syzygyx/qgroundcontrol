@@ -33,6 +33,7 @@ AltitudeIndicator::AltitudeIndicator(QWidget* pParent) :
 	// Testing only
 	m_dAlt = 0.0;
 
+	// testing only (creates a small memory leak also!)
 	QTimer* pTimer = new QTimer(this);
 	pTimer->setInterval(50);
 	connect(pTimer, SIGNAL(timeout()), this, SLOT(IncreaseAltitude()));
