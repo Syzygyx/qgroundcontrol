@@ -38,11 +38,10 @@ void QcPolygonItem::AddMirrorY()
 void QcPolygonItem::draw(QPainter* pP)
 {
 	QRectF tmpRect = resetRect();
-	float r = getRadius(adjustRect(50));
+	float r = getRadius(adjustRect(position()));
 
 	int iX = tmpRect.center().x();
 	int iY = tmpRect.center().y();
-	qDebug() << "Center" << tmpRect.center();
 	QPolygon poly;
 	for (int i = 0; i < m_liPts.count(); i++) {
 		poly << QPoint(
