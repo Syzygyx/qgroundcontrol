@@ -71,6 +71,7 @@ This file is part of the QGROUNDCONTROL project
 #include "vehicle/VehicleWidget.h"
 #include "vehicle/TemperatureGauge.h"
 #include "planning/MissionPlannerWidget.h"
+#include "flightindicators/FlightInstrumentsWidget.h"
 #include "flightindicators/AirspeedIndicator.h"
 #include "flightindicators/VerticalSpeedIndicator.h"
 #include "flightindicators/AltitudeIndicator.h"
@@ -126,6 +127,7 @@ const char* MainWindow::_hudDockWidgetName = "HEAD_UP_DISPLAY_DOCKWIDGET";
 const char* MainWindow::_uasInfoViewDockWidgetName = "UAS_INFO_INFOVIEW_DOCKWIDGET";
 const char* MainWindow::_vehicleWidgetName = "VEHICLE_DOCKWIDGET";
 const char* MainWindow::_missionPlanningWidgetName = "MISSION_PLANNING_DOCKWIDGET";
+const char* MainWindow::_flightInstrumentsWidgetName = "FLIGHT_INSTRUMENTS_DOCKWIDGET";
 const char* MainWindow::_fuelGaugeWidgetName = "FUEL_GAUGE_DOCKWIDGET";
 const char* MainWindow::_weightGaugeWidgetName = "WEIGHT_GAUGE_DOCKWIDGET";
 const char* MainWindow::_airspeedIndicatorWidgetName = "AIRSPEED_INDICATOR_DOCKWIDGET";
@@ -457,6 +459,7 @@ void MainWindow::_buildCommonWidgets(void)
         { _uasInfoViewDockWidgetName,       "Info View",                Qt::LeftDockWidgetArea },
 		  { _vehicleWidgetName,               "Vehicle View",             Qt::LeftDockWidgetArea},
 		  { _missionPlanningWidgetName,       "Mission Planning",         Qt::RightDockWidgetArea},
+		  { _flightInstrumentsWidgetName,     "Flight Instruments",       Qt::LeftDockWidgetArea},
 		  { _fuelGaugeWidgetName,             "Fuel Indicator",           Qt::LeftDockWidgetArea},
 		  { _weightGaugeWidgetName,           "Total Weight Indicator",   Qt::LeftDockWidgetArea},
 		  { _airspeedIndicatorWidgetName,     "Airspeed Indicator",       Qt::RightDockWidgetArea},
@@ -606,6 +609,8 @@ void MainWindow::_createInnerDockWidget(const QString& widgetName)
 		 widget = pVW;
 	 } else if (widgetName == _missionPlanningWidgetName) {
 		widget = new MissionPlannerWidget(this);
+	 } else if (widgetName == _flightInstrumentsWidgetName) {
+		widget = new FlightInstrumentsWidget(this);
 	 } else if (widgetName == _fuelGaugeWidgetName) {
 		widget = new FuelGauge(6, this);
 	 } else if (widgetName == _weightGaugeWidgetName) {

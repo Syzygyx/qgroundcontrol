@@ -9,6 +9,7 @@
 
 HeadingIndicator::HeadingIndicator(QWidget* pParent) : QcRotatedGaugeWidget(pParent)
 {
+	m_bInitialized = false;
 	setMinimumSize(150, 150);
 	// create some background, items are fixed by default!
 	QcBackgroundItem* pbg = addBackground(99);
@@ -109,14 +110,21 @@ void HeadingIndicator::Init()
 
 	// add glass effect
 	addGlass(88);
+
+	// mark as initialized
+	m_bInitialized = true;
 }
 
 //-----------------------------------------------------------------------------
 
 void HeadingIndicator::SetHeading(float fAng)
 {
-	setRotation(fAng);
-	update();
+	if (m_bInitialized == true) {
+		setRotation(fAng);
+		update();
+	}	else {
+		qWarning() << "HeadingIndicator not initialized! Call HeadingIndicator::Init method after constructor!";
+	}
 }
 
 //-----------------------------------------------------------------------------

@@ -367,7 +367,8 @@ HEADERS += \
     src/ui/flightindicators/AltitudeIndicator.h \
     src/ui/gauge/QcRotatedGaugeWidget.h \
     src/ui/flightindicators/HeadingIndicator.h \
-    src/ui/gauge/QcPolygonItem.h
+    src/ui/gauge/QcPolygonItem.h \
+    src/ui/flightindicators/FlightInstrumentsWidget.h
 
 !AndroidBuild {
 HEADERS += \
@@ -510,7 +511,8 @@ SOURCES += \
     src/ui/flightindicators/AltitudeIndicator.cpp \
     src/ui/gauge/QcRotatedGaugeWidget.cpp \
     src/ui/flightindicators/HeadingIndicator.cpp \
-    src/ui/gauge/QcPolygonItem.cpp
+    src/ui/gauge/QcPolygonItem.cpp \
+    src/ui/flightindicators/FlightInstrumentsWidget.cpp
 
 
 !AndroidBuild {

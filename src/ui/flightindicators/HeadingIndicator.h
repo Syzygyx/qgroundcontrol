@@ -23,6 +23,10 @@ public slots:
 	void SetHeading(float fAng);
 	//! Testing only
 	void IncreaseHeading();
+
+private:
+	//! This is set to true, if indicator was initalized
+	bool m_bInitialized;
 };
 
 #endif // HEADINGINDICATOR_H
