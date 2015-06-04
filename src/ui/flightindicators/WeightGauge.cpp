@@ -1,4 +1,4 @@
-#include "QcPixmapItem.h"
+#include "gauge/QcPixmapItem.h"
 
 #include "WeightGauge.h"
 
