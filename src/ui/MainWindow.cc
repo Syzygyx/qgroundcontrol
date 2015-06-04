@@ -77,6 +77,8 @@ This file is part of the QGROUNDCONTROL project
 #include "flightindicators/AltitudeIndicator.h"
 #include "flightindicators/HeadingIndicator.h"
 
+#include "core/MessageDispatcher.h"
+
 #ifdef UNITTEST_BUILD
 #include "QmlControls/QmlTestWidget.h"
 #endif
@@ -610,7 +612,14 @@ void MainWindow::_createInnerDockWidget(const QString& widgetName)
 	 } else if (widgetName == _missionPlanningWidgetName) {
 		widget = new MissionPlannerWidget(this);
 	 } else if (widgetName == _flightInstrumentsWidgetName) {
-		widget = new FlightInstrumentsWidget(this);
+		FlightInstrumentsWidget* pFIW = new FlightInstrumentsWidget(this);
+		connect(
+					MessageDispatcher::GetInstance(),
+					SIGNAL(SignalGroundSpeed(double)),
+					pFIW,
+					SLOT(SetAirspeed(double))
+					);
+		widget = pFIW;
 	 } else if (widgetName == _fuelGaugeWidgetName) {
 		widget = new FuelGauge(6, this);
 	 } else if (widgetName == _weightGaugeWidgetName) {
@@ -623,6 +632,13 @@ void MainWindow::_createInnerDockWidget(const QString& widgetName)
 					 this
 					 );
 		 pAI->Init();
+		 connect(
+					 MessageDispatcher::GetInstance(),
+					 SIGNAL(SignalGroundSpeed(double)),
+					 pAI,
+					 SLOT(SetSpeed(double))
+					 );
+
 		 widget = pAI;
 	 } else if (widgetName == _verticalSpeedIndicatorWidgetName) {
 		 VerticalSpeedIndicator* pVSI = new VerticalSpeedIndicator(20.0, this);
