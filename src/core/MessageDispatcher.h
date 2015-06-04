@@ -2,7 +2,7 @@
 #define MESSAGEDISPATCHER_H
 
 #include <QObject>
-#include "MAVLinkDecoder.h"
+#include "ui/MAVLinkDecoder.h"
 #include "uas/UASInterface.h"
 
 /** This class uses MAVLinkDecoder class and converts its messages into more user

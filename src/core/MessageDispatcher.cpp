@@ -1,4 +1,4 @@
-#include "MAVLinkProtocol.h"
+#include "comm/MAVLinkProtocol.h"
 #include "uas/UASManager.h"
 
 #include "MessageDispatcher.h"
