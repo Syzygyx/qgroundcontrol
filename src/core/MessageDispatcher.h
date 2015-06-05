@@ -37,7 +37,7 @@ private slots:
 
 signals:
 	//! Emitted when ground speed has changed
-	void SignalGroundSpeed(double);
+	void SignalAirSpeed(double);
 	//! Emitted when motor temperature has changed
 	void SignalTemperature(double);
 	//! Emitted when altitude has changed

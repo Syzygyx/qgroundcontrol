@@ -69,10 +69,14 @@ void MessageDispatcher::DecodeMessage(
 	if (bOK == false || eMT == QMetaType::QString || eMT == QMetaType::QByteArray)
 		return;
 
-	if (qsName == "groundSpeed") {
+	if (qsName == "airSpeed") {
 		//qDebug() << "Ground speed" << dVal;
 		// conversion m/s -> knots (multiplier 1.94384)
-		emit SignalGroundSpeed(1.94384f*dVal);
+		emit SignalAirSpeed(1.94384f*dVal);
+	}	else if (qsName == "altitudeAMSLFT") {
+		emit SignalAltitude(dVal);
+	}	else if (qsName == "heading") {
+		emit SignalHeading(dVal);
 	}
 }
 

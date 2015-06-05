@@ -111,10 +111,10 @@ void HeadingIndicator::Init()
 
 //-----------------------------------------------------------------------------
 
-void HeadingIndicator::SetHeading(float fAng)
+void HeadingIndicator::SetHeading(double dAng)
 {
 	if (m_bInitialized == true) {
-		setRotation(fAng);
+		setRotation(dAng);
 		update();
 	}	else {
 		qWarning() << "HeadingIndicator not initialized! Call HeadingIndicator::Init method after constructor!";

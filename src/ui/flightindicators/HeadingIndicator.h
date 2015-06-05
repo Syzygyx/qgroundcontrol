@@ -20,7 +20,7 @@ public:
 
 public slots:
 	//! Sets the current heading to fAng [deg]
-	void SetHeading(float fAng);
+	void SetHeading(double dAng);
 
 private:
 	//! This is set to true, if indicator was initalized

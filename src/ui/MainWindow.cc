@@ -619,6 +619,19 @@ void MainWindow::_createInnerDockWidget(const QString& widgetName)
 					pFIW,
 					SLOT(SetAirspeed(double))
 					);
+		connect(
+					MessageDispatcher::GetInstance(),
+					SIGNAL(SignalAltitude(double)),
+					pFIW,
+					SLOT(SetAltitude(double))
+					);
+		connect(
+					MessageDispatcher::GetInstance(),
+					SIGNAL(SignalHeading(double)),
+					pFIW,
+					SLOT(SetHeading(double))
+					);
+
 		widget = pFIW;
 	 } else if (widgetName == _fuelGaugeWidgetName) {
 		widget = new FuelGauge(6, this);
@@ -634,7 +647,7 @@ void MainWindow::_createInnerDockWidget(const QString& widgetName)
 		 pAI->Init();
 		 connect(
 					 MessageDispatcher::GetInstance(),
-					 SIGNAL(SignalGroundSpeed(double)),
+					 SIGNAL(SignalAirSpeed(double)),
 					 pAI,
 					 SLOT(SetSpeed(double))
 					 );
@@ -647,10 +660,22 @@ void MainWindow::_createInnerDockWidget(const QString& widgetName)
 	 } else if (widgetName == _altitudeIndicatorWidgetName) {
 		 AltitudeIndicator* pAI = new AltitudeIndicator(this);
 		 pAI->Init();
+		 connect(
+					 MessageDispatcher::GetInstance(),
+					 SIGNAL(SignalAltitude(double)),
+					 pAI,
+					 SLOT(SetAltitude(double))
+					 );
 		 widget = pAI;
 	 } else if (widgetName == _headingIndicatorWidgetName) {
 		 HeadingIndicator* pHI = new HeadingIndicator(this);
 		 pHI->Init();
+		 connect(
+					 MessageDispatcher::GetInstance(),
+					 SIGNAL(SignalHeading(double)),
+					 pHI,
+					 SLOT(SetHeading(double))
+					 );
 		 widget = pHI;
 	 } else {
         qWarning() << "Attempt to create unknown Inner Dock Widget" << widgetName;

@@ -14,10 +14,10 @@ public:
 	virtual ~QcRotatedGaugeWidget();
 
 	//! Sets the angle of rotation
-	void setRotation(float fAng);
+	void setRotation(double dAng);
 	//! Returns the current angle of rotation
 	float rotation() const
-	{	return m_fAngle; }
+	{	return m_dAngle; }
 
 protected:
 	//! Paints the widget
@@ -25,7 +25,7 @@ protected:
 
 private:
 	//! Angle of rotation
-	float m_fAngle;
+	double m_dAngle;
 };
 
 #endif // QCROTATEDGAUGEWIDGET_H
