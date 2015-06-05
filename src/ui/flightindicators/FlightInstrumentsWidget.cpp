@@ -1,5 +1,6 @@
 #include <QGridLayout>
 
+#include "core/MessageDispatcher.h"
 #include "FlightInstrumentsWidget.h"
 
 //-----------------------------------------------------------------------------
@@ -27,6 +28,32 @@ FlightInstrumentsWidget::FlightInstrumentsWidget(QWidget* pParent) :
 	pLayout->addWidget(m_pHeading, 1, 1);
 	pLayout->addWidget(m_pFuel, 2, 0);
 	pLayout->addWidget(m_pWeight, 2, 1);
+
+	connect(
+				MessageDispatcher::GetInstance(),
+				SIGNAL(SignalAirSpeed(double)),
+				this,
+				SLOT(SetAirspeed(double))
+				);
+	connect(
+				MessageDispatcher::GetInstance(),
+				SIGNAL(SignalAltitude(double)),
+				this,
+				SLOT(SetAltitude(double))
+				);
+	connect(
+				MessageDispatcher::GetInstance(),
+				SIGNAL(SignalHeading(double)),
+				this,
+				SLOT(SetHeading(double))
+				);
+
+	connect(
+				MessageDispatcher::GetInstance(),
+				SIGNAL(SignalVario(double)),
+				this,
+				SLOT(SetVerticalSpeed(double))
+				);
 }
 
 //-----------------------------------------------------------------------------

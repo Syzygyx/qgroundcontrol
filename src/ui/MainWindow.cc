@@ -613,25 +613,6 @@ void MainWindow::_createInnerDockWidget(const QString& widgetName)
 		widget = new MissionPlannerWidget(this);
 	 } else if (widgetName == _flightInstrumentsWidgetName) {
 		FlightInstrumentsWidget* pFIW = new FlightInstrumentsWidget(this);
-		connect(
-					MessageDispatcher::GetInstance(),
-					SIGNAL(SignalGroundSpeed(double)),
-					pFIW,
-					SLOT(SetAirspeed(double))
-					);
-		connect(
-					MessageDispatcher::GetInstance(),
-					SIGNAL(SignalAltitude(double)),
-					pFIW,
-					SLOT(SetAltitude(double))
-					);
-		connect(
-					MessageDispatcher::GetInstance(),
-					SIGNAL(SignalHeading(double)),
-					pFIW,
-					SLOT(SetHeading(double))
-					);
-
 		widget = pFIW;
 	 } else if (widgetName == _fuelGaugeWidgetName) {
 		widget = new FuelGauge(6, this);
@@ -655,6 +636,12 @@ void MainWindow::_createInnerDockWidget(const QString& widgetName)
 		 widget = pAI;
 	 } else if (widgetName == _verticalSpeedIndicatorWidgetName) {
 		 VerticalSpeedIndicator* pVSI = new VerticalSpeedIndicator(20.0, this);
+		 connect(
+					 MessageDispatcher::GetInstance(),
+					 SIGNAL(SignalVario(double)),
+					 pVSI,
+					 SLOT(SetVerticalSpeed(double))
+					 );
 		 pVSI->Init();
 		 widget = pVSI;
 	 } else if (widgetName == _altitudeIndicatorWidgetName) {

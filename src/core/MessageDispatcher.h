@@ -2,6 +2,7 @@
 #define MESSAGEDISPATCHER_H
 
 #include <QObject>
+#include <QTimer>
 #include "ui/MAVLinkDecoder.h"
 #include "uas/UASInterface.h"
 
@@ -22,6 +23,7 @@ public:
 	static MessageDispatcher* GetInstance();
 
 private slots:
+	/*
 	//! Used to decode MAVLink messages
 	void DecodeMessage(
 			int uasID,
@@ -30,10 +32,29 @@ private slots:
 			QVariant vValue,
 			quint64 uiTime
 			);
+			*/
 	//! Sets the active UAS
 	void SetActiveUAS(UASInterface* pUAS);
 	//! Sets the active UAS only if it is not set already
 	void InitUAS(UASInterface* pUAS);
+	//! Emits certain signals (heading)
+	void Report();
+	//! Emits speed signal
+	void ReportSpeed(
+			UASInterface*,
+			double dGroundSpeed,
+			double dAirSpeed,
+			quint64 uiTime
+			);
+	//! Emits altitude and vario signals
+	void ReportAltitude(
+			UASInterface*,
+			double dAltAMSL,
+			double dAltWGS84,
+			double dAltRel,
+			double dVario,
+			quint64 uiTime
+			);
 
 signals:
 	//! Emitted when ground speed has changed
@@ -58,6 +79,8 @@ private:
 	MAVLinkDecoder* m_pMAVLink;
 	//! Pointer to the current UAS object
 	UASInterface* m_pUAS;
+	//! Internal timer used to emit some signals at regular intervals
+	QTimer* m_pTimer;
 };
 
 #endif // MESSAGEDISPATCHER_H

@@ -39,7 +39,7 @@ void QcRotatedGaugeWidget::paintEvent(QPaintEvent*)
 			// move painter origin from (0, 0) to center
 			P.translate(width()/2.0f, height()/2.0f);
 			// perform rotation
-			P.rotate(m_dAngle);
+			P.rotate(-m_dAngle);
 			// painter origin from center back to (0, 0)
 			P.translate(-width()/2.0f, -height()/2.0f);
 		}
