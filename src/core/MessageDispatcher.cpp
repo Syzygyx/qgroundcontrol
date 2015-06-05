@@ -91,12 +91,14 @@ void MessageDispatcher::SetActiveUAS(UASInterface* pUAS)
 		return;
 
 	m_pUAS = pUAS;
+	/*
 	connect(
 				m_pUAS,
 				SIGNAL(valueChanged(int,QString,QString,QVariant,quint64)),
 				this,
 				SLOT(DecodeMessage(int,QString,QString,QVariant,quint64))
 				);
+				*/
 
 	connect(
 				m_pUAS,
