@@ -28,6 +28,8 @@ MessageDispatcher::MessageDispatcher() : QObject()
 				);
 
 	InitUAS(UASManager::instance()->getActiveUAS());
+
+	// create a timer, which will trigger Report call 10 times per second
 	m_pTimer = new QTimer(this);
 	m_pTimer->setInterval(100);
 	connect(m_pTimer, SIGNAL(timeout()), this, SLOT(Report()));
@@ -128,6 +130,7 @@ void MessageDispatcher::InitUAS(UASInterface* pUAS)
 void MessageDispatcher::Report()
 {
 	if (m_pUAS != 0) {
+		// convert from radians to degrees
 		emit SignalHeading(180.0*m_pUAS->getYaw()/M_PI);
 	}
 }
