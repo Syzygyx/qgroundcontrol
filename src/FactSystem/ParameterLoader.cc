@@ -434,7 +434,7 @@ void ParameterLoader::_waitingParamTimeout(void)
         foreach(int paramIndex, _waitingReadParamIndexMap[componentId]) {
             paramsRequested = true;
             _readParameterRaw(componentId, "", paramIndex);
-            qCDebug(ParameterLoaderLog) << "Read re-request for (componentId:" << componentId << "paramIndex:" << paramIndex << ")";
+				//qCDebug(ParameterLoaderLog) << "Read re-request for (componentId:" << componentId << "paramIndex:" << paramIndex << ")";
             
             if (++batchCount > maxBatchSize) {
                 goto Out;
@@ -461,7 +461,7 @@ void ParameterLoader::_waitingParamTimeout(void)
             foreach(QString paramName, _waitingReadParamNameMap[componentId]) {
                 paramsRequested = true;
                 _readParameterRaw(componentId, paramName, -1);
-                qCDebug(ParameterLoaderLog) << "Read re-request for (componentId:" << componentId << "paramName:" << paramName << ")";
+					 //qCDebug(ParameterLoaderLog) << "Read re-request for (componentId:" << componentId << "paramName:" << paramName << ")";
                 
                 if (++batchCount > maxBatchSize) {
                     goto Out;

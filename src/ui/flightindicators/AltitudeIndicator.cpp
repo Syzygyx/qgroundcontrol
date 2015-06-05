@@ -30,14 +30,7 @@ AltitudeIndicator::AltitudeIndicator(QWidget* pParent) :
 	m_pNeedle1 = 0;
 	m_pNeedle100 = 0;
 
-	// Testing only
 	m_dAlt = 0.0;
-
-	// testing only (creates a small memory leak also!)
-	QTimer* pTimer = new QTimer(this);
-	pTimer->setInterval(50);
-	connect(pTimer, SIGNAL(timeout()), this, SLOT(IncreaseAltitude()));
-	pTimer->start();
 }
 
 //-----------------------------------------------------------------------------
@@ -138,14 +131,6 @@ void AltitudeIndicator::SetAltitude(double dAlt)
 	}	else {
 		qWarning() << "AltitudeIndicator not initialized! Call AltitudeIndicator::Init method after constructor!";
 	}
-}
-
-//-----------------------------------------------------------------------------
-
-void AltitudeIndicator::IncreaseAltitude()
-{
-	m_dAlt += 1.0;
-	SetAltitude(m_dAlt);
 }
 
 //-----------------------------------------------------------------------------

@@ -1,3 +1,5 @@
+#include <QDebug>
+
 #include "comm/MAVLinkProtocol.h"
 #include "uas/UASManager.h"
 
@@ -58,6 +60,7 @@ void MessageDispatcher::DecodeMessage(
 	Q_UNUSED(qsUnit);
 	Q_UNUSED(uiTime);
 
+	//qDebug() << "MessageDispatcher::DecodeMessage" << uasID << qsName << qsUnit;
 	bool bOK;
 	double dVal = vValue.toDouble(&bOK);
 	QMetaType::Type eMT = static_cast<QMetaType::Type>(vValue.type());
@@ -66,8 +69,11 @@ void MessageDispatcher::DecodeMessage(
 	if (bOK == false || eMT == QMetaType::QString || eMT == QMetaType::QByteArray)
 		return;
 
-	if (qsName == "groundSpeed")
-		emit SignalGroundSpeed(dVal);
+	if (qsName == "groundSpeed") {
+		//qDebug() << "Ground speed" << dVal;
+		// conversion m/s -> knots (multiplier 1.94384)
+		emit SignalGroundSpeed(1.94384f*dVal);
+	}
 }
 
 //-----------------------------------------------------------------------------

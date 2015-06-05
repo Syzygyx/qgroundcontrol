@@ -21,8 +21,6 @@ public:
 public slots:
 	//! Sets the current altitude
 	void SetAltitude(double dAlt);
-	//! Testing only
-	void IncreaseAltitude();
 
 protected:
 	//! Pointer to the feet needle

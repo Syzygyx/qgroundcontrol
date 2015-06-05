@@ -26,12 +26,6 @@ HeadingIndicator::HeadingIndicator(QWidget* pParent) : QcRotatedGaugeWidget(pPar
 	pbg->clearrColors();
 	pbg->addColor(0.1, QColor(32, 32, 32));
 	pbg->addColor(1.0, QColor(64, 64, 64));
-
-	// testing only (creates a small memory leak also!)
-	QTimer* pTimer = new QTimer(this);
-	pTimer->setInterval(50);
-	connect(pTimer, SIGNAL(timeout()), this, SLOT(IncreaseHeading()));
-	pTimer->start();
 }
 
 //-----------------------------------------------------------------------------
@@ -125,13 +119,6 @@ void HeadingIndicator::SetHeading(float fAng)
 	}	else {
 		qWarning() << "HeadingIndicator not initialized! Call HeadingIndicator::Init method after constructor!";
 	}
-}
-
-//-----------------------------------------------------------------------------
-
-void HeadingIndicator::IncreaseHeading()
-{
-	SetHeading(rotation() + 1.0f);
 }
 
 //-----------------------------------------------------------------------------
