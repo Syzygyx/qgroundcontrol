@@ -1,0 +1,146 @@
+<?xml version="1.0"?>
+
+<PropertyList>
+ <comment>
+  <![CDATA[
+    Usage:
+  
+    Recording: fgfs --generic=file,out,20,flight.out,playback
+    Playback:  fgfs --generic=file,in,20,flight.out,playback --fdm=null
+  ]]>
+ </comment>
+
+ <generic>
+
+  <output>
+   <line_separator>newline</line_separator>
+   <var_separator>,</var_separator>
+
+
+   <!-- Position -->
+   <chunk>
+    <name>latitude-deg</name>
+    <type>double</type>
+    <format>%.10lf</format>
+    <node>/position/latitude-deg</node>
+   </chunk>
+
+   <chunk>
+    <name>longitude-deg</name>
+    <type>double</type>
+    <format>%.10lf</format>
+    <node>/position/longitude-deg</node>
+   </chunk>
+
+   <chunk>
+    <name>altitude-ft</name>
+    <type>float</type>
+    <format>%f</format>
+    <node>/position/altitude-ft</node>
+   </chunk>
+
+   <!-- Orientation -->
+   <chunk>
+    <name>roll-deg</name>
+    <type>float</type>
+    <format>%f</format>
+    <node>/orientation/roll-deg</node>
+   </chunk>
+
+   <chunk>
+    <name>pitch-deg</name>
+    <type>float</type>
+    <format>%f</format>
+    <node>/orientation/pitch-deg</node>
+   </chunk>
+
+   <chunk>
+    <name>heading-deg</name>
+    <type>float</type>
+    <format>%f</format>
+    <node>/orientation/heading-deg</node>
+   </chunk>
+
+   <!-- Velocities -->
+   <chunk>
+     <name>airspeed-kt</name>
+     <type>float</type>
+     <format>%f</format>
+     <node>/velocities/airspeed-kt</node>
+   </chunk>
+
+   <chunk>
+     <name>vertical-speed-fps</name>
+     <type>float</type>
+     <format>%f</format>
+     <node>/velocities/vertical-speed-fps</node>
+   </chunk>
+  </output>
+
+  <input>
+   <line_separator>newline</line_separator>
+   <var_separator>,</var_separator>
+
+   <!-- Position -->
+   <chunk>
+    <name>latitude-deg</name>
+    <type>double</type>
+    <format>%.10lf</format>
+    <node>/position/latitude-deg</node>
+   </chunk>
+
+   <chunk>
+    <name>longitude-deg</name>
+    <type>double</type>
+    <format>%.10lf</format>
+    <node>/position/longitude-deg</node>
+   </chunk>
+
+   <chunk>
+    <name>altitude-ft</name>
+    <type>float</type>
+    <format>%f</format>
+    <node>/position/altitude-ft</node>
+   </chunk>
+
+   <!-- Orientation -->
+   <chunk>
+    <name>roll-deg</name>
+    <type>float</type>
+    <format>%f</format>
+    <node>/orientation/roll-deg</node>
+   </chunk>
+
+   <chunk>
+    <name>pitch-deg</name>
+    <type>float</type>
+    <format>%f</format>
+    <node>/orientation/pitch-deg</node>
+   </chunk>
+
+   <chunk>
+    <name>heading-deg</name>
+    <type>float</type>
+    <format>%f</format>
+    <node>/orientation/heading-deg</node>
+   </chunk>
+
+   <!-- Velocities -->
+   <chunk>
+     <name>airspeed-kt</name>
+     <type>float</type>
+     <format>%f</format>
+     <node>/velocities/airspeed-kt</node>
+   </chunk>
+
+   <chunk>
+     <name>vertical-speed-fps</name>
+     <type>float</type>
+     <format>%f</format>
+     <node>/velocities/vertical-speed-fps</node>
+   </chunk>
+  </input>
+
+</generic>
+
+</PropertyList>

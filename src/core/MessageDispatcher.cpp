@@ -43,6 +43,8 @@ MessageDispatcher::MessageDispatcher() : QObject()
 
 	// create an UDP socket object
 	m_pSocketUDP = new QUdpSocket(this);
+	m_pSocketUDP->bind(QHostAddress::LocalHost, 5500);
+	connect(m_pSocketUDP, SIGNAL(readyRead()), this, SLOT(GetData()));
 }
 
 //-----------------------------------------------------------------------------
@@ -185,17 +187,30 @@ void MessageDispatcher::ReportAltitude(
 
 void MessageDispatcher::SendUDP()
 {
-	//qDebug() << "NetFDM" << sizeof(m_netFDM);
-	// reset the structure
-	memset(&m_netFDM, 0, sizeof(m_netFDM));
+	QString qs = "14.5000000000,45.5678901234,2.286483,0.108518,2.708227,0.000000,3.545612,-0.000000;";
+	qDebug() << "Write bytes" << m_pSocketUDP->writeDatagram(qs.toLatin1().constData(), qs.length(), QHostAddress::LocalHost, 5500);
+}
 
-	m_netFDM.version = FG_NET_FDM_VERSION;
-	m_netFDM.longitude = M_PI*14.5/180.0;
-	m_netFDM.latitude = M_PI*46.0/180.0;
+//-----------------------------------------------------------------------------
 
-	char* pch = (char*)&m_netFDM;
-
-	m_pSocketUDP->writeDatagram(pch, sizeof(m_netFDM), QHostAddress::LocalHost, 5500);
+void MessageDispatcher::GetData()
+{
+	while (m_pSocketUDP->hasPendingDatagrams() == true) {
+		// let's capture the FG output and save it into file for analysis
+		QByteArray ba;
+		ba.resize(m_pSocketUDP->pendingDatagramSize());
+		QHostAddress ha;
+		quint16 uiPort;
+		m_pSocketUDP->readDatagram(ba.data(), ba.size(), &ha, &uiPort);
+		QFile f("fg_out.bin");
+		if (f.exists() == false) {
+			qDebug() << "Data received" << ba.size() << sizeof(FGNetFDM);
+			if (f.open(QFile::WriteOnly) == true) {
+				f.write(ba);
+				f.close();
+			}
+		}
+	}
 }
 
 //-----------------------------------------------------------------------------

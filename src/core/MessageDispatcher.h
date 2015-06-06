@@ -60,6 +60,8 @@ private slots:
 			);
 	//! Sends information over UDP port
 	void SendUDP();
+	//! Testing only. Receive data from FG
+	void GetData();
 
 signals:
 	//! Emitted when ground speed has changed
