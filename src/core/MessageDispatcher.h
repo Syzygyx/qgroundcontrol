@@ -43,6 +43,7 @@ private slots:
 	void InitUAS(UASInterface* pUAS);
 	//! Obtains position and attitude from UASInterface and also sends some signals (heading)
 	void ReadUAS();
+
 	//! Emits speed signal
 	void ReportSpeed(
 			UASInterface*,
