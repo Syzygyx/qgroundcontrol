@@ -76,9 +76,9 @@ void AirspeedIndicator::Init()
 	// add the second color band
 	pcb = addColorBand(75);
 	li.clear();
-	pair.first = Qt::transparent;
+	/*pair.first = Qt::transparent;
 	pair.second = 5.0f/1.6f;
-	li << pair;
+	li << pair;*/
 	pair.first = Qt::green;
 	pair.second = 90.0f/1.6f;
 	li << pair;
@@ -96,9 +96,9 @@ void AirspeedIndicator::Init()
 	pdi->setColor(Qt::white);
 	pdi->setValueRange(m_dMinSpeed, m_dMaxSpeed);
 	if (m_eAU == auKmh)
-		pdi->setStep(50.0);
-	else
 		pdi->setStep(20.0);
+	else
+		pdi->setStep(10.0);
 	pdi->setDgereeRange(135, 405);
 
 	// small scale
@@ -106,9 +106,9 @@ void AirspeedIndicator::Init()
 	pdi->setColor(Qt::white);
 	pdi->setValueRange(m_dMinSpeed, m_dMaxSpeed);
 	if (m_eAU == auKmh)
-		pdi->setStep(10.0);
+		pdi->setStep(4.0);
 	else
-		pdi->setStep(5.0);
+		pdi->setStep(2.0);
 	pdi->setDgereeRange(135, 405);
 	pdi->setSubDegree(true);
 
@@ -117,9 +117,9 @@ void AirspeedIndicator::Init()
 	double dVal = m_dMinSpeed;
 	double dStep;
 	if (m_eAU == auKmh)
-		dStep = 50.0;
-	else
 		dStep = 20.0;
+	else
+		dStep = 10.0;
 
 	int iStep = 0;
 	while (dVal <= m_dMaxSpeed) {
@@ -138,9 +138,9 @@ void AirspeedIndicator::Init()
 	m_pNeedle->setNeedle(QcNeedleItem::DiamonNeedle);
 	// we want needle to point straight up at speed 0, thus range (90, 405)
 	// instead of (135, 405)
-	m_pNeedle->setDgereeRange(90, 405);
+	m_pNeedle->setDgereeRange(135, 405);
 	// now we must correct the minimal value as well. (405-135)/45 = 6
-	m_pNeedle->setMinValue(m_dMinSpeed - (m_dMaxSpeed-m_dMinSpeed)/6);
+	m_pNeedle->setMinValue(m_dMinSpeed /*- (m_dMaxSpeed-m_dMinSpeed)/6*/);
 	m_pNeedle->setMaxValue(m_dMaxSpeed);
 	m_pNeedle->setCurrentValue(0.0);
 

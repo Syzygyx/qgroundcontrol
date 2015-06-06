@@ -620,8 +620,8 @@ void MainWindow::_createInnerDockWidget(const QString& widgetName)
 		widget = new WeightGauge(200, true, this);
 	 } else if (widgetName == _airspeedIndicatorWidgetName) {
 		 AirspeedIndicator* pAI = new AirspeedIndicator(
-					 40,
-					 200,
+					 0,
+					 50,
 					 AirspeedIndicator::auKnots,
 					 this
 					 );

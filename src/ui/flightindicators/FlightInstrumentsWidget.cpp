@@ -15,7 +15,7 @@ FlightInstrumentsWidget::FlightInstrumentsWidget(QWidget* pParent) :
 	m_pAltitude->Init();
 	m_pVariometer = new VerticalSpeedIndicator(20.0);
 	m_pVariometer->Init();
-	m_pAirspeed = new AirspeedIndicator(40, 200, AirspeedIndicator::auKnots);
+	m_pAirspeed = new AirspeedIndicator(0, 50, AirspeedIndicator::auKnots);
 	m_pAirspeed->Init();
 	m_pHeading = new HeadingIndicator;
 	m_pHeading->Init();
