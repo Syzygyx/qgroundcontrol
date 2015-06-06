@@ -369,7 +369,8 @@ HEADERS += \
     src/ui/flightindicators/HeadingIndicator.h \
     src/ui/gauge/QcPolygonItem.h \
     src/ui/flightindicators/FlightInstrumentsWidget.h \
-    src/core/MessageDispatcher.h
+    src/core/MessageDispatcher.h \
+    src/core/net_fdm.hxx
 
 !AndroidBuild {
 HEADERS += \

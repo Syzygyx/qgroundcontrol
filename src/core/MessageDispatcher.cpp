@@ -34,6 +34,15 @@ MessageDispatcher::MessageDispatcher() : QObject()
 	m_pTimer->setInterval(100);
 	connect(m_pTimer, SIGNAL(timeout()), this, SLOT(Report()));
 	m_pTimer->start();
+
+	// create a timer, which will send information over UDP port 25 times per second
+	m_pTimerUDP = new QTimer(this);
+	m_pTimerUDP->setInterval(40);
+	connect(m_pTimerUDP, SIGNAL(timeout()), this, SLOT(SendUDP()));
+	m_pTimerUDP->start();
+
+	// create an UDP socket object
+	m_pSocketUDP = new QUdpSocket(this);
 }
 
 //-----------------------------------------------------------------------------
@@ -42,6 +51,8 @@ MessageDispatcher::~MessageDispatcher()
 {
 	//delete m_pMAVLink;
 	delete m_pTimer;
+	delete m_pTimerUDP;
+	delete m_pSocketUDP;
 }
 
 //-----------------------------------------------------------------------------
@@ -168,6 +179,23 @@ void MessageDispatcher::ReportAltitude(
 	// convert altitude from [m] to [ft]
 	emit SignalAltitude(3.28084f*dAltAMSL);
 	emit SignalVario(dVario);
+}
+
+//-----------------------------------------------------------------------------
+
+void MessageDispatcher::SendUDP()
+{
+	//qDebug() << "NetFDM" << sizeof(m_netFDM);
+	// reset the structure
+	memset(&m_netFDM, 0, sizeof(m_netFDM));
+
+	m_netFDM.version = FG_NET_FDM_VERSION;
+	m_netFDM.longitude = M_PI*14.5/180.0;
+	m_netFDM.latitude = M_PI*46.0/180.0;
+
+	char* pch = (char*)&m_netFDM;
+
+	m_pSocketUDP->writeDatagram(pch, sizeof(m_netFDM), QHostAddress::LocalHost, 5500);
 }
 
 //-----------------------------------------------------------------------------

@@ -3,8 +3,11 @@
 
 #include <QObject>
 #include <QTimer>
+#include <QUdpSocket>
+
 #include "ui/MAVLinkDecoder.h"
 #include "uas/UASInterface.h"
+#include "core/net_fdm.hxx"
 
 /** This class uses MAVLinkDecoder class and converts its messages into more user
  *  friendly ones
@@ -55,6 +58,8 @@ private slots:
 			double dVario,
 			quint64 uiTime
 			);
+	//! Sends information over UDP port
+	void SendUDP();
 
 signals:
 	//! Emitted when ground speed has changed
@@ -81,6 +86,12 @@ private:
 	UASInterface* m_pUAS;
 	//! Internal timer used to emit some signals at regular intervals
 	QTimer* m_pTimer;
+	//! Internal timer used to send information over UDP port
+	QTimer* m_pTimerUDP;
+	//! UDP socket for sending data
+	QUdpSocket* m_pSocketUDP;
+	//! Structure to be sent over UDP socket
+	FGNetFDM m_netFDM;
 };
 
 #endif // MESSAGEDISPATCHER_H
