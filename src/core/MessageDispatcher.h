@@ -41,8 +41,8 @@ private slots:
 	void SetActiveUAS(UASInterface* pUAS);
 	//! Sets the active UAS only if it is not set already
 	void InitUAS(UASInterface* pUAS);
-	//! Emits certain signals (heading)
-	void Report();
+	//! Obtains position and attitude from UASInterface and also sends some signals (heading)
+	void ReadUAS();
 	//! Emits speed signal
 	void ReportSpeed(
 			UASInterface*,

@@ -11,6 +11,11 @@
 
 MessageDispatcher::MessageDispatcher() : QObject()
 {
+	// reset the structure
+	memset(&m_netFDM, 0, sizeof(m_netFDM));
+	// save the correct version
+	m_netFDM.version = ToNetwork(FG_NET_FDM_VERSION);
+
 	m_pUAS = 0;
 	//m_pMAVLink = new MAVLinkDecoder(MAVLinkProtocol::instance(), this);
 
@@ -34,7 +39,7 @@ MessageDispatcher::MessageDispatcher() : QObject()
 	// create a timer, which will trigger Report call 10 times per second
 	m_pTimer = new QTimer(this);
 	m_pTimer->setInterval(100);
-	connect(m_pTimer, SIGNAL(timeout()), this, SLOT(Report()));
+	connect(m_pTimer, SIGNAL(timeout()), this, SLOT(ReadUAS()));
 	m_pTimer->start();
 
 	// create a timer, which will send information over UDP port 25 times per second
@@ -142,9 +147,25 @@ void MessageDispatcher::InitUAS(UASInterface* pUAS)
 
 //-----------------------------------------------------------------------------
 
-void MessageDispatcher::Report()
+void MessageDispatcher::ReadUAS()
 {
 	if (m_pUAS != 0) {
+		// read UAS info and save it into m_netFDM in correct format for sending to UDP port
+		m_netFDM.longitude = ToNetwork(double(M_PI*m_pUAS->getLongitude()/180.0));
+		m_netFDM.latitude = ToNetwork(double(M_PI*m_pUAS->getLatitude()/180.0));
+		m_netFDM.altitude = ToNetwork(m_pUAS->getAltitudeAMSL());
+
+		m_netFDM.phi = ToNetwork(float(m_pUAS->getRoll()));
+		m_netFDM.theta = ToNetwork(float(m_pUAS->getPitch()));
+		m_netFDM.psi = ToNetwork(float(m_pUAS->getYaw()));
+
+		//qDebug() << "Position" << m_pUAS->getLongitude() << m_pUAS->getLatitude();
+		/*qDebug() << "Angles" << 180.0*m_pUAS->getRoll()/M_PI
+						<< 180.0*m_pUAS->getPitch()/M_PI
+							<< 180.0*m_pUAS->getYaw()/M_PI;*/
+		/*qDebug() << "Altitude" << m_pUAS->getAltitudeAMSL() << "m  " <<
+						3.28084*m_pUAS->getAltitudeAMSL() << "ft" <<
+						m_pUAS->getAltitudeAMSL()/3.28084;*/
 		// convert from radians to degrees
 		emit SignalHeading(180.0*m_pUAS->getYaw()/M_PI);
 	}
@@ -180,17 +201,20 @@ void MessageDispatcher::ReportAltitude(
 	Q_UNUSED(dAltWGS84);
 	Q_UNUSED(dAltRel);
 	Q_UNUSED(uiTime);
+
 	// convert altitude from [m] to [ft]
 	emit SignalAltitude(3.28084f*dAltAMSL);
 	emit SignalVario(dVario);
+
+	// also update the object to send to UDP port
+	m_netFDM.altitude = ToNetwork(dAltAMSL);
 }
 
 //-----------------------------------------------------------------------------
 
 void MessageDispatcher::SendUDP()
 {
-	// reset the structure
-	memset(&m_netFDM, 0, sizeof(m_netFDM));
+	/*
 	m_netFDM.version = ToNetwork(FG_NET_FDM_VERSION);
 	m_netFDM.longitude = ToNetwork(double(M_PI*14.54/180.0));
 	m_netFDM.latitude = ToNetwork(double(M_PI*45.56/180.0));
@@ -208,7 +232,10 @@ void MessageDispatcher::SendUDP()
 	m_netFDM.cur_time = ToNetwork(uint32_t(time(0)));
 	m_netFDM.warp = ToNetwork(uint32_t(1));
 	m_netFDM.visibility = ToNetwork(5000.0f);
+	*/
 
+	m_netFDM.cur_time = ToNetwork(uint32_t(time(0)));
+	m_netFDM.visibility = ToNetwork(20000.0f);
 	char* pch = (char*)&m_netFDM;
 	m_pSocketUDP->writeDatagram(pch, sizeof(m_netFDM), QHostAddress::LocalHost, 5600);
 }
