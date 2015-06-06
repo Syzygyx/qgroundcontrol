@@ -1,3 +1,5 @@
+#include <time.h>
+
 #include <QDebug>
 
 #include "comm/MAVLinkProtocol.h"
@@ -187,8 +189,28 @@ void MessageDispatcher::ReportAltitude(
 
 void MessageDispatcher::SendUDP()
 {
-	QString qs = "14.5000000000,45.5678901234,2.286483,0.108518,2.708227,0.000000,3.545612,-0.000000;";
-	qDebug() << "Write bytes" << m_pSocketUDP->writeDatagram(qs.toLatin1().constData(), qs.length(), QHostAddress::LocalHost, 5500);
+	// reset the structure
+	memset(&m_netFDM, 0, sizeof(m_netFDM));
+	m_netFDM.version = ToNetwork(FG_NET_FDM_VERSION);
+	m_netFDM.longitude = ToNetwork(double(M_PI*14.54/180.0));
+	m_netFDM.latitude = ToNetwork(double(M_PI*45.56/180.0));
+	m_netFDM.altitude = ToNetwork(1200.0);
+
+	m_netFDM.phi = ToNetwork(0.0f);
+	m_netFDM.theta = ToNetwork(0.0f);
+	m_netFDM.psi = ToNetwork(0.0f);
+
+	m_netFDM.num_engines = ToNetwork(uint32_t(1));
+	m_netFDM.num_tanks = ToNetwork(uint32_t(1));
+	m_netFDM.fuel_quantity[0] = ToNetwork(6.0f);
+	m_netFDM.num_wheels = ToNetwork(uint32_t(3));
+
+	m_netFDM.cur_time = ToNetwork(uint32_t(time(0)));
+	m_netFDM.warp = ToNetwork(uint32_t(1));
+	m_netFDM.visibility = ToNetwork(5000.0f);
+
+	char* pch = (char*)&m_netFDM;
+	m_pSocketUDP->writeDatagram(pch, sizeof(m_netFDM), QHostAddress::LocalHost, 5600);
 }
 
 //-----------------------------------------------------------------------------
@@ -211,6 +233,36 @@ void MessageDispatcher::GetData()
 			}
 		}
 	}
+}
+
+//-----------------------------------------------------------------------------
+
+uint32_t MessageDispatcher::ToNetwork(uint32_t uiVal) const
+{
+	qint32* pi = (qint32*)&uiVal;
+	qint32 iNew = qToBigEndian(*pi);
+	uiVal = *(uint32_t*)&iNew;
+	return uiVal;
+}
+
+//-----------------------------------------------------------------------------
+
+float MessageDispatcher::ToNetwork(float fVal) const
+{
+	qint32* pi = (qint32*)&fVal;
+	qint32 iNew = qToBigEndian(*pi);
+	fVal = *(float*)&iNew;
+	return fVal;
+}
+
+//-----------------------------------------------------------------------------
+
+double MessageDispatcher::ToNetwork(double dVal) const
+{
+	qint64* pi =(qint64*)&dVal;
+	qint64 iNew = qToBigEndian(*pi);
+	dVal = *(double*)&iNew;
+	return dVal;
 }
 
 //-----------------------------------------------------------------------------

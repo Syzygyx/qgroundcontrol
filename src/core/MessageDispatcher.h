@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QTimer>
 #include <QUdpSocket>
+#include <QtEndian>
 
 #include "ui/MAVLinkDecoder.h"
 #include "uas/UASInterface.h"
@@ -62,6 +63,14 @@ private slots:
 	void SendUDP();
 	//! Testing only. Receive data from FG
 	void GetData();
+
+private:
+	//! Converts uint32 to network order
+	uint32_t ToNetwork(uint32_t uiVal) const;
+	//! Converts float to network order
+	float ToNetwork(float fVal) const;
+	//! Converts double to network order
+	double ToNetwork(double dVal) const;
 
 signals:
 	//! Emitted when ground speed has changed
