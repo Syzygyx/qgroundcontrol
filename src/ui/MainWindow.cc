@@ -1329,7 +1329,7 @@ void MainWindow::launchFlightGear()
 	QString qsApp;
 
 #if defined(Q_OS_MACX)
-	qsApp = "/Applications/FlightGear.app";
+	qsApp = "/Applications/FlightGear.app/Contents/MacOS/fgfs";
 #elseif defined(Q_OS_WIN32)
 	qsApp = "fgfs.exe";
 #else
