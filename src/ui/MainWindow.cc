@@ -1325,12 +1325,12 @@ void MainWindow::setFontSizeFactor(double size) {
 void MainWindow::launchFlightGear()
 {
 	qDebug() << "Trying to launch FlightGear";
-	QString qsPar = "--native-fdm=socket,in,100,,5600,udp --fdm=null --aircraft=arducopter";
+    QString qsPar = "--native-fdm=socket,in,25,,5600,udp --fdm=null --aircraft=arducopter";
 	QString qsApp;
 
 #if defined(Q_OS_MACX)
 	qsApp = "/Applications/FlightGear.app/Contents/MacOS/fgfs";
-#elseif defined(Q_OS_WIN32)
+#elif defined(Q_OS_WIN32)
 	qsApp = "fgfs.exe";
 #else
 	qsApp = "fgfs";

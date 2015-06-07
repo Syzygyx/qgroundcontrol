@@ -36,16 +36,16 @@ MessageDispatcher::MessageDispatcher() : QObject()
 
 	InitUAS(UASManager::instance()->getActiveUAS());
 
-	// create a timer, which will trigger Report call 10 times per second
-	m_pTimer = new QTimer(this);
-	m_pTimer->setInterval(100);
-	connect(m_pTimer, SIGNAL(timeout()), this, SLOT(ReadUAS()));
-	m_pTimer->start();
+    // create a timer, which will trigger Report call 100 times per second
+//	m_pTimer = new QTimer(this);
+//    m_pTimer->setInterval(20);
+//	connect(m_pTimer, SIGNAL(timeout()), this, SLOT(ReadUAS()));
+//	m_pTimer->start();
 
 	m_bSendUDP = false;
-	// create a timer, which will send information over UDP port 25 times per second
+    // create a timer, which will send information over UDP port 0 times per second
 	m_pTimerUDP = new QTimer(this);
-	m_pTimerUDP->setInterval(40);
+    m_pTimerUDP->setInterval(25);
 	connect(m_pTimerUDP, SIGNAL(timeout()), this, SLOT(SendUDP()));
 	m_pTimerUDP->start();
 
@@ -161,8 +161,10 @@ void MessageDispatcher::ReadUAS()
 	if (m_pUAS != 0) {
 		// read UAS info and save it into m_netFDM in correct format for sending to UDP port
 		m_netFDM.longitude = ToNetwork(double(M_PI*m_pUAS->getLongitude()/180.0));
-		m_netFDM.latitude = ToNetwork(double(M_PI*m_pUAS->getLatitude()/180.0));
-		m_netFDM.altitude = ToNetwork(m_pUAS->getAltitudeAMSL());
+        m_netFDM.latitude = ToNetwork(double(M_PI*m_pUAS->getLatitude()/180.0));
+
+        m_netFDM.altitude = ToNetwork(double(m_pUAS->getAltitudeAMSL()+2));
+        m_netFDM.agl = ToNetwork(float(fmax(1,m_pUAS->getAltitudeRelative())));
 
 		m_netFDM.phi = ToNetwork(float(m_pUAS->getRoll()));
 		m_netFDM.theta = ToNetwork(float(m_pUAS->getPitch()));
@@ -212,17 +214,19 @@ void MessageDispatcher::ReportAltitude(
 	Q_UNUSED(uiTime);
 
 	// convert altitude from [m] to [ft]
-	emit SignalAltitude(3.28084f*dAltAMSL);
-	emit SignalVario(dVario);
+    emit SignalAltitude(3.28084f*dAltRel);
+    emit SignalVario(dVario);
 
-	// also update the object to send to UDP port
-	m_netFDM.altitude = ToNetwork(dAltAMSL);
+    // also update the object to send to UDP port
+    //m_netFDM.altitude = ToNetwork(double(1000.0));
+    //m_netFDM.agl = ToNetwork(float(500));
 }
 
 //-----------------------------------------------------------------------------
 
 void MessageDispatcher::SendUDP()
 {
+    ReadUAS();
 	/*
 	m_netFDM.version = ToNetwork(FG_NET_FDM_VERSION);
 	m_netFDM.longitude = ToNetwork(double(M_PI*14.54/180.0));

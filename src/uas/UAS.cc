@@ -783,7 +783,7 @@ void UAS::receiveMessage(LinkInterface* link, mavlink_message_t message)
                 emit attitudeChanged(this, getRoll(), getPitch(), getYaw(), time);
             }
 
-            setAltitudeAMSL(hud.alt);
+            //setAltitudeAMSL(hud.alt);
             setGroundSpeed(hud.groundspeed);
             if (!isnan(hud.airspeed))
                 setAirSpeed(hud.airspeed);
@@ -844,6 +844,7 @@ void UAS::receiveMessage(LinkInterface* link, mavlink_message_t message)
             setLongitude(pos.lon/(double)1E7);
             setAltitudeWGS84(pos.alt/1000.0);
             setAltitudeRelative(pos.relative_alt/1000.0);
+            setAltitudeAMSL(pos.alt/1000.0);
 
             globalEstimatorActive = true;
 

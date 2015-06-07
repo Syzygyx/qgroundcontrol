@@ -40,7 +40,7 @@ ExternalAppLauncher::ExternalAppLauncher(QObject *pParent) :
 				SIGNAL(SignalFinished())
 				);
 
-	m_iTimeout = 20000;
+    m_iTimeout = 45000;
 }
 
 //-----------------------------------------------------------------------------
