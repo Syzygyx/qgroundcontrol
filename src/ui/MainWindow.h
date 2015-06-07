@@ -66,6 +66,7 @@ This file is part of the QGROUNDCONTROL project
 #include "MAVLinkDecoder.h"
 #include "QGCUASFileViewMulti.h"
 #include "QGCFlightGearLink.h"
+#include "core/ExternalAppLauncher.h"
 
 class QGCMapTool;
 class QGCMAVLinkMessageSender;
@@ -200,6 +201,10 @@ protected slots:
      * @brief Enable/Disable Status Bar
      */
     void showStatusBarCallback(bool checked);
+	 /**
+	  * @brief Launches FlightGear with correct parameters, if installed
+	  */
+	 void launchFlightGear();
 
 signals:
     void initStatusChanged(const QString& message, int alignment, const QColor &color);
@@ -383,6 +388,8 @@ private:
     static double _pixelFactor;
     static double _fontFactor;
 
+	 //! Pointer to the external application launcher
+	 ExternalAppLauncher* m_pExtAppLauncher;
 };
 
 #endif /* _MAINWINDOW_H_ */

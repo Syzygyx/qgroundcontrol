@@ -356,6 +356,24 @@ MainWindow::MainWindow(QSplashScreen* splashScreen)
         qd.close();
 #endif
     }
+
+	 m_pExtAppLauncher = new ExternalAppLauncher(this);
+
+	 // we must enable UDP sending only after FlightGear is ready to receive data
+	 // otherwise the scenery loading on FlightGear will never finish
+	 connect(
+				 m_pExtAppLauncher,
+				 SIGNAL(SignalReady()),
+				 MessageDispatcher::GetInstance(),
+				 SLOT(EnableUDP())
+				);
+
+	 connect(
+				 m_pExtAppLauncher,
+				 SIGNAL(SignalFinished()),
+				 MessageDispatcher::GetInstance(),
+				 SLOT(DisableUDP())
+				);
 }
 
 MainWindow::~MainWindow()
@@ -375,6 +393,8 @@ MainWindow::~MainWindow()
         _commsWidgetList[i]->deleteLater();
     }
     _instance = NULL;
+
+	 delete m_pExtAppLauncher;
 }
 
 void MainWindow::resizeEvent(QResizeEvent * event)
@@ -909,6 +929,7 @@ void MainWindow::connectCommonActions()
     connect(_ui.actionAnalyze, SIGNAL(triggered()), this, SLOT(loadAnalyzeView()));
     connect(_ui.actionPlan, SIGNAL(triggered()), this, SLOT(loadPlanView()));
     connect(_ui.actionExperimentalPlanView, SIGNAL(triggered()), this, SLOT(loadOldPlanView()));
+	 connect(_ui.actionLaunch_FlightGear, SIGNAL(triggered()), this, SLOT(launchFlightGear()));
 
     // Help Actions
     connect(_ui.actionOnline_Documentation, SIGNAL(triggered()), this, SLOT(showHelp()));
@@ -1299,6 +1320,18 @@ void MainWindow::setFontSizeFactor(double size) {
     }
     _fontFactor = size;
     emit fontSizeChanged();
+}
+
+void MainWindow::launchFlightGear()
+{
+	qDebug() << "Trying to launch FlightGear";
+	m_pExtAppLauncher->Launch(
+				"fgfs",
+				"--native-fdm=socket,in,100,,5600,udp --fdm=null",
+				"http://www.flightgear.org/"
+				);
+	// when "power up" is written on standard output, the FlightGear is ready to receive data
+	m_pExtAppLauncher->SetMagicString("power up");
 }
 
 #ifdef QGC_MOUSE_ENABLED_LINUX

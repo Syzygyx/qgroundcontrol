@@ -42,6 +42,7 @@ MessageDispatcher::MessageDispatcher() : QObject()
 	connect(m_pTimer, SIGNAL(timeout()), this, SLOT(ReadUAS()));
 	m_pTimer->start();
 
+	m_bSendUDP = false;
 	// create a timer, which will send information over UDP port 25 times per second
 	m_pTimerUDP = new QTimer(this);
 	m_pTimerUDP->setInterval(40);
@@ -50,8 +51,6 @@ MessageDispatcher::MessageDispatcher() : QObject()
 
 	// create an UDP socket object
 	m_pSocketUDP = new QUdpSocket(this);
-	m_pSocketUDP->bind(QHostAddress::LocalHost, 5500);
-	connect(m_pSocketUDP, SIGNAL(readyRead()), this, SLOT(GetData()));
 }
 
 //-----------------------------------------------------------------------------
@@ -72,6 +71,16 @@ MessageDispatcher* MessageDispatcher::GetInstance()
 		s_pInstance = new MessageDispatcher;
 	return s_pInstance;
 }
+
+//-----------------------------------------------------------------------------
+
+void MessageDispatcher::EnableUDP()
+{	m_bSendUDP = true; }
+
+//-----------------------------------------------------------------------------
+
+void MessageDispatcher::DisableUDP()
+{	m_bSendUDP = false; }
 
 //-----------------------------------------------------------------------------
 
@@ -234,10 +243,12 @@ void MessageDispatcher::SendUDP()
 	m_netFDM.visibility = ToNetwork(5000.0f);
 	*/
 
-	m_netFDM.cur_time = ToNetwork(uint32_t(time(0)));
-	m_netFDM.visibility = ToNetwork(20000.0f);
-	char* pch = (char*)&m_netFDM;
-	m_pSocketUDP->writeDatagram(pch, sizeof(m_netFDM), QHostAddress::LocalHost, 5600);
+	if (m_bSendUDP == true) {
+		m_netFDM.cur_time = ToNetwork(uint32_t(time(0)));
+		m_netFDM.visibility = ToNetwork(20000.0f);
+		char* pch = (char*)&m_netFDM;
+		m_pSocketUDP->writeDatagram(pch, sizeof(m_netFDM), QHostAddress::LocalHost, 5600);
+	}
 }
 
 //-----------------------------------------------------------------------------

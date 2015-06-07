@@ -26,6 +26,12 @@ public:
 	//! Returns the instance. Creates one, if it does not exist yet
 	static MessageDispatcher* GetInstance();
 
+public slots:
+	//! Enables sending data over UDP port
+	void EnableUDP();
+	//! Disables sending data over UDP port
+	void DisableUDP();
+
 private slots:
 	/*
 	//! Used to decode MAVLink messages
@@ -104,6 +110,8 @@ private:
 	QUdpSocket* m_pSocketUDP;
 	//! Structure to be sent over UDP socket
 	FGNetFDM m_netFDM;
+	//! Indicates whether the sending data over UDP is allowed
+	bool m_bSendUDP;
 };
 
 #endif // MESSAGEDISPATCHER_H
