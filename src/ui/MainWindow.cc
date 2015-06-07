@@ -1325,13 +1325,18 @@ void MainWindow::setFontSizeFactor(double size) {
 void MainWindow::launchFlightGear()
 {
 	qDebug() << "Trying to launch FlightGear";
-	m_pExtAppLauncher->Launch(
-				"fgfs",
-				"--native-fdm=socket,in,100,,5600,udp --fdm=null",
-				"http://www.flightgear.org/"
-				);
-	// when "power up" is written on standard output, the FlightGear is ready to receive data
-	m_pExtAppLauncher->SetMagicString("power up");
+	QString qsPar = "--native-fdm=socket,in,100,,5600,udp --fdm=null --aircraft=arducopter";
+	QString qsApp;
+
+#if defined(Q_OS_MACX)
+	qsApp = "/Applications/FlightGear.app";
+#elseif defined(Q_OS_WIN32)
+	qsApp = "fgfs.exe";
+#else
+	qsApp = "fgfs";
+#endif
+
+	m_pExtAppLauncher->Launch(qsApp, qsPar, "http://www.flightgear.org/");
 }
 
 #ifdef QGC_MOUSE_ENABLED_LINUX

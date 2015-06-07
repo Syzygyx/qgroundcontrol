@@ -26,6 +26,8 @@ protected slots:
 	void HandleError(QProcess::ProcessError ePE);
 	//! Reads from standard output and emits SignalReady, if necessary
 	void ReadStandardOutput();
+	//! Emits SignalReady if it hasn't been emitted yet
+	void CheckReady();
 
 signals:
 	//! Emitted when magic string is read from the application output
@@ -44,6 +46,10 @@ private:
 	QString m_qsMagic;
 	//! Pointer to the process object
 	QProcess* m_pProcess;
+	//! Timeout after which the process will emit SignalReady [ms]
+	int m_iTimeout;
+	//! Indicates whether SignalReady has been emitted after launch
+	bool m_bSignalled;
 };
 
 #endif // EXTERNALAPPLAUNCHER_H

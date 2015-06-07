@@ -1,5 +1,6 @@
 #include <QDebug>
 #include <QMessageBox>
+#include <QTimer>
 
 #include "ExternalAppLauncher.h"
 
@@ -38,6 +39,8 @@ ExternalAppLauncher::ExternalAppLauncher(QObject *pParent) :
 				this,
 				SIGNAL(SignalFinished())
 				);
+
+	m_iTimeout = 20000;
 }
 
 //-----------------------------------------------------------------------------
@@ -55,7 +58,11 @@ void ExternalAppLauncher::Launch(QString qsApp, QString qsPar, QString qsUrl)
 	m_qsPar = qsPar;
 	m_qsUrl = qsUrl;
 	QString qsCommand = m_qsApp + " " + m_qsPar;
+	m_bSignalled = false;
 	m_pProcess->start(qsCommand);
+
+	// emit SignalReady after 20s
+	QTimer::singleShot(m_iTimeout, this, SLOT(CheckReady()));
 }
 
 //-----------------------------------------------------------------------------
@@ -83,8 +90,20 @@ void ExternalAppLauncher::ReadStandardOutput()
 	QString qsErr = m_pProcess->readAllStandardError();
 	if (m_qsMagic.length() > 0) {
 		if (qsText.indexOf(m_qsMagic) >= 0 || qsErr.indexOf(m_qsMagic) >= 0) {
-			emit SignalReady();
+			CheckReady();
 		}
+	}
+}
+
+//-----------------------------------------------------------------------------
+
+void ExternalAppLauncher::CheckReady()
+{
+	qDebug() << "Checking ready" << m_bSignalled;
+	if (m_bSignalled == false) {
+		emit SignalReady();
+		m_bSignalled = true;
+		qDebug() << "Application launched!";
 	}
 }
 
