@@ -163,6 +163,7 @@ void MessageDispatcher::ReadUAS()
 		m_netFDM.longitude = ToNetwork(double(M_PI*m_pUAS->getLongitude()/180.0));
 		m_netFDM.latitude = ToNetwork(double(M_PI*m_pUAS->getLatitude()/180.0));
 		m_netFDM.altitude = ToNetwork(m_pUAS->getAltitudeAMSL());
+		m_netFDM.agl = ToNetwork(float(m_pUAS->getAltitudeRelative()));
 
 		m_netFDM.phi = ToNetwork(float(m_pUAS->getRoll()));
 		m_netFDM.theta = ToNetwork(float(m_pUAS->getPitch()));
