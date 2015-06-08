@@ -49,8 +49,8 @@ QPoint VehicleWidget::GetCenter(int i) const
 	// engine 5: 226, 396
 	// engine 6: 400, 297
 
-	int aiX[] = { 225, 399, 573, 574, 398, 226, 400 };
-	int aiY[] = { 196, 97, 196, 397, 496, 396, 297 };
+	int aiX[] = { 501, 602, 500, 300, 199, 300, 400 };
+	int aiY[] = { 122, 296, 471, 471, 296, 122, 297 };
 
 	QPoint pt;
 	if (i >= 0 &&  i < 7) {
@@ -77,7 +77,7 @@ int VehicleWidget::GetSize(int i) const
 
 //-----------------------------------------------------------------------------
 
-void VehicleWidget::paintEvent(QPaintEvent* pPE)
+void VehicleWidget::paintEvent(QPaintEvent*)
 {
 	QPainter P(this);
 
@@ -90,6 +90,11 @@ void VehicleWidget::paintEvent(QPaintEvent* pPE)
 	double dH = 3*dW/4; //rectW.height();
 	rectW.setCoords(-dW/4, 0, 5*dW/4, 6*dH/4);
 
+	// rotate the surface around its center for 90 degrees
+	QPoint pt = GetCenter(6);
+	P.translate(pt.x(), pt.y());
+	P.rotate(90.0);
+	P.translate(-pt.x(), -pt.y());
 
 	m_pSvgRender->render(&P, rectW);
 }
@@ -98,7 +103,7 @@ void VehicleWidget::paintEvent(QPaintEvent* pPE)
 
 void VehicleWidget::mousePressEvent(QMouseEvent* pME)
 {
-	//qDebug() << "Mouse pressed at" << pME->pos();
+	qDebug() << "Mouse pressed at" << pME->pos();
 }
 
 //-----------------------------------------------------------------------------
