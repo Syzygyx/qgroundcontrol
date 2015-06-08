@@ -76,6 +76,7 @@ This file is part of the QGROUNDCONTROL project
 #include "flightindicators/VerticalSpeedIndicator.h"
 #include "flightindicators/AltitudeIndicator.h"
 #include "flightindicators/HeadingIndicator.h"
+#include "video/FlightGearGrabWidget.h"
 
 #include "core/MessageDispatcher.h"
 
@@ -136,6 +137,7 @@ const char* MainWindow::_airspeedIndicatorWidgetName = "AIRSPEED_INDICATOR_DOCKW
 const char* MainWindow::_verticalSpeedIndicatorWidgetName = "VERTICAL_SPEED_INDICATOR_DOCKWIDGET";
 const char* MainWindow::_altitudeIndicatorWidgetName = "ALTITDE_INDICATOR_DOCKWIDGET";
 const char* MainWindow::_headingIndicatorWidgetName = "HEADING_INDICATOR_DOCKWIDGET";
+const char* MainWindow::_flightGearVideoWidgetName = "FLIGHT_GEAR_VIDEO_DOCKWIDGET";
 
 static MainWindow* _instance = NULL;   ///< @brief MainWindow singleton
 
@@ -488,6 +490,7 @@ void MainWindow::_buildCommonWidgets(void)
 		  { _verticalSpeedIndicatorWidgetName,"Vertical Speed Indicator", Qt::RightDockWidgetArea},
 		  { _altitudeIndicatorWidgetName,     "Altitude Indicator",       Qt::RightDockWidgetArea},
 		  { _headingIndicatorWidgetName,      "Heading Indicator",        Qt::RightDockWidgetArea},
+		  { _flightGearVideoWidgetName,       "FlightGear Live Video",    Qt::RightDockWidgetArea},
 	 };
     static const size_t cDockWidgetInfo = sizeof(rgDockWidgetInfo) / sizeof(rgDockWidgetInfo[0]);
 
@@ -684,7 +687,11 @@ void MainWindow::_createInnerDockWidget(const QString& widgetName)
 					 SLOT(SetHeading(double))
 					 );
 		 widget = pHI;
-	 } else {
+	 } else if (widgetName == _flightGearVideoWidgetName) {
+		 widget = new FlightGearGrabWidget(this);
+	 }
+
+	 else {
         qWarning() << "Attempt to create unknown Inner Dock Widget" << widgetName;
     }
 
@@ -1325,7 +1332,11 @@ void MainWindow::setFontSizeFactor(double size) {
 void MainWindow::launchFlightGear()
 {
 	qDebug() << "Trying to launch FlightGear";
+<<<<<<< HEAD
     QString qsPar = "--native-fdm=socket,in,25,,5600,udp --fdm=null --aircraft=arducopter";
+=======
+	QString qsPar = "--httpd=8080 --native-fdm=socket,in,100,,5600,udp --fdm=null --aircraft=arducopter";
+>>>>>>> origin/master
 	QString qsApp;
 
 #if defined(Q_OS_MACX)

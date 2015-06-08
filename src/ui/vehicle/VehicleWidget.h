@@ -31,7 +31,7 @@ protected:
 	int GetSize(int i) const;
 
 	//! Paints the widget
-	void paintEvent(QPaintEvent* pPE);
+	void paintEvent(QPaintEvent*);
 	//! This is intended to find locations for gauges
 	void mousePressEvent(QMouseEvent* pME);
 	//! Handles the resize events by moving the gauges as well

@@ -161,10 +161,16 @@ void MessageDispatcher::ReadUAS()
 	if (m_pUAS != 0) {
 		// read UAS info and save it into m_netFDM in correct format for sending to UDP port
 		m_netFDM.longitude = ToNetwork(double(M_PI*m_pUAS->getLongitude()/180.0));
+<<<<<<< HEAD
         m_netFDM.latitude = ToNetwork(double(M_PI*m_pUAS->getLatitude()/180.0));
 
         m_netFDM.altitude = ToNetwork(double(m_pUAS->getAltitudeAMSL()+2));
         m_netFDM.agl = ToNetwork(float(fmax(1,m_pUAS->getAltitudeRelative())));
+=======
+		m_netFDM.latitude = ToNetwork(double(M_PI*m_pUAS->getLatitude()/180.0));
+		m_netFDM.altitude = ToNetwork(m_pUAS->getAltitudeAMSL());
+		m_netFDM.agl = ToNetwork(float(m_pUAS->getAltitudeRelative()));
+>>>>>>> origin/master
 
 		m_netFDM.phi = ToNetwork(float(m_pUAS->getRoll()));
 		m_netFDM.theta = ToNetwork(float(m_pUAS->getPitch()));
