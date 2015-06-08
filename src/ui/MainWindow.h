@@ -345,6 +345,7 @@ private:
 	 static const char* _verticalSpeedIndicatorWidgetName;
 	 static const char* _altitudeIndicatorWidgetName;
 	 static const char* _headingIndicatorWidgetName;
+	 static const char* _flightGearVideoWidgetName;
 
     QMap<QString, QDockWidget*>     _mapName2DockWidget;
     QMap<int, QDockWidget*>         _mapUasId2HilDockWidget;
