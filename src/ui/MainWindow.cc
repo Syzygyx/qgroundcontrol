@@ -1332,11 +1332,7 @@ void MainWindow::setFontSizeFactor(double size) {
 void MainWindow::launchFlightGear()
 {
 	qDebug() << "Trying to launch FlightGear";
-<<<<<<< HEAD
-    QString qsPar = "--native-fdm=socket,in,25,,5600,udp --fdm=null --aircraft=arducopter";
-=======
 	QString qsPar = "--httpd=8080 --native-fdm=socket,in,100,,5600,udp --fdm=null --aircraft=arducopter";
->>>>>>> origin/master
 	QString qsApp;
 
 #if defined(Q_OS_MACX)

@@ -44,6 +44,7 @@ LinuxBuild|MacBuild|AndroidBuild {
 
 WindowsBuild {
     PRE_TARGETDEPS += $${LOCATION_PLUGIN_DESTDIR}/$${LOCATION_PLUGIN_NAME}.lib
+    DEFINES += DISABLE_XBEE
 }
 
 # Qt configuration
