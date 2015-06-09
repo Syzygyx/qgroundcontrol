@@ -64,11 +64,13 @@ QGCMapWidget::QGCMapWidget(QWidget *parent) :
 }
 void QGCMapWidget::guidedActionTriggered()
 {
-    if (!uas)
+	// commented out, so that destination can be selected even without connection
+	/* if (!uas)
     {
         QGCMessageBox::information(tr("Error"), tr("Please connect first"));
         return;
-    }
+	 }*/
+	qDebug() << "guidedActionTriggered" << currWPManager << defaultGuidedAlt;
     if (currWPManager)
     {
         if (defaultGuidedAlt == -1)
@@ -90,11 +92,13 @@ void QGCMapWidget::guidedActionTriggered()
 }
 bool QGCMapWidget::guidedAltActionTriggered()
 {
-    if (!uas)
+	// commented out, so that destination can be selected even without connection
+	/* if (!uas)
     {
         QGCMessageBox::information(tr("Error"), tr("Please connect first"));
         return false;
     }
+	 */
     bool ok = false;
     int tmpalt = QInputDialog::getInt(this,"Altitude","Enter default altitude (in meters) of destination point for guided mode",100,0,30000,1,&ok);
     if (!ok)
@@ -102,6 +106,8 @@ bool QGCMapWidget::guidedAltActionTriggered()
         //Use has chosen cancel. Do not send the waypoint
         return false;
     }
+
+	 qDebug() << "guidedAltActionTriggered true";
     defaultGuidedAlt = tmpalt;
     guidedActionTriggered();
     return true;
@@ -112,11 +118,12 @@ bool QGCMapWidget::guidedAltActionTriggered()
  */
 bool QGCMapWidget::setHomeActionTriggered()
 {
-    if (!uas)
+	// commented out, so that home location can be selected even without connection
+	/* if (!uas)
     {
         QGCMessageBox::information(tr("Error"), tr("Please connect first"));
         return false;
-    }
+	 }*/
     UASManagerInterface *uasManager = UASManager::instance();
     if (!uasManager) { return false; }
 
