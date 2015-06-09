@@ -37,12 +37,18 @@ protected:
 	//! Handles the resize events by moving the gauges as well
 	void resizeEvent(QResizeEvent*);
 
+	//! Creates the internal vehicle pixmap
+	virtual void CreateVehiclePixmap();
 
 protected:
 	//! Object, which renders the vehicle widget from SVG
 	QSvgRenderer* m_pSvgRender;
 	//! Array of pointers to gauges
 	QcGaugeWidget* m_apGauges[GAUGE_COUNT];
+	//! Internal pixmap, which holds the vehicle photo
+	QPixmap* m_pPixVehicle;
+	//! Scaled vehicle pixmap
+	QPixmap m_pixScaled;
 };
 
 #endif // VEHICLEWIDGET_H

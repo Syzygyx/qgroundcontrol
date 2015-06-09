@@ -4,14 +4,20 @@
 
 #include "VehicleWidget.h"
 
+#define PHOTO_W			550
+#define PHOTO_H			500
+
 //-----------------------------------------------------------------------------
 
 VehicleWidget::VehicleWidget(QWidget* pParent) : QWidget(pParent)
 {
+	setMinimumSize(3*PHOTO_W/5, 3*PHOTO_H/5);
 	QString qsFile = ":/files/Vehicle.svg";
 	m_pSvgRender = new QSvgRenderer(qsFile, this);
 	for (int i = 0; i < GAUGE_COUNT; i++)
 		m_apGauges[i] = 0;
+
+	m_pPixVehicle = 0;
 }
 
 //-----------------------------------------------------------------------------
@@ -19,6 +25,8 @@ VehicleWidget::VehicleWidget(QWidget* pParent) : QWidget(pParent)
 VehicleWidget::~VehicleWidget()
 {
 	delete m_pSvgRender;
+	if (m_pPixVehicle != 0)
+		delete m_pPixVehicle;
 }
 
 //-----------------------------------------------------------------------------
@@ -49,13 +57,36 @@ QPoint VehicleWidget::GetCenter(int i) const
 	// engine 5: 226, 396
 	// engine 6: 400, 297
 
-	int aiX[] = { 501, 602, 500, 300, 199, 300, 400 };
-	int aiY[] = { 122, 296, 471, 471, 296, 122, 297 };
+	//int aiX[] = { 501, 602, 500, 300, 199, 300, 400 };
+	//int aiY[] = { 122, 296, 471, 471, 296, 122, 297 };
+	//int aiX[] = { 376, 478, 375, 175, 74, 175, 275 };
+	//int aiY[] = { 87, 246, 406, 406, 246, 87, 247 };
+	int aiX[] = { 101, 203, 101, -100, -201, -100, 0 };
+	int aiY[] = { -178, -4, 172, 171, -4, -178, -3 };
 
 	QPoint pt;
 	if (i >= 0 &&  i < 7) {
-		pt.setX((aiX[i]*width())/800);
-		pt.setY((aiY[i]*width())/800);
+
+		// center of the widget
+		int iCX = width()/2-1;
+		int iCY = height()/2-1;
+
+		// size of the vehicle area
+		int iW;
+		int iH;
+		if (iCX > PHOTO_W*iCY/PHOTO_H) {
+			// empty space on the left and right
+			iH = height();
+			iW = PHOTO_W*iH/PHOTO_H;
+		}	else {
+			// empty space at top and bottom
+			iW = width();
+			iH = PHOTO_H*iW/PHOTO_W;
+		}
+
+		pt.setX(iCX + aiX[i]*iW/PHOTO_W);
+		pt.setY(iCY + aiY[i]*iH/PHOTO_H);
+
 	}	else {
 		qWarning() << "Wrong engine index!";
 		Q_ASSERT(i >= 0 && i < 7);
@@ -69,34 +100,35 @@ int VehicleWidget::GetSize(int i) const
 {
 	// engines 0-5 have size 120 on 800 pix width
 	// engine 6 has size 200 on 800 pix width
-	if (i < 6)
-		return (120*width())/800;
+
+	int iW;
+	if (width() > PHOTO_W*height()/PHOTO_H)
+		iW = PHOTO_W*height()/PHOTO_H;
 	else
-		return (200*width())/800;
+		iW = width();
+
+	if (i < 6)
+		return (120*iW)/PHOTO_W;
+	else
+		return (205*iW)/PHOTO_W;
 }
 
 //-----------------------------------------------------------------------------
 
 void VehicleWidget::paintEvent(QPaintEvent*)
 {
+	if (m_pPixVehicle == 0)
+		CreateVehiclePixmap();
+
 	QPainter P(this);
 
-	P.fillRect(rect(), palette().color(QPalette::Window));
+	P.fillRect(rect(), Qt::cyan);
 
-	QRectF rectW = rect();
-
-	// this should be removed once the correct SVG is in place
-	double dW = rectW.width();
-	double dH = 3*dW/4; //rectW.height();
-	rectW.setCoords(-dW/4, 0, 5*dW/4, 6*dH/4);
-
-	// rotate the surface around its center for 90 degrees
-	QPoint pt = GetCenter(6);
-	P.translate(pt.x(), pt.y());
-	P.rotate(90.0);
-	P.translate(-pt.x(), -pt.y());
-
-	m_pSvgRender->render(&P, rectW);
+	P.drawPixmap(
+				(width() - m_pixScaled.width())/2,
+				(height() - m_pixScaled.height())/2,
+				m_pixScaled
+				);
 }
 
 //-----------------------------------------------------------------------------
@@ -120,6 +152,32 @@ void VehicleWidget::resizeEvent(QResizeEvent*)
 			m_apGauges[i]->move(ptCenter.x() - iW/2, ptCenter.y() - iW/2);
 		}
 	}
+	CreateVehiclePixmap();
+}
+
+//-----------------------------------------------------------------------------
+
+void VehicleWidget::CreateVehiclePixmap()
+{
+	// create the full scale photo of vehicle
+	if (m_pPixVehicle == 0) {
+		// Widget for painting the original SVG file
+		QPixmap pix(800, 800);
+		pix.fill(Qt::transparent);
+
+		QPainter P(&pix);
+		QRectF rectW;
+		rectW.setCoords(-200, 0, 1000, 900);
+		QPoint pt(400, 297);
+		P.translate(pt);
+		P.rotate(90);
+		P.translate(-pt);
+
+		m_pSvgRender->render(&P, rectW);
+
+		m_pPixVehicle = new QPixmap(pix.copy(125, 50, PHOTO_W, PHOTO_H));
+	}
+	m_pixScaled = m_pPixVehicle->scaled(size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
 }
 
 //-----------------------------------------------------------------------------
