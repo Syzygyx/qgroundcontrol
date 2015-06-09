@@ -2,6 +2,7 @@
 #define TEMPERATUREGAUGE_H
 
 #include "gauge/qcgaugewidget.h"
+#include "gauge/QcColorLabelItem.h"
 
 //! This gauge is used to show the temperature
 class TemperatureGauge : public QcGaugeWidget
@@ -22,6 +23,8 @@ public slots:
 	void SetTemperature(double dTemp);
 	//! Just in case an integer value setter is needed
 	void SetTemperature(int iTemp);
+	//! Sets the RPM value
+	void SetRPM(int iRPM);
 
 protected:
 	//! Minimal temperature
@@ -30,6 +33,8 @@ protected:
 	double m_dMax;
 	//! Pointer to the needle
 	QcNeedleItem* m_pNeedle;
+	//! Pointer to the RPM item
+	QcColorLabelItem* m_pCLI;
 };
 
 #endif // TEMPERATUREGAUGE_H

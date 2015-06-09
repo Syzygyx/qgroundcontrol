@@ -86,8 +86,23 @@ void TemperatureGauge::Init()
 	qsUnit += "F";
 	QcLabelItem* plbi = addLabel(30);
 	plbi->setColor(Qt::white);
-	plbi->setAngle(-90);
+	plbi->setAngle(90);
 	plbi->setText(qsUnit);
+
+	// RPM label
+	plbi = addLabel(45);
+	plbi->setColor(Qt::white);
+	plbi->setAngle(-90);
+	plbi->setText(tr("RPM"));
+
+	// RPM value
+	m_pCLI = new QcColorLabelItem(this);
+	addItem(m_pCLI, 60);
+	m_pCLI->setAngle(-90);
+	m_pCLI->SetWidth(45);
+	m_pCLI->SetBackground(Qt::white);
+	m_pCLI->setColor(Qt::black);
+
 
 	m_pNeedle = addNeedle(75);
 	m_pNeedle->setColor(Qt::red);
@@ -116,6 +131,15 @@ void TemperatureGauge::SetTemperature(int iTemp)
 {
 	double dTemp = 1.0*iTemp;
 	SetTemperature(dTemp);
+}
+
+//-----------------------------------------------------------------------------
+
+void TemperatureGauge::SetRPM(int iRPM)
+{
+	QString qsVal;
+	qsVal.setNum(iRPM);
+	m_pCLI->SetValue(qsVal);
 }
 
 //-----------------------------------------------------------------------------

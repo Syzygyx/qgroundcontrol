@@ -215,7 +215,7 @@ public:
 	 //! Sets the rotation
 	 void setRotation(qreal a);
 
-private:
+protected:
     float mAngle;
     QString mText;
     QColor mColor;
