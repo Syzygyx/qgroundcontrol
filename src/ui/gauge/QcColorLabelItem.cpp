@@ -23,7 +23,7 @@ void QcColorLabelItem::draw(QPainter* pP)
 	resetRect();
 	QRectF tmpRect = adjustRect(position());
 	float fR = getRadius(rect());
-	QFont font("Meiryo UI", fR/10.0 + miFont, meWeight);
+	QFont font("Meiryo UI", fR/7.0 + miFont, meWeight);
 	pP->setFont(font);
 
 	QPointF txtCenter = getPoint(mAngle,tmpRect);

@@ -629,7 +629,7 @@ void MainWindow::_createInnerDockWidget(const QString& widgetName)
 		 for (int i = 0; i < 7; i++) {
 			TemperatureGauge* pTG = new TemperatureGauge(0, 400);
 			pTG->Init();
-			pTG->SetRPM(1000+2*i*100);
+			pTG->SetRPM(211000+2*i*100);
 			pVW->SetGauge(i, pTG);
 		 }
 		 widget = pVW;

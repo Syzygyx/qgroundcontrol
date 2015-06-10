@@ -99,9 +99,9 @@ void TemperatureGauge::Init()
 	m_pCLI = new QcColorLabelItem(this);
 	addItem(m_pCLI, 60);
 	m_pCLI->setAngle(-90);
-	m_pCLI->SetWidth(45);
-	m_pCLI->SetBackground(Qt::white);
-	m_pCLI->setColor(Qt::black);
+	m_pCLI->SetWidth(75);
+	m_pCLI->SetBackground(Qt::transparent);
+	m_pCLI->setColor(Qt::white);
 
 
 	m_pNeedle = addNeedle(75);
