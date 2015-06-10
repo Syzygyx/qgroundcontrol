@@ -122,7 +122,7 @@ void VehicleWidget::paintEvent(QPaintEvent*)
 
 	QPainter P(this);
 
-	P.fillRect(rect(), Qt::cyan);
+	//P.fillRect(rect(), Qt::transparent);
 
 	P.drawPixmap(
 				(width() - m_pixScaled.width())/2,
