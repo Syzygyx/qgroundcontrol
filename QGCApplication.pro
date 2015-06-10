@@ -374,7 +374,8 @@ HEADERS += \
     src/core/net_fdm.hxx \
     src/core/ExternalAppLauncher.h \
     src/ui/video/FlightGearGrabWidget.h \
-    src/ui/gauge/QcColorLabelItem.h
+    src/ui/gauge/QcColorLabelItem.h \
+    src/uas/StaticUAS.h
 
 !AndroidBuild {
 HEADERS += \
@@ -522,7 +523,8 @@ SOURCES += \
     src/core/MessageDispatcher.cpp \
     src/core/ExternalAppLauncher.cpp \
     src/ui/video/FlightGearGrabWidget.cpp \
-    src/ui/gauge/QcColorLabelItem.cpp
+    src/ui/gauge/QcColorLabelItem.cpp \
+    src/uas/StaticUAS.cpp
 
 
 !AndroidBuild {

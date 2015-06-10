@@ -923,6 +923,7 @@ bool UASWaypointManager::guidedModeSupported()
 
 void UASWaypointManager::goToWaypoint(Waypoint *wp)
 {
+	qDebug() << "UASWaypointManager::goToWaypoint" << uas->getUASName() << uas->getAutopilotType();
     //Don't try to send a guided mode message to an AP that does not support it.
     if (uas->getAutopilotType() == MAV_AUTOPILOT_ARDUPILOTMEGA)
     {
@@ -930,7 +931,7 @@ void UASWaypointManager::goToWaypoint(Waypoint *wp)
         memset(&mission, 0, sizeof(mavlink_mission_item_t));   //initialize with zeros
         //const Waypoint *cur_s = waypointsEditable.at(i);
 
-        mission.autocontinue = 0;
+		  mission.autocontinue = 0;
         mission.current = 2; //2 for guided mode
         mission.param1 = wp->getParam1();
         mission.param2 = wp->getParam2();

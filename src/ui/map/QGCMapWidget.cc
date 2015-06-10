@@ -7,6 +7,7 @@
 #include "Waypoint2DIcon.h"
 #include "UASWaypointManager.h"
 #include "QGCMessageBox.h"
+#include "uas/StaticUAS.h"
 
 QGCMapWidget::QGCMapWidget(QWidget *parent) :
     mapcontrol::OPMapWidget(parent),
@@ -22,7 +23,13 @@ QGCMapWidget::QGCMapWidget(QWidget *parent) :
     zoomBlocked(false),
     uas(NULL)
 {
-    currWPManager = UASManager::instance()->getActiveUASWaypointManager();
+	 defaultUAS = new StaticUAS(MAVLinkProtocol::instance());
+	 defaultWPManager = new UASWaypointManager(defaultUAS);
+	 currWPManager = UASManager::instance()->getActiveUASWaypointManager();
+	 // if active UAS is not present, switch to default WP manager
+	 if (currWPManager == 0)
+		 currWPManager = defaultWPManager;
+
     waypointLines.insert(0, new QGraphicsItemGroup(map));
     connect(currWPManager, SIGNAL(waypointEditableListChanged(int)), this, SLOT(updateWaypointList(int)));
     connect(currWPManager, SIGNAL(waypointEditableChanged(int, Waypoint*)), this, SLOT(updateWaypoint(int,Waypoint*)));
@@ -70,9 +77,9 @@ void QGCMapWidget::guidedActionTriggered()
         QGCMessageBox::information(tr("Error"), tr("Please connect first"));
         return;
 	 }*/
-	qDebug() << "guidedActionTriggered" << currWPManager << defaultGuidedAlt;
-    if (currWPManager)
-    {
+	//qDebug() << "guidedActionTriggered" << currWPManager << defaultGuidedAlt;
+	 if (currWPManager)
+	 {
         if (defaultGuidedAlt == -1)
         {
             if (!guidedAltActionTriggered())
@@ -82,13 +89,14 @@ void QGCMapWidget::guidedActionTriggered()
         }
         // Create new waypoint and send it to the WPManager to send out.
         internals::PointLatLng pos = map->FromLocalToLatLng(contextMousePressPos.x(), contextMousePressPos.y());
-        qDebug() << "Guided action requested. Lat:" << pos.Lat() << "Lon:" << pos.Lng();
+		  //qDebug() << "Guided action requested. Lat:" << pos.Lat() << "Lon:" << pos.Lng();
         Waypoint wp;
         wp.setLatitude(pos.Lat());
         wp.setLongitude(pos.Lng());
-        wp.setAltitude(defaultGuidedAlt);
-        currWPManager->goToWaypoint(&wp);
-    }
+		  wp.setAltitude(defaultGuidedAlt);
+		  qDebug() << "Waypoint created" << wp.getLongitude() << wp.getLatitude() << wp.getAltitude();
+		  currWPManager->goToWaypoint(&wp);
+	 }
 }
 bool QGCMapWidget::guidedAltActionTriggered()
 {
@@ -107,7 +115,7 @@ bool QGCMapWidget::guidedAltActionTriggered()
         return false;
     }
 
-	 qDebug() << "guidedAltActionTriggered true";
+	 //qDebug() << "guidedAltActionTriggered true";
     defaultGuidedAlt = tmpalt;
     guidedActionTriggered();
     return true;
@@ -172,6 +180,8 @@ QGCMapWidget::~QGCMapWidget()
     SetShowHome(false);	// doing this appears to stop the map lib crashing on exit
     SetShowUAV(false);	//   "          "
     storeSettings();
+	 delete defaultWPManager;
+	 delete defaultUAS;
 }
 
 void QGCMapWidget::showEvent(QShowEvent* event)
@@ -398,7 +408,20 @@ void QGCMapWidget::activeUASSet(UASInterface* uas)
     }
     else
     {
-        currWPManager = NULL;
+		 // Disconnect the waypoint manager / data storage from the UI
+		 disconnect(currWPManager, SIGNAL(waypointEditableListChanged(int)), this, SLOT(updateWaypointList(int)));
+		 disconnect(currWPManager, SIGNAL(waypointEditableChanged(int, Waypoint*)), this, SLOT(updateWaypoint(int,Waypoint*)));
+		 disconnect(this, SIGNAL(waypointCreated(Waypoint*)), currWPManager, SLOT(addWaypointEditable(Waypoint*)));
+		 disconnect(this, SIGNAL(waypointChanged(Waypoint*)), currWPManager, SLOT(notifyOfChangeEditable(Waypoint*)));
+
+		 // revert back to default WP manager
+		  currWPManager = defaultWPManager;
+
+		  // Connect the waypoint manager / data storage to the UI
+		  connect(currWPManager, SIGNAL(waypointEditableListChanged(int)), this, SLOT(updateWaypointList(int)), Qt::UniqueConnection);
+		  connect(currWPManager, SIGNAL(waypointEditableChanged(int, Waypoint*)), this, SLOT(updateWaypoint(int,Waypoint*)), Qt::UniqueConnection);
+		  connect(this, SIGNAL(waypointCreated(Waypoint*)), currWPManager, SLOT(addWaypointEditable(Waypoint*)), Qt::UniqueConnection);
+		  connect(this, SIGNAL(waypointChanged(Waypoint*)), currWPManager, SLOT(notifyOfChangeEditable(Waypoint*)), Qt::UniqueConnection);
     }
 }
 
