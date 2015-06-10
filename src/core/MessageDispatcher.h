@@ -77,6 +77,9 @@ private:
 	//! Converts double to network order
 	double ToNetwork(double dVal) const;
 
+	//! Returns the first integer it founds in the string, starting at i-th character
+	int GetInt(QString qs, int i) const;
+
 signals:
 	//! Emitted when ground speed has changed
 	void SignalAirSpeed(double);

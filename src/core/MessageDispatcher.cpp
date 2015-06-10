@@ -7,6 +7,8 @@
 
 #include "MessageDispatcher.h"
 
+#define SERVO_STRING							"SERVO_OUTPUT_RAW"
+
 //-----------------------------------------------------------------------------
 
 MessageDispatcher::MessageDispatcher() : QObject()
@@ -124,9 +126,22 @@ void MessageDispatcher::DecodeMessage(
 		quint64 uiTime
 		)
 {
-	// this is testing only
-	for (int i = 0; i < 7; i++)
-		emit SignalTempRPM(i, 200 + 20*i, 100000 + 10000*i);
+	Q_UNUSED(uasID);
+	Q_UNUSED(qsUnit);
+	Q_UNUSED(uiTime);
+	int iServo = qsName.indexOf(SERVO_STRING);
+	if (iServo >= 0) {
+		// search for the index
+		int iInd = GetInt(qsName, iServo + strlen(SERVO_STRING));
+
+		if (iInd > 0 && iInd <= 4) {
+			// this is just test!
+			double dTemp = 50.0 + (vValue.toUInt() - 1131.0)/2.0;
+			double dRPM = dTemp*1000.0;
+			emit SignalTempRPM(iInd - 1, dTemp, dRPM);
+			emit SignalTempRPM(iInd + 3, dTemp, dRPM);
+		}
+	}
 }
 
 //-----------------------------------------------------------------------------
@@ -320,6 +335,27 @@ double MessageDispatcher::ToNetwork(double dVal) const
 	qint64 iNew = qToBigEndian(*pi);
 	dVal = *(double*)&iNew;
 	return dVal;
+}
+
+//-----------------------------------------------------------------------------
+
+int MessageDispatcher::GetInt(QString qs, int i) const
+{
+	int iStart = i;
+	// move until first digit is found
+	while (qs[iStart].isDigit() == false && iStart < qs.length())
+		iStart++;
+
+	if (iStart >= qs.length())
+		return -1;
+
+	int iEnd = iStart+1;
+	// move until there are digits
+	while (qs[iEnd].isDigit() == true && iEnd < qs.length())
+		iEnd++;
+
+	QString qsNum = qs.mid(iStart, iEnd - iStart);
+	return qsNum.toInt();
 }
 
 //-----------------------------------------------------------------------------
