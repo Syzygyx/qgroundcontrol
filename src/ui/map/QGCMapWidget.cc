@@ -7,7 +7,6 @@
 #include "Waypoint2DIcon.h"
 #include "UASWaypointManager.h"
 #include "QGCMessageBox.h"
-#include "uas/StaticUAS.h"
 
 QGCMapWidget::QGCMapWidget(QWidget *parent) :
     mapcontrol::OPMapWidget(parent),
@@ -23,12 +22,7 @@ QGCMapWidget::QGCMapWidget(QWidget *parent) :
     zoomBlocked(false),
     uas(NULL)
 {
-	 defaultUAS = new StaticUAS(MAVLinkProtocol::instance());
-	 defaultWPManager = new UASWaypointManager(defaultUAS);
 	 currWPManager = UASManager::instance()->getActiveUASWaypointManager();
-	 // if active UAS is not present, switch to default WP manager
-	 if (currWPManager == 0)
-		 currWPManager = defaultWPManager;
 
     waypointLines.insert(0, new QGraphicsItemGroup(map));
     connect(currWPManager, SIGNAL(waypointEditableListChanged(int)), this, SLOT(updateWaypointList(int)));
@@ -180,8 +174,6 @@ QGCMapWidget::~QGCMapWidget()
     SetShowHome(false);	// doing this appears to stop the map lib crashing on exit
     SetShowUAV(false);	//   "          "
     storeSettings();
-	 delete defaultWPManager;
-	 delete defaultUAS;
 }
 
 void QGCMapWidget::showEvent(QShowEvent* event)
@@ -330,6 +322,8 @@ void QGCMapWidget::storeSettings()
 
 void QGCMapWidget::mouseDoubleClickEvent(QMouseEvent* event)
 {
+	qDebug() << "mouseDoubleClickEvent" << currWPManager <<
+					UASManager::instance()->getActiveUASWaypointManager();
     // If a waypoint manager is available
     if (currWPManager)
     {
@@ -367,6 +361,8 @@ void QGCMapWidget::addUAS(UASInterface* uas)
 
 void QGCMapWidget::activeUASSet(UASInterface* uas)
 {
+	/*qDebug() << "MapWidget activeUAS" << uas <<
+					UASManager::instance()->getActiveUASWaypointManager();*/
     // Only execute if proper UAS is set
     this->uas = uas;
 
@@ -408,21 +404,14 @@ void QGCMapWidget::activeUASSet(UASInterface* uas)
     }
     else
     {
-		 // Disconnect the waypoint manager / data storage from the UI
-		 disconnect(currWPManager, SIGNAL(waypointEditableListChanged(int)), this, SLOT(updateWaypointList(int)));
-		 disconnect(currWPManager, SIGNAL(waypointEditableChanged(int, Waypoint*)), this, SLOT(updateWaypoint(int,Waypoint*)));
-		 disconnect(this, SIGNAL(waypointCreated(Waypoint*)), currWPManager, SLOT(addWaypointEditable(Waypoint*)));
-		 disconnect(this, SIGNAL(waypointChanged(Waypoint*)), currWPManager, SLOT(notifyOfChangeEditable(Waypoint*)));
-
 		 // revert back to default WP manager
-		  currWPManager = defaultWPManager;
-
+		  currWPManager = UASManager::instance()->getActiveUASWaypointManager();
 		  // Connect the waypoint manager / data storage to the UI
 		  connect(currWPManager, SIGNAL(waypointEditableListChanged(int)), this, SLOT(updateWaypointList(int)), Qt::UniqueConnection);
 		  connect(currWPManager, SIGNAL(waypointEditableChanged(int, Waypoint*)), this, SLOT(updateWaypoint(int,Waypoint*)), Qt::UniqueConnection);
 		  connect(this, SIGNAL(waypointCreated(Waypoint*)), currWPManager, SLOT(addWaypointEditable(Waypoint*)), Qt::UniqueConnection);
 		  connect(this, SIGNAL(waypointChanged(Waypoint*)), currWPManager, SLOT(notifyOfChangeEditable(Waypoint*)), Qt::UniqueConnection);
-    }
+	 }
 }
 
 /**

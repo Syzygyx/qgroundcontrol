@@ -14,6 +14,7 @@
 #include <QSettings>
 
 #include "UAS.h"
+#include "StaticUAS.h"
 #include "UASInterface.h"
 #include "UASManager.h"
 #include "QGC.h"
@@ -360,13 +361,15 @@ UASInterface* UASManager::silentGetActiveUAS()
 }
 UASWaypointManager *UASManager::getActiveUASWaypointManager()
 {
-    if (activeUAS)
+	 //qDebug() << "UASManager" << activeUAS << offlineUASWaypointManager;
+	 if (activeUAS)
     {
         return activeUAS->getWaypointManager();
     }
     if (!offlineUASWaypointManager)
     {
-        offlineUASWaypointManager = new UASWaypointManager(NULL);
+		 StaticUAS* pS = new StaticUAS(MAVLinkProtocol::instance());
+		  offlineUASWaypointManager = pS->getWaypointManager();
     }
     return offlineUASWaypointManager;
 

@@ -4,7 +4,6 @@
 #include <QMap>
 #include <QTimer>
 #include "opmapcontrol.h"
-#include "UAS.h"
 
 // Choose one default map type
 //#define MAP_DEFAULT_TYPE_BING
@@ -151,8 +150,6 @@ protected:
     //void contextMenuEvent(QContextMenuEvent *);
 
     UASWaypointManager* currWPManager; ///< The current waypoint manager
-	 UASWaypointManager* defaultWPManager;		//!< Default waypoint manager
-	 UAS* defaultUAS;									//!< Default (static) UAS
     bool offlineMode;
     QMap<Waypoint* , mapcontrol::WayPointItem*> waypointsToIcons;
     QMap<mapcontrol::WayPointItem*, Waypoint*> iconsToWaypoints;

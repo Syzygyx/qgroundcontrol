@@ -482,6 +482,7 @@ void UASWaypointManager::addWaypointEditable(Waypoint *wp, bool enforceFirstActi
         waypointsEditable.insert(waypointsEditable.count(), wp);
         connect(wp, SIGNAL(changed(Waypoint*)), this, SLOT(notifyOfChangeEditable(Waypoint*)));
 
+		  qDebug() << "UASWPM::addWP" << this;
         emit waypointEditableListChanged();
         emit waypointEditableListChanged(uasid);
     }

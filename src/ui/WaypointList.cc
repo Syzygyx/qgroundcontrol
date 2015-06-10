@@ -99,6 +99,7 @@ WaypointList::WaypointList(QWidget *parent, UASWaypointManager* wpm) :
 
     connect(m_ui->refreshButton, SIGNAL(clicked()), this, SLOT(refresh()));
 
+	 //qDebug() << "WPM" << WPM << WPM->getUAS();
     if (WPM) {
         // SET UAS AFTER ALL SIGNALS/SLOTS ARE CONNECTED
         if (!WPM->getUAS())
@@ -198,6 +199,7 @@ void WaypointList::setUAS(UASInterface* uas)
     m_ui->refreshButton->setEnabled(true);
 
     WPM = uas->getWaypointManager();
+	 qDebug() << "WaypointList" << WPM << uas->getUASName();
 
     this->uas = uas;
     connect(WPM, SIGNAL(updateStatusString(const QString &)),        this, SLOT(updateStatusLabel(const QString &)));
