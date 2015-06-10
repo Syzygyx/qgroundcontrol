@@ -31,9 +31,6 @@ public slots:
 	void EnableUDP();
 	//! Disables sending data over UDP port
 	void DisableUDP();
-
-private slots:
-	/*
 	//! Used to decode MAVLink messages
 	void DecodeMessage(
 			int uasID,
@@ -42,7 +39,8 @@ private slots:
 			QVariant vValue,
 			quint64 uiTime
 			);
-			*/
+
+private slots:
 	//! Sets the active UAS
 	void SetActiveUAS(UASInterface* pUAS);
 	//! Sets the active UAS only if it is not set already
@@ -82,8 +80,6 @@ private:
 signals:
 	//! Emitted when ground speed has changed
 	void SignalAirSpeed(double);
-	//! Emitted when motor temperature has changed
-	void SignalTemperature(double);
 	//! Emitted when altitude has changed
 	void SignalAltitude(double);
 	//! Emitted when vertical speed has changed
@@ -94,6 +90,8 @@ signals:
 	void SignalFuel(double);
 	//! Emitted when total weight has changed
 	void SignalTotalWeight(double);
+	//! Emitted when temperature and RPM of i-th servo have been read
+	void SignalTempRPM(int, double, double);
 
 private:
 	//! Pointer to the instance

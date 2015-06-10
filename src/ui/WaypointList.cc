@@ -563,7 +563,7 @@ void WaypointList::waypointEditableListChanged()
     }
     this->setUpdatesEnabled(true);
     loadFileGlobalWP = false;
-	 updateIndices();
+	 //updateIndices();
 }
 
 void WaypointList::moveUp(Waypoint* wp)

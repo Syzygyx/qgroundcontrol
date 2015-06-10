@@ -139,6 +139,7 @@ void TemperatureGauge::SetRPM(int iRPM)
 {
 	QString qsVal;
 	qsVal.setNum(iRPM);
+	qsVal = qsVal.rightJustified(6, '0');
 	m_pCLI->SetValue(qsVal);
 }
 

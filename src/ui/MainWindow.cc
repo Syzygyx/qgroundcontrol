@@ -376,6 +376,15 @@ MainWindow::MainWindow(QSplashScreen* splashScreen)
 				 MessageDispatcher::GetInstance(),
 				 SLOT(DisableUDP())
 				);
+
+	 // this will enable MessageDispatcher to decode messages from MAVLinkDecoder
+	 // and dispatch interesting signals
+	 connect(
+				 this,
+				 SIGNAL(valueChanged(const int,const QString&, const QString&, const QVariant&, const quint64)),
+				 MessageDispatcher::GetInstance(),
+				 SLOT(DecodeMessage(int,QString,QString,QVariant,quint64))
+				 );
 }
 
 MainWindow::~MainWindow()
@@ -402,6 +411,7 @@ MainWindow::~MainWindow()
 void MainWindow::resizeEvent(QResizeEvent * event)
 {
     QMainWindow::resizeEvent(event);
+	 emit valueChanged(0, "", "", 0, 0);
 }
 
 QString MainWindow::_getWindowStateKey()
@@ -629,9 +639,16 @@ void MainWindow::_createInnerDockWidget(const QString& widgetName)
 		 for (int i = 0; i < 7; i++) {
 			TemperatureGauge* pTG = new TemperatureGauge(0, 400);
 			pTG->Init();
-			pTG->SetRPM(211000+2*i*100);
+			pTG->SetRPM(0);
 			pVW->SetGauge(i, pTG);
 		 }
+
+		 connect(
+					 MessageDispatcher::GetInstance(),
+					 SIGNAL(SignalTempRPM(int,double,double)),
+					 pVW,
+					 SLOT(SetTempRPM(int,double,double))
+					 );
 		 widget = pVW;
 	 } else if (widgetName == _missionPlanningWidgetName) {
 		widget = new MissionPlannerWidget(this);

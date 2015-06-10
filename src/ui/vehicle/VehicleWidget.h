@@ -24,6 +24,10 @@ public:
 	 */
 	void SetGauge(int i, QcGaugeWidget* pGauge);
 
+public slots:
+	//! Sets the temperature and RPM of i-th gauge
+	void SetTempRPM(int i, double dTemp, double dRPM);
+
 protected:
 	//! Returns the center of i-th engine
 	QPoint GetCenter(int i) const;

@@ -2,6 +2,8 @@
 #include <QPainter>
 #include <QMouseEvent>
 
+#include "vehicle/TemperatureGauge.h"
+
 #include "VehicleWidget.h"
 
 #define PHOTO_W			550
@@ -42,6 +44,21 @@ void VehicleWidget::SetGauge(int i, QcGaugeWidget* pGauge)
 	pGauge->move(ptCenter.x() - iW/2, ptCenter.y() - iW/2);
 	m_apGauges[i] = pGauge;
 	pGauge->show();
+}
+
+//-----------------------------------------------------------------------------
+
+void VehicleWidget::SetTempRPM(int i, double dTemp, double dRPM)
+{
+	// safety check against ill-formed messages
+	if (i < 0 || i >= 7)
+		return;
+
+	TemperatureGauge* pTG = dynamic_cast<TemperatureGauge*>(m_apGauges[i]);
+	if (pTG != 0) {
+		pTG->SetTemperature(dTemp);
+		pTG->SetRPM((int)round(dRPM));
+	}
 }
 
 //-----------------------------------------------------------------------------

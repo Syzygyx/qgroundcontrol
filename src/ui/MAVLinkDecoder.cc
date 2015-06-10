@@ -283,6 +283,7 @@ void MAVLinkDecoder::emitFieldValue(mavlink_message_t* msg, int fieldid, quint64
         mavlink_msg_servo_output_raw_decode(msg, &servo);
         name = name.arg(messageInfo[msgid].name).arg(fieldName);
         name.prepend(QString("port%1_").arg(servo.port));
+		  qDebug() << "SERVO-MSG:" << name;
     }
     else
     {

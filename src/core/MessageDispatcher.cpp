@@ -116,6 +116,21 @@ void MessageDispatcher::DecodeMessage(
 
 //-----------------------------------------------------------------------------
 
+void MessageDispatcher::DecodeMessage(
+		int uasID,
+		QString qsName,
+		QString qsUnit,
+		QVariant vValue,
+		quint64 uiTime
+		)
+{
+	// this is testing only
+	for (int i = 0; i < 7; i++)
+		emit SignalTempRPM(i, 200 + 20*i, 100000 + 10000*i);
+}
+
+//-----------------------------------------------------------------------------
+
 void MessageDispatcher::SetActiveUAS(UASInterface* pUAS)
 {
 	if (pUAS == 0)
