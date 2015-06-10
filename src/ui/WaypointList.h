@@ -123,6 +123,8 @@ signals:
 
 protected:
     virtual void changeEvent(QEvent *e);
+	 //! Rewrites indices
+	 void updateIndices();
 
 protected:
     QMap<Waypoint*, WaypointEditableView*> wpEditableViews;

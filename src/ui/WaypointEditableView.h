@@ -65,11 +65,13 @@ class WaypointEditableView : public QWidget
     Q_OBJECT
     Q_DISABLE_COPY(WaypointEditableView)
 public:
-    explicit WaypointEditableView(Waypoint* wp, QWidget* parent);
+	 explicit WaypointEditableView(int iInd, Waypoint* wp, QWidget* parent);
     virtual ~WaypointEditableView();
 
 public:
     void setCurrent(bool state);
+	 //! Sets the index of the item
+	 void setIndex(int iInd);
 
 public slots:
     void moveUp();

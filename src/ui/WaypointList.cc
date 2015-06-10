@@ -542,7 +542,7 @@ void WaypointList::waypointEditableListChanged()
     for(int i = 0; i < waypoints.count(); i++) {
         Waypoint *wp = waypoints[i];
         if (!wpEditableViews.contains(wp)) {
-            WaypointEditableView* wpview = new WaypointEditableView(wp, this);
+				WaypointEditableView* wpview = new WaypointEditableView(i+1, wp, this);
             wpEditableViews.insert(wp, wpview);
             connect(wpview, SIGNAL(moveDownWaypoint(Waypoint*)),    this, SLOT(moveDown(Waypoint*)));
             connect(wpview, SIGNAL(moveUpWaypoint(Waypoint*)),      this, SLOT(moveUp(Waypoint*)));
@@ -563,7 +563,7 @@ void WaypointList::waypointEditableListChanged()
     }
     this->setUpdatesEnabled(true);
     loadFileGlobalWP = false;
-
+	 updateIndices();
 }
 
 void WaypointList::moveUp(Waypoint* wp)
@@ -617,18 +617,38 @@ void WaypointList::changeEvent(QEvent *e)
 }
 
 
+void WaypointList::updateIndices()
+{
+	const QList<Waypoint *> &waypoints = WPM->getWaypointEditableList();
+	for (int i = 0; i < waypoints.count(); i++) {
+		WaypointEditableView* pWEV = wpEditableViews.value(waypoints[i], NULL);
+		if (pWEV != 0)
+			pWEV->setIndex(i + 1);
+	}
+}
+
 
 void WaypointList::on_clearWPListButton_clicked()
 {
     if (uas) {
         emit clearPathclicked();
         const QList<Waypoint *> &waypoints = WPM->getWaypointEditableList();
-        while(!waypoints.isEmpty()) {
+
+		  // This is bug, because widget->remove() does not remove the widget immediately,
+		  // thus waypoint.isEmpty() is always false!
+		  /*while(!waypoints.isEmpty()) {
             WaypointEditableView* widget = wpEditableViews.value(waypoints[0], NULL);
             if (widget) {
                 widget->remove();
             }
-        }
+		  }*/
+
+		  for (int i = waypoints.count() - 1; i >= 0; i--) {
+			  WaypointEditableView* widget = wpEditableViews.value(waypoints[i], NULL);
+			  if (widget != 0)
+				  widget->remove();
+		  }
+
     }
 }
 
@@ -640,11 +660,20 @@ void WaypointList::clearWPWidget()
 
         // XXX delete wps as well
 
-        // Clear UI elements
+		  // This is bug, because widget->remove() does not remove the widget immediately,
+		  // thus waypoint.isEmpty() is always false!
+		  /*// Clear UI elements
         while(!waypoints.isEmpty()) {
             WaypointEditableView* widget = wpEditableViews.value(waypoints[0], NULL);
             if (widget) {
                 widget->remove();
             }
         }
+		  */
+
+		  for (int i = waypoints.count() - 1; i >= 0; i--) {
+			  WaypointEditableView* widget = wpEditableViews.value(waypoints[i], NULL);
+			  if (widget != 0)
+				  widget->remove();
+		  }
 }

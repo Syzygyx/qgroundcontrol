@@ -35,8 +35,10 @@
 #include "mission/QGCMissionDoFinishSearch.h"
 #include "mission/QGCMissionOther.h"
 
+#define PAY_DEPLOY				"PAY: Deploy %1"
 
-WaypointEditableView::WaypointEditableView(Waypoint* wp, QWidget* parent) :
+
+WaypointEditableView::WaypointEditableView(int iInd, Waypoint* wp, QWidget* parent) :
     QWidget(parent),
     wp(wp),
     viewMode(QGC_WAYPOINTEDITABLEVIEW_MODE_DEFAULT),
@@ -67,8 +69,9 @@ WaypointEditableView::WaypointEditableView(Waypoint* wp, QWidget* parent) :
 
 
     // add actions
-    m_ui->comboBox_action->addItem(tr("NAV: Waypoint"),MAV_CMD_NAV_WAYPOINT);
-    m_ui->comboBox_action->addItem(tr("NAV: TakeOff"),MAV_CMD_NAV_TAKEOFF);
+	 //m_ui->comboBox_action->addItem(tr("NAV: Waypoint"),MAV_CMD_NAV_WAYPOINT);
+	 m_ui->comboBox_action->addItem(tr(PAY_DEPLOY).arg(iInd),MAV_CMD_NAV_WAYPOINT);
+	 m_ui->comboBox_action->addItem(tr("NAV: TakeOff"),MAV_CMD_NAV_TAKEOFF);
     m_ui->comboBox_action->addItem(tr("NAV: Loiter Unlim."),MAV_CMD_NAV_LOITER_UNLIM);
     m_ui->comboBox_action->addItem(tr("NAV: Loiter Time"),MAV_CMD_NAV_LOITER_TIME);
     m_ui->comboBox_action->addItem(tr("NAV: Loiter Turns"),MAV_CMD_NAV_LOITER_TURNS);
@@ -112,6 +115,11 @@ WaypointEditableView::WaypointEditableView(Waypoint* wp, QWidget* parent) :
     connect(m_ui->comboBox_action, SIGNAL(activated(int)), this, SLOT(changedAction(int)));
     connect(m_ui->comboBox_frame, SIGNAL(activated(int)), this, SLOT(changedFrame(int)));
 
+}
+
+void WaypointEditableView::setIndex(int iInd)
+{
+	m_ui->comboBox_action->setItemText(0, tr(PAY_DEPLOY).arg(iInd));
 }
 
 void WaypointEditableView::moveUp()
