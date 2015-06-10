@@ -74,8 +74,8 @@ WeightGauge::WeightGauge(double dMaxWeight, bool bLabels, QWidget *pParent) :
 	}
 
 	// Central pixmap item
-	QPixmap pix(":/files/Person.png");
-	QcPixmapItem* ppi = new QcPixmapItem(pix, 20, this);
+	QPixmap pix(":/files/rtlogo.png");
+	QcPixmapItem* ppi = new QcPixmapItem(pix, 30, this);
 	ppi->setAngle(90);
 	addItem(ppi, 10);
 

@@ -340,7 +340,7 @@ bool QGCApplication::_initForNormalAppBoot(void)
     _createSingletons();
 
     // Show splash screen
-    QPixmap splashImage(":/res/SplashScreen");
+	 QPixmap splashImage(":/res/resources/full-logo.png");
     QSplashScreen* splashScreen = new QSplashScreen(splashImage);
     // Delete splash screen after mainWindow was displayed
     splashScreen->setAttribute(Qt::WA_DeleteOnClose);
