@@ -41,8 +41,7 @@ namespace mapcontrol
         altitude(altitude),
         heading(0)
     {
-		 qDebug() << "WP created";
-        text=0;
+		  text=0;
         numberI=0;
 		  picture.load(QString::fromUtf8(":/markers/images/marker.png"));
 		  number=WayPointItem::snumber;
@@ -68,7 +67,6 @@ namespace mapcontrol
         altitude(altitude),
         heading(0)
     {
-		 qDebug() << "WP created";
 		  text=0;
         numberI=0;
 		  picture.load(QString::fromUtf8(":/markers/images/marker.png"));
@@ -101,8 +99,7 @@ namespace mapcontrol
     }
     void WayPointItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
     {
-		 qDebug() << "WP mouse press event" << pos();
-        if(event->button()==Qt::LeftButton)
+		  if(event->button()==Qt::LeftButton)
         {
 	    text=new QGraphicsSimpleTextItem(this);
             textBG=new QGraphicsRectItem(this);

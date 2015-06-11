@@ -175,7 +175,14 @@ void Waypoint2DIcon::drawIcon()
         painter.drawLine(p.x(), p.y(), p.x()+sin(Heading()/180.0f*M_PI) * rad, p.y()-cos(Heading()/180.0f*M_PI) * rad);
     }
 
-    if (((!waypoint.isNull())) && (waypoint->getAction() == (int)MAV_CMD_NAV_TAKEOFF))
+	 if ((waypoint.isNull() == false) &&
+		  (waypoint->getAction() == (int)MAV_CMD_PAY_DEPLOY_1 ||
+			waypoint->getAction() == (int)MAV_CMD_PAY_DEPLOY_2 ||
+			waypoint->getAction() == (int)MAV_CMD_PAY_DEPLOY_3
+			)
+		  ) {
+		 painter.drawPixmap(p.x() - 10, p.y() - 17, PixmapGenerator::GetTearDrop());
+	 }	else if (((!waypoint.isNull())) && (waypoint->getAction() == (int)MAV_CMD_NAV_TAKEOFF))
     {
         // Takeoff waypoint
         int width = picture.width()-penWidth;
@@ -239,14 +246,11 @@ void Waypoint2DIcon::drawIcon()
     }
     else
     {
-		 /*
         // Navigation waypoint
         painter.setPen(pen1);
         painter.drawPolygon(poly);
         painter.setPen(pen2);
         painter.drawPolygon(poly);
-		  */
-		 painter.drawPixmap(p.x() - 10, p.y() - 17, PixmapGenerator::GetTearDrop());
     }
 }
 

@@ -1,7 +1,9 @@
 <RCC>
     <qresource prefix="/markers">
         <file>images/bigMarkerGreen.png</file>
-        <file>images/marker.png</file>
+        <file>images/marker1.png</file>
+        <file>images/marker2.png</file>
+        <file>images/marker3.png</file>
         <file>images/airplane.svg</file>
         <file>images/home.png</file>
         <file>images/home.svg</file>

@@ -38,7 +38,7 @@
 #define PAY_DEPLOY				"PAY: Deploy %1"
 
 
-WaypointEditableView::WaypointEditableView(int iInd, Waypoint* wp, QWidget* parent) :
+WaypointEditableView::WaypointEditableView(Waypoint* wp, QWidget* parent) :
     QWidget(parent),
     wp(wp),
     viewMode(QGC_WAYPOINTEDITABLEVIEW_MODE_DEFAULT),
@@ -69,8 +69,10 @@ WaypointEditableView::WaypointEditableView(int iInd, Waypoint* wp, QWidget* pare
 
 
     // add actions
-	 //m_ui->comboBox_action->addItem(tr("NAV: Waypoint"),MAV_CMD_NAV_WAYPOINT);
-	 m_ui->comboBox_action->addItem(tr(PAY_DEPLOY).arg(iInd),MAV_CMD_NAV_WAYPOINT);
+	 m_ui->comboBox_action->addItem(tr("PAY: Deploy 1"),MAV_CMD_PAY_DEPLOY_1);
+	 m_ui->comboBox_action->addItem(tr("PAY: Deploy 2"),MAV_CMD_PAY_DEPLOY_2);
+	 m_ui->comboBox_action->addItem(tr("PAY: Deploy 3"),MAV_CMD_PAY_DEPLOY_3);
+	 m_ui->comboBox_action->addItem(tr("NAV: Waypoint"),MAV_CMD_NAV_WAYPOINT);
 	 m_ui->comboBox_action->addItem(tr("NAV: TakeOff"),MAV_CMD_NAV_TAKEOFF);
     m_ui->comboBox_action->addItem(tr("NAV: Loiter Unlim."),MAV_CMD_NAV_LOITER_UNLIM);
     m_ui->comboBox_action->addItem(tr("NAV: Loiter Time"),MAV_CMD_NAV_LOITER_TIME);
@@ -102,10 +104,10 @@ WaypointEditableView::WaypointEditableView(int iInd, Waypoint* wp, QWidget* pare
     updateActionView(actionID);
 
     // Check for mission frame
-    if (wp->getFrame() == MAV_FRAME_MISSION)
+	 if (wp->getFrame() == MAV_FRAME_MISSION)
     {
         m_ui->comboBox_action->setCurrentIndex(m_ui->comboBox_action->count()-1);
-    }
+	 }
 
     connect(m_ui->upButton, SIGNAL(clicked()), this, SLOT(moveUp()));
     connect(m_ui->downButton, SIGNAL(clicked()), this, SLOT(moveDown()));
@@ -169,7 +171,10 @@ void WaypointEditableView::updateActionView(int action)
     {
         switch(action) {
         case MAV_CMD_NAV_WAYPOINT:
-            if(MissionNavWaypointWidget) MissionNavWaypointWidget->show();
+		  case MAV_CMD_PAY_DEPLOY_1:
+		  case MAV_CMD_PAY_DEPLOY_2:
+		  case MAV_CMD_PAY_DEPLOY_3:
+				if(MissionNavWaypointWidget) MissionNavWaypointWidget->show();
             break;
         case MAV_CMD_NAV_LOITER_UNLIM:
             if(MissionNavLoiterUnlimWidget) MissionNavLoiterUnlimWidget->show();
@@ -236,7 +241,10 @@ void WaypointEditableView::initializeActionView(int actionID)
     //initialize a new action-widget, if needed.
     switch(actionID) {
     case MAV_CMD_NAV_WAYPOINT:
-        if (!MissionNavWaypointWidget)
+	 case MAV_CMD_PAY_DEPLOY_1:
+	 case MAV_CMD_PAY_DEPLOY_2:
+	 case MAV_CMD_PAY_DEPLOY_3:
+		  if (!MissionNavWaypointWidget)
         {
             MissionNavWaypointWidget = new QGCMissionNavWaypoint(this);
             m_ui->customActionWidget->layout()->addWidget(MissionNavWaypointWidget);

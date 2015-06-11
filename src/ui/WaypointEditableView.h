@@ -65,7 +65,7 @@ class WaypointEditableView : public QWidget
     Q_OBJECT
     Q_DISABLE_COPY(WaypointEditableView)
 public:
-	 explicit WaypointEditableView(int iInd, Waypoint* wp, QWidget* parent);
+	 explicit WaypointEditableView(Waypoint* wp, QWidget* parent);
     virtual ~WaypointEditableView();
 
 public:

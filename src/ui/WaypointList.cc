@@ -544,7 +544,7 @@ void WaypointList::waypointEditableListChanged()
     for(int i = 0; i < waypoints.count(); i++) {
         Waypoint *wp = waypoints[i];
         if (!wpEditableViews.contains(wp)) {
-				WaypointEditableView* wpview = new WaypointEditableView(i+1, wp, this);
+				WaypointEditableView* wpview = new WaypointEditableView(wp, this);
             wpEditableViews.insert(wp, wpview);
             connect(wpview, SIGNAL(moveDownWaypoint(Waypoint*)),    this, SLOT(moveDown(Waypoint*)));
             connect(wpview, SIGNAL(moveUpWaypoint(Waypoint*)),      this, SLOT(moveUp(Waypoint*)));
