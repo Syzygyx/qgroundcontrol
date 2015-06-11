@@ -376,7 +376,8 @@ HEADERS += \
     src/ui/video/FlightGearGrabWidget.h \
     src/ui/gauge/QcColorLabelItem.h \
     src/uas/StaticUAS.h \
-    src/ui/map/PixmapGenerator.h
+    src/ui/map/PixmapGenerator.h \
+    src/ui/map/common_ext.h
 
 !AndroidBuild {
 HEADERS += \

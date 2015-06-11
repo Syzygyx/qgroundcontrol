@@ -36,6 +36,7 @@ This file is part of the QGROUNDCONTROL project
 #include <QWidget>
 #include "Waypoint.h"
 #include <iostream>
+#include "map/common_ext.h"
 
 enum QGC_WAYPOINTEDITABLEVIEW_MODE {
     QGC_WAYPOINTEDITABLEVIEW_MODE_DEFAULT,

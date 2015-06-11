@@ -1,8 +1,9 @@
-#include "Waypoint2DIcon.h"
 #include <QPainter>
 #include "opmapcontrol.h"
 #include "QGC.h"
 #include "map/PixmapGenerator.h"
+#include "map/common_ext.h"
+#include "Waypoint2DIcon.h"
 
 Waypoint2DIcon::Waypoint2DIcon(mapcontrol::MapGraphicItem* map, mapcontrol::OPMapWidget* parent, qreal latitude, qreal longitude, qreal altitude, int listindex, QString name, QString description, int radius)
     : mapcontrol::WayPointItem(internals::PointLatLng(latitude, longitude), altitude, description, map),
