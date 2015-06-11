@@ -22,6 +22,7 @@ QGCMapWidget::QGCMapWidget(QWidget *parent) :
     zoomBlocked(false),
     uas(NULL)
 {
+
 	 currWPManager = UASManager::instance()->getActiveUASWaypointManager();
 
     waypointLines.insert(0, new QGraphicsItemGroup(map));

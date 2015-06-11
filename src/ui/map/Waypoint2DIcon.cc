@@ -2,6 +2,7 @@
 #include <QPainter>
 #include "opmapcontrol.h"
 #include "QGC.h"
+#include "map/PixmapGenerator.h"
 
 Waypoint2DIcon::Waypoint2DIcon(mapcontrol::MapGraphicItem* map, mapcontrol::OPMapWidget* parent, qreal latitude, qreal longitude, qreal altitude, int listindex, QString name, QString description, int radius)
     : mapcontrol::WayPointItem(internals::PointLatLng(latitude, longitude), altitude, description, map),
@@ -144,8 +145,8 @@ void Waypoint2DIcon::drawIcon()
     // DRAW WAYPOINT
     QPointF p(picture.width()/2, picture.height()/2);
 
-    QPolygonF poly(4);
-    // Top point
+	 QPolygonF poly(4);
+	 // Top point
     poly.replace(0, QPointF(p.x(), p.y()-picture.height()/2.0f+penWidth/2));
     // Right point
     poly.replace(1, QPointF(p.x()+picture.width()/2.0f-penWidth/2, p.y()));
@@ -238,11 +239,14 @@ void Waypoint2DIcon::drawIcon()
     }
     else
     {
+		 /*
         // Navigation waypoint
         painter.setPen(pen1);
         painter.drawPolygon(poly);
         painter.setPen(pen2);
         painter.drawPolygon(poly);
+		  */
+		 painter.drawPixmap(p.x() - 10, p.y() - 17, PixmapGenerator::GetTearDrop());
     }
 }
 

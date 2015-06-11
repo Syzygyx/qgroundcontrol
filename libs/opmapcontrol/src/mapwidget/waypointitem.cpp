@@ -24,10 +24,13 @@
 * with this program; if not, write to the Free Software Foundation, Inc.,
 * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
+
 #include "waypointitem.h"
 namespace mapcontrol
 {
     WayPointItem::WayPointItem(const internals::PointLatLng &coord,double const& altitude, MapGraphicItem *map) :
+		 QObject(),
+		 QGraphicsItem(),
         map(map),
         autoreachedEnabled(true),
         coord(coord),
@@ -38,10 +41,11 @@ namespace mapcontrol
         altitude(altitude),
         heading(0)
     {
+		 qDebug() << "WP created";
         text=0;
         numberI=0;
-        picture.load(QString::fromUtf8(":/markers/images/marker.png"));
-        number=WayPointItem::snumber;
+		  picture.load(QString::fromUtf8(":/markers/images/marker.png"));
+		  number=WayPointItem::snumber;
         ++WayPointItem::snumber;
         this->setFlag(QGraphicsItem::ItemIsMovable,true);
         this->setFlag(QGraphicsItem::ItemIgnoresTransformations,true);
@@ -53,6 +57,8 @@ namespace mapcontrol
         RefreshPos();
     }
     WayPointItem::WayPointItem(const internals::PointLatLng &coord,double const& altitude, const QString &description, MapGraphicItem *map) :
+		 QObject(),
+		 QGraphicsItem(),
         map(map),
         coord(coord),
         reached(false),
@@ -62,10 +68,11 @@ namespace mapcontrol
         altitude(altitude),
         heading(0)
     {
-        text=0;
+		 qDebug() << "WP created";
+		  text=0;
         numberI=0;
-        picture.load(QString::fromUtf8(":/markers/images/marker.png"));
-        number=WayPointItem::snumber;
+		  picture.load(QString::fromUtf8(":/markers/images/marker.png"));
+		  number=WayPointItem::snumber;
         ++WayPointItem::snumber;
         this->setFlag(QGraphicsItem::ItemIsMovable,true);
         this->setFlag(QGraphicsItem::ItemIgnoresTransformations,true);
@@ -86,14 +93,15 @@ namespace mapcontrol
     {
         Q_UNUSED(option);
         Q_UNUSED(widget);
-        painter->drawPixmap(-picture.width()/2,-picture.height(),picture);
+		  painter->drawPixmap(-picture.width()/2,-picture.height(),picture);
         if(this->isSelected())
         {
-            painter->drawRect(QRectF(-picture.width()/2,-picture.height(),picture.width()-1,picture.height()-1));
+				painter->drawRect(QRectF(-picture.width()/2,-picture.height(),picture.width()-1,picture.height()-1));
         }
     }
     void WayPointItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
     {
+		 qDebug() << "WP mouse press event" << pos();
         if(event->button()==Qt::LeftButton)
         {
 	    text=new QGraphicsSimpleTextItem(this);
@@ -242,10 +250,8 @@ namespace mapcontrol
             delete numberIBG;
         }
         this->update();
-
-
-
     }
+
     void WayPointItem::WPDeleted(const int &onumber)
     {
         if(number>onumber) --number;

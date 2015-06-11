@@ -19,7 +19,7 @@
 
 include(QGCCommon.pri)
 
-TARGET = qgroundcontrol
+TARGET = rtGCS
 
 # Load additional config flags from user_config.pri
 exists(user_config.pri):infile(user_config.pri, CONFIG) {
@@ -375,7 +375,8 @@ HEADERS += \
     src/core/ExternalAppLauncher.h \
     src/ui/video/FlightGearGrabWidget.h \
     src/ui/gauge/QcColorLabelItem.h \
-    src/uas/StaticUAS.h
+    src/uas/StaticUAS.h \
+    src/ui/map/PixmapGenerator.h
 
 !AndroidBuild {
 HEADERS += \
@@ -524,7 +525,8 @@ SOURCES += \
     src/core/ExternalAppLauncher.cpp \
     src/ui/video/FlightGearGrabWidget.cpp \
     src/ui/gauge/QcColorLabelItem.cpp \
-    src/uas/StaticUAS.cpp
+    src/uas/StaticUAS.cpp \
+    src/ui/map/PixmapGenerator.cpp
 
 
 !AndroidBuild {
