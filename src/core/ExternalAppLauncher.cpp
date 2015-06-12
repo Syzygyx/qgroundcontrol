@@ -5,6 +5,12 @@
 
 #include "ExternalAppLauncher.h"
 
+#if defined(Q_OS_WIN32)
+    #define PARENTHESIS             "\""
+#else
+    #define PARENTHESIS             ""
+#endif
+
 //-----------------------------------------------------------------------------
 
 ExternalAppLauncher::ExternalAppLauncher(QObject *pParent) :
@@ -70,7 +76,7 @@ void ExternalAppLauncher::Launch(
         m_pProcess->setWorkingDirectory(m_qslDirs[m_iPath]);
     QString qsCommand = m_qsApp;
     if (m_qslDirs[m_iPath].length() > 0)
-        qsCommand = "\"" + m_qslDirs[m_iPath] + "/" + m_qsApp + "\"";
+        qsCommand = PARENTHESIS + m_qslDirs[m_iPath] + "/" + m_qsApp + PARENTHESIS;
 
 	m_bSignalled = false;
     m_pProcess->start(qsCommand + " " + m_qsPar);
@@ -92,7 +98,7 @@ void ExternalAppLauncher::HandleError(QProcess::ProcessError ePE)
 				m_pProcess->setWorkingDirectory(m_qslDirs[m_iPath]);
             QString qsCommand = m_qsApp;
             if (m_qslDirs[m_iPath].length() > 0)
-                qsCommand = "\"" + m_qslDirs[m_iPath] + "/" + m_qsApp + "\"";
+                qsCommand = PARENTHESIS + m_qslDirs[m_iPath] + "/" + m_qsApp + PARENTHESIS;
             m_pProcess->start(qsCommand + " " + m_qsPar);
 			return;
 		}
@@ -100,9 +106,6 @@ void ExternalAppLauncher::HandleError(QProcess::ProcessError ePE)
 		QString qsMsg = tr("Looks like %1 is not installed on this computer. ").arg(m_qsApp);
 		if (m_qsUrl.length() > 0)
 			qsMsg += tr("You can download %1 from %2 and install it.").arg(m_qsApp).arg(m_qsUrl);
-        QDir dir("C:\\Program Files\\FlightGear 3.4.0\\bin");
-        qsMsg += "\n" + m_pProcess->workingDirectory() + (dir.exists()? " yes" : " no");
-        qsMsg += "\n" + dir.path();
 
 		QMessageBox::warning(
 					0,
@@ -138,4 +141,3 @@ void ExternalAppLauncher::CheckReady()
 }
 
 //-----------------------------------------------------------------------------
-
