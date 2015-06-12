@@ -65,13 +65,10 @@ void ExternalAppLauncher::Launch(
 	m_qsApp = qsApp;
 	m_qsPar = qsPar;
 	m_qsUrl = qsUrl;
-	QString qsFile = m_qsApp;
-	if (m_qslDirs[m_iPath].length() > 0)
-		qsFile = m_qslDirs[m_iPath] + "/" + qsFile;
 
-	QString qsCommand = QDir::toNativeSeparators(qsFile) + " " + m_qsPar;
 	if (m_qslDirs[m_iPath].length() > 0)
 		m_pProcess->setWorkingDirectory(QDir::toNativeSeparators(m_qslDirs[m_iPath]));
+	QString qsCommand = m_qsApp + " " + m_qsPar;
 
 	m_bSignalled = false;
 	m_pProcess->start(qsCommand);
@@ -89,13 +86,9 @@ void ExternalAppLauncher::HandleError(QProcess::ProcessError ePE)
 		m_iPath++;
 		if (m_iPath < m_qslDirs.count()) {
 			// try next working dir
-			QString qsFile = m_qsApp;
-			if (m_qslDirs[m_iPath].length() > 0)
-				qsFile = m_qslDirs[m_iPath] + "/" + qsFile;
-			QString qsCommand = QDir::toNativeSeparators(qsFile) + " " + m_qsPar;
 			if (m_qslDirs[m_iPath].length() > 0)
 				m_pProcess->setWorkingDirectory(m_qslDirs[m_iPath]);
-
+			QString qsCommand = m_qsApp + " " + m_qsPar;
 			m_pProcess->start(qsCommand);
 			return;
 		}
