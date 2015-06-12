@@ -377,7 +377,8 @@ HEADERS += \
     src/ui/gauge/QcColorLabelItem.h \
     src/uas/StaticUAS.h \
     src/ui/map/PixmapGenerator.h \
-    src/ui/map/common_ext.h
+    src/ui/map/common_ext.h \
+    src/GeoFence/GeoFenceZone.h
 
 !AndroidBuild {
 HEADERS += \
@@ -527,7 +528,8 @@ SOURCES += \
     src/ui/video/FlightGearGrabWidget.cpp \
     src/ui/gauge/QcColorLabelItem.cpp \
     src/uas/StaticUAS.cpp \
-    src/ui/map/PixmapGenerator.cpp
+    src/ui/map/PixmapGenerator.cpp \
+    src/GeoFence/GeoFenceZone.cpp
 
 
 !AndroidBuild {

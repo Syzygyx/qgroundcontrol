@@ -80,6 +80,8 @@ This file is part of the QGROUNDCONTROL project
 
 #include "core/MessageDispatcher.h"
 
+#include "GeoFence/GeoFenceZone.h"
+
 #ifdef UNITTEST_BUILD
 #include "QmlControls/QmlTestWidget.h"
 #endif
@@ -385,6 +387,30 @@ MainWindow::MainWindow(QSplashScreen* splashScreen)
 				 MessageDispatcher::GetInstance(),
 				 SLOT(DecodeMessage(int,QString,QString,QVariant,quint64))
 				 );
+
+
+	 // Testing only
+	 QFile f("geofence.txt");
+	 if (f.open(QFile::ReadOnly) == true) {
+		 QTextStream ts(&f);
+		 GeoFenceZone gfz;
+		 bool bOK;
+		 bOK = gfz.Load(ts);
+
+		 QFile fOut("out.txt");
+		 fOut.open(QFile::WriteOnly);
+		 QTextStream tsOut(&fOut);
+		 gfz.Save(tsOut);
+		 ts << endl;
+		 gfz.Save(tsOut, GeoFenceZone::gffDMS);
+		 fOut.close();
+
+		 while (bOK == true) {
+			 bOK = gfz.Load(ts);
+		 }
+		 f.close();
+	 }
+	 // end testing
 }
 
 MainWindow::~MainWindow()
