@@ -1376,14 +1376,14 @@ void MainWindow::setFontSizeFactor(double size) {
 void MainWindow::launchFlightGear()
 {
 	qDebug() << "Trying to launch FlightGear";
-	QString qsPar = "--httpd=8080 --native-fdm=socket,in,100,,5600,udp --fdm=null --aircraft=arducopter";
+    QString qsPar = "--httpd=8080 --native-fdm=socket,in,100,,5600,udp --fdm=null --aircraft=arducopter";
 	QStringList qslDirs;
 
 #if defined(Q_OS_MACX)
 	qslDirs << "/Applications/FlightGear.app/Contents/MacOS";
 #elif defined(Q_OS_WIN32)
-	qslDirs << "" << "/Program Files/FlightGear 3.4.0/bin" <<
-				  "/Program Files (x86)/FlightGear 3.4.0/bin";
+    qslDirs << "" << "C:/Program Files/FlightGear 3.4.0/bin" <<
+                  "C:/Program Files (x86)/FlightGear 3.4.0/bin";
 #else
 	qslDirs << "";
 #endif

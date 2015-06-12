@@ -67,11 +67,13 @@ void ExternalAppLauncher::Launch(
 	m_qsUrl = qsUrl;
 
 	if (m_qslDirs[m_iPath].length() > 0)
-		m_pProcess->setWorkingDirectory(QDir::toNativeSeparators(m_qslDirs[m_iPath]));
-	QString qsCommand = m_qsApp + " " + m_qsPar;
+        m_pProcess->setWorkingDirectory(m_qslDirs[m_iPath]);
+    QString qsCommand = m_qsApp;
+    if (m_qslDirs[m_iPath].length() > 0)
+        qsCommand = "\"" + m_qslDirs[m_iPath] + "/" + m_qsApp + "\"";
 
 	m_bSignalled = false;
-	m_pProcess->start(qsCommand);
+    m_pProcess->start(qsCommand + " " + m_qsPar);
 
 	// emit SignalReady after 20s
 	QTimer::singleShot(m_iTimeout, this, SLOT(CheckReady()));
@@ -88,14 +90,19 @@ void ExternalAppLauncher::HandleError(QProcess::ProcessError ePE)
 			// try next working dir
 			if (m_qslDirs[m_iPath].length() > 0)
 				m_pProcess->setWorkingDirectory(m_qslDirs[m_iPath]);
-			QString qsCommand = m_qsApp + " " + m_qsPar;
-			m_pProcess->start(qsCommand);
+            QString qsCommand = m_qsApp;
+            if (m_qslDirs[m_iPath].length() > 0)
+                qsCommand = "\"" + m_qslDirs[m_iPath] + "/" + m_qsApp + "\"";
+            m_pProcess->start(qsCommand + " " + m_qsPar);
 			return;
 		}
 
 		QString qsMsg = tr("Looks like %1 is not installed on this computer. ").arg(m_qsApp);
 		if (m_qsUrl.length() > 0)
 			qsMsg += tr("You can download %1 from %2 and install it.").arg(m_qsApp).arg(m_qsUrl);
+        QDir dir("C:\\Program Files\\FlightGear 3.4.0\\bin");
+        qsMsg += "\n" + m_pProcess->workingDirectory() + (dir.exists()? " yes" : " no");
+        qsMsg += "\n" + dir.path();
 
 		QMessageBox::warning(
 					0,
