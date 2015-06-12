@@ -16,7 +16,7 @@ public:
 	~ExternalAppLauncher();
 
 	//! Launches the application with the given parameters.
-	void Launch(QStringList qsl, QString qsPar = "", QString qsUrl = "");
+	void Launch(QString qsApp, QString qsPar, QString qsUrl, QStringList qslDirs);
 	//! Sets the magic string
 	void SetMagicString(QString qsMagic)
 	{	m_qsMagic = qsMagic; }
@@ -36,8 +36,10 @@ signals:
 	void SignalFinished();
 
 private:
-	//! List of possible application paths and names
-	QStringList m_qslApps;
+	//! Index of currently used working path
+	int m_iPath;
+	//! List of possible application paths
+	QStringList m_qslDirs;
 	//! External application name
 	QString m_qsApp;
 	//! External application parameters

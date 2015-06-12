@@ -1,4 +1,5 @@
 #include <QDebug>
+#include <QDir>
 #include <QMessageBox>
 #include <QTimer>
 
@@ -52,13 +53,26 @@ ExternalAppLauncher::~ExternalAppLauncher()
 
 //-----------------------------------------------------------------------------
 
-void ExternalAppLauncher::Launch(QStringList qsl, QString qsPar, QString qsUrl)
+void ExternalAppLauncher::Launch(
+		QString qsApp,
+		QString qsPar,
+		QString qsUrl,
+		QStringList qslDirs
+		)
 {
-	m_qslApps = qsl;
-	m_qsApp = m_qslApps.takeFirst();
+	m_iPath = 0;
+	m_qslDirs = qslDirs;
+	m_qsApp = qsApp;
 	m_qsPar = qsPar;
 	m_qsUrl = qsUrl;
-	QString qsCommand = m_qsApp + " " + m_qsPar;
+	QString qsFile = m_qsApp;
+	if (m_qslDirs[m_iPath].length() > 0)
+		qsFile = m_qslDirs[m_iPath] + "/" + qsFile;
+
+	QString qsCommand = QDir::toNativeSeparators(qsFile) + " " + m_qsPar;
+	if (m_qslDirs[m_iPath].length() > 0)
+		m_pProcess->setWorkingDirectory(QDir::toNativeSeparators(m_qslDirs[m_iPath]));
+
 	m_bSignalled = false;
 	m_pProcess->start(qsCommand);
 
@@ -72,9 +86,16 @@ void ExternalAppLauncher::HandleError(QProcess::ProcessError ePE)
 {
 	if (ePE == QProcess::FailedToStart) {
 		// look if there are more candidates
-		if (m_qslApps.count() > 0) {
-			m_qsApp = m_qslApps.takeFirst();
-			QString qsCommand = m_qsApp + " " + m_qsPar;
+		m_iPath++;
+		if (m_iPath < m_qslDirs.count()) {
+			// try next working dir
+			QString qsFile = m_qsApp;
+			if (m_qslDirs[m_iPath].length() > 0)
+				qsFile = m_qslDirs[m_iPath] + "/" + qsFile;
+			QString qsCommand = QDir::toNativeSeparators(qsFile) + " " + m_qsPar;
+			if (m_qslDirs[m_iPath].length() > 0)
+				m_pProcess->setWorkingDirectory(m_qslDirs[m_iPath]);
+
 			m_pProcess->start(qsCommand);
 			return;
 		}
