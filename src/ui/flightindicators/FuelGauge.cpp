@@ -5,7 +5,7 @@
 FuelGauge::FuelGauge(double dCapacity, QWidget *pParent) :
 	QcGaugeWidget(pParent)
 {
-	setMinimumSize(150, 150);
+	setMinimumSize(100, 100);
 	m_dCapacity = dCapacity;
 
 	// some background items

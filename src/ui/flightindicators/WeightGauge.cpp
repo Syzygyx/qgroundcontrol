@@ -7,7 +7,7 @@
 WeightGauge::WeightGauge(double dMaxWeight, bool bLabels, QWidget *pParent) :
 	QcGaugeWidget(pParent)
 {
-	setMinimumSize(150, 150);
+	setMinimumSize(100, 100);
 	m_dMaxWeight = dMaxWeight;
 
 	// some background items

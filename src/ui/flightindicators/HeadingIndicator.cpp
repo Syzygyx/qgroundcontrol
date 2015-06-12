@@ -10,7 +10,7 @@
 HeadingIndicator::HeadingIndicator(QWidget* pParent) : QcRotatedGaugeWidget(pParent)
 {
 	m_bInitialized = false;
-	setMinimumSize(150, 150);
+	setMinimumSize(100, 100);
 	// create some background, items are fixed by default!
 	QcBackgroundItem* pbg = addBackground(99);
 	pbg->clearrColors();

@@ -8,7 +8,7 @@
 AltitudeIndicator::AltitudeIndicator(QWidget* pParent) :
 	QcGaugeWidget(pParent)
 {
-	setMinimumSize(150, 150);
+	setMinimumSize(100, 100);
 	// create some background
 	QcBackgroundItem* pbg = addBackground(99);
 	pbg->clearrColors();

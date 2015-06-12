@@ -11,7 +11,7 @@ AirspeedIndicator::AirspeedIndicator(
 		) :
 	QcGaugeWidget(pParent)
 {
-	setMinimumSize(150, 150);
+	setMinimumSize(100, 100);
 	m_eAU = eAU;
 	m_dMinSpeed = dMinSpeed;
 	m_dMaxSpeed = dMaxSpeed;
