@@ -224,7 +224,7 @@ MainWindow::MainWindow(QSplashScreen* splashScreen)
     _mainToolBar = new MainToolBar(widget);
     widget->setWidget(_mainToolBar);
     widget->setFeatures(QDockWidget::NoDockWidgetFeatures);
-    widget->setTitleBarWidget(new QWidget(this)); // Disables the title bar
+	 widget->setTitleBarWidget(new QWidget(this)); // Disables the title bar
     addDockWidget(Qt::TopDockWidgetArea, widget);
 
     // Setup UI state machines
@@ -1382,8 +1382,8 @@ void MainWindow::launchFlightGear()
 #if defined(Q_OS_MACX)
 	qslApps << "/Applications/FlightGear.app/Contents/MacOS/fgfs";
 #elif defined(Q_OS_WIN32)
-	qslApps << "fgfs.exe" << "C:\\Program Files\\FlightGear 3.4.0\\fgfs" <<
-				  "C:\\Program Files (x86)\\FlightGear 3.4.0\\fgfs";
+	qslApps << "fgfs.exe" << "C:\\Program Files\\FlightGear 3.4.0\\bin\\fgfs" <<
+				  "C:\\Program Files (x86)\\FlightGear 3.4.0\\bin\\fgfs";
 #else
 	qslApps << "fgfs";
 #endif
