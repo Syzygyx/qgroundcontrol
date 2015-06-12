@@ -1,4 +1,6 @@
 #include <QDebug>
+
+#include "SizeDef.h"
 #include "AirspeedIndicator.h"
 
 //-----------------------------------------------------------------------------
@@ -11,7 +13,7 @@ AirspeedIndicator::AirspeedIndicator(
 		) :
 	QcGaugeWidget(pParent)
 {
-	setMinimumSize(100, 100);
+    setMinimumSize(MIN_GAUGE_SIZE);
 	m_eAU = eAU;
 	m_dMinSpeed = dMinSpeed;
 	m_dMaxSpeed = dMaxSpeed;

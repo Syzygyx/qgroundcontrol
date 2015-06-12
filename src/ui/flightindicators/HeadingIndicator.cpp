@@ -3,6 +3,8 @@
 
 #include "gauge/QcPolygonItem.h"
 
+#include "SizeDef.h"
+
 #include "HeadingIndicator.h"
 
 //-----------------------------------------------------------------------------
@@ -10,7 +12,7 @@
 HeadingIndicator::HeadingIndicator(QWidget* pParent) : QcRotatedGaugeWidget(pParent)
 {
 	m_bInitialized = false;
-	setMinimumSize(100, 100);
+    setMinimumSize(MIN_GAUGE_SIZE);
 	// create some background, items are fixed by default!
 	QcBackgroundItem* pbg = addBackground(99);
 	pbg->clearrColors();

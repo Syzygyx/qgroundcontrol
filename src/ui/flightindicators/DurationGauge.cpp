@@ -4,6 +4,7 @@
 #include <QFontMetrics>
 #include <QRadialGradient>
 #include <QLinearGradient>
+
 #include "DurationGauge.h"
 
 #define OFFSET_X				8

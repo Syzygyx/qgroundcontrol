@@ -378,7 +378,8 @@ HEADERS += \
     src/uas/StaticUAS.h \
     src/ui/map/PixmapGenerator.h \
     src/ui/map/common_ext.h \
-    src/GeoFence/GeoFenceZone.h
+    src/GeoFence/GeoFenceZone.h \
+    src/ui/flightindicators/SizeDef.h
 
 !AndroidBuild {
 HEADERS += \

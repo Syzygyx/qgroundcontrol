@@ -1,5 +1,7 @@
 #include <QDebug>
 
+#include "SizeDef.h"
+
 #include "VerticalSpeedIndicator.h"
 
 //-----------------------------------------------------------------------------
@@ -9,7 +11,7 @@ VerticalSpeedIndicator::VerticalSpeedIndicator(double dMaxVS, QWidget *pParent) 
 {
 	m_dMaxVS = dMaxVS;
 
-	setMinimumSize(100, 100);
+    setMinimumSize(MIN_GAUGE_SIZE);
 	// create some background
 	QcBackgroundItem* pbg = addBackground(99);
 	pbg->clearrColors();

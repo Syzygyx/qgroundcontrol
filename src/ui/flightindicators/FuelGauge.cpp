@@ -1,3 +1,5 @@
+#include "SizeDef.h"
+
 #include "FuelGauge.h"
 
 //-----------------------------------------------------------------------------
@@ -5,7 +7,7 @@
 FuelGauge::FuelGauge(double dCapacity, QWidget *pParent) :
 	QcGaugeWidget(pParent)
 {
-	setMinimumSize(100, 100);
+    setMinimumSize(MIN_GAUGE_SIZE);
 	m_dCapacity = dCapacity;
 
 	// some background items

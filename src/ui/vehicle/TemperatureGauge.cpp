@@ -1,5 +1,7 @@
 #include <QDebug>
 
+#include "flightindicators/SizeDef.h"
+
 #include "TemperatureGauge.h"
 
 //-----------------------------------------------------------------------------
@@ -9,7 +11,7 @@ TemperatureGauge::TemperatureGauge(double dMinT, double dMaxT, QWidget *pParent)
 {
 	m_dMin = dMinT;
 	m_dMax = dMaxT;
-	setMinimumSize(100, 100);
+    setMinimumSize(MIN_GAUGE_SIZE);
 
 	// some background items
 	QcBackgroundItem* pbg = addBackground(99);

@@ -29,7 +29,7 @@ FlightInstrumentsWidget::FlightInstrumentsWidget(QWidget* pParent) :
 	pLayout->addWidget(m_pFuel, 2, 0);
 	pLayout->addWidget(m_pWeight, 2, 1);
 
-	connect(
+    connect(
 				MessageDispatcher::GetInstance(),
 				SIGNAL(SignalAirSpeed(double)),
 				this,

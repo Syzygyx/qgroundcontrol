@@ -1,5 +1,7 @@
 #include "gauge/QcPixmapItem.h"
 
+#include "SizeDef.h"
+
 #include "WeightGauge.h"
 
 //-----------------------------------------------------------------------------
@@ -7,7 +9,7 @@
 WeightGauge::WeightGauge(double dMaxWeight, bool bLabels, QWidget *pParent) :
 	QcGaugeWidget(pParent)
 {
-	setMinimumSize(100, 100);
+    setMinimumSize(MIN_GAUGE_SIZE);
 	m_dMaxWeight = dMaxWeight;
 
 	// some background items

@@ -1,6 +1,7 @@
 #include <QDebug>
 #include <QTimer>
 
+#include "SizeDef.h"
 #include "AltitudeIndicator.h"
 
 //-----------------------------------------------------------------------------
@@ -8,7 +9,7 @@
 AltitudeIndicator::AltitudeIndicator(QWidget* pParent) :
 	QcGaugeWidget(pParent)
 {
-	setMinimumSize(100, 100);
+    setMinimumSize(MIN_GAUGE_SIZE);
 	// create some background
 	QcBackgroundItem* pbg = addBackground(99);
 	pbg->clearrColors();
