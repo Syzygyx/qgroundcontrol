@@ -14,7 +14,7 @@
 // up by 1. This will caused store settings to be cleared on next boot.
 #define QGC_SETTINGS_VERSION 6
 
-#define QGC_APPLICATION_NAME "QGroundControl"
+#define QGC_APPLICATION_NAME "rtGCS"
 #define QGC_ORG_NAME "QGroundControl.org"
 #define QGC_ORG_DOMAIN "org.qgroundcontrol"
 

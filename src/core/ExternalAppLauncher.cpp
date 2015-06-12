@@ -52,9 +52,10 @@ ExternalAppLauncher::~ExternalAppLauncher()
 
 //-----------------------------------------------------------------------------
 
-void ExternalAppLauncher::Launch(QString qsApp, QString qsPar, QString qsUrl)
+void ExternalAppLauncher::Launch(QStringList qsl, QString qsPar, QString qsUrl)
 {
-	m_qsApp = qsApp;
+	m_qslApps = qsl;
+	m_qsApp = m_qslApps.takeFirst();
 	m_qsPar = qsPar;
 	m_qsUrl = qsUrl;
 	QString qsCommand = m_qsApp + " " + m_qsPar;
@@ -70,6 +71,14 @@ void ExternalAppLauncher::Launch(QString qsApp, QString qsPar, QString qsUrl)
 void ExternalAppLauncher::HandleError(QProcess::ProcessError ePE)
 {
 	if (ePE == QProcess::FailedToStart) {
+		// look if there are more candidates
+		if (m_qslApps.count() > 0) {
+			m_qsApp = m_qslApps.takeFirst();
+			QString qsCommand = m_qsApp + " " + m_qsPar;
+			m_pProcess->start(qsCommand);
+			return;
+		}
+
 		QString qsMsg = tr("Looks like %1 is not installed on this computer. ").arg(m_qsApp);
 		if (m_qsUrl.length() > 0)
 			qsMsg += tr("You can download %1 from %2 and install it.").arg(m_qsApp).arg(m_qsUrl);

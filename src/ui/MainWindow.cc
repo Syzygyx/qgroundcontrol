@@ -1377,17 +1377,18 @@ void MainWindow::launchFlightGear()
 {
 	qDebug() << "Trying to launch FlightGear";
 	QString qsPar = "--httpd=8080 --native-fdm=socket,in,100,,5600,udp --fdm=null --aircraft=arducopter";
-	QString qsApp;
+	QStringList qslApps;
 
 #if defined(Q_OS_MACX)
-	qsApp = "/Applications/FlightGear.app/Contents/MacOS/fgfs";
+	qslApps << "/Applications/FlightGear.app/Contents/MacOS/fgfs";
 #elif defined(Q_OS_WIN32)
-	qsApp = "fgfs.exe";
+	qslApps << "fgfs.exe" << "C:\\Program Files\\FlightGear 3.4.0\\fgfs" <<
+				  "C:\\Program Files (x86)\\FlightGear 3.4.0\\fgfs";
 #else
-	qsApp = "fgfs";
+	qslApps << "fgfs";
 #endif
 
-	m_pExtAppLauncher->Launch(qsApp, qsPar, "http://www.flightgear.org/");
+	m_pExtAppLauncher->Launch(qslApps, qsPar, "http://www.flightgear.org/");
 }
 
 #ifdef QGC_MOUSE_ENABLED_LINUX
