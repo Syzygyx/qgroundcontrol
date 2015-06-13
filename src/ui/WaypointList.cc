@@ -371,12 +371,14 @@ void WaypointList::loadGeoFenceZones()
 {
 	QString qsName = QGCFileDialog::getOpenFileName(this, tr("Load GeoFence File"), ".", tr("GeoFence files (*.txt);;All Files (*)"));
 	if (qsName.length() > 0)
-		emit SignalLoadGF(qsName);
+		emit SignalTransmitter::GetInstance()->SignalLoadGF(qsName);
 }
 
 void WaypointList::saveGeoFenceZones()
 {
-
+	QString qsName = QGCFileDialog::getSaveFileName(this, tr("Save GeoFence File"), ".", tr("GeoFence files (*.txt);;All Files (*)"));
+	if (qsName.length() > 0)
+		emit SignalTransmitter::GetInstance()->SignalSaveGF(qsName);
 }
 
 
@@ -670,13 +672,6 @@ void WaypointList::setupGeoFence()
 	connect(pb, SIGNAL(clicked()), this, SLOT(loadGeoFenceZones()));
 
 	m_ui->tabWidget->addTab(pW, tr("GeoFence"));
-
-	connect(
-				this,
-				SIGNAL(SignalLoadGF(QString)),
-				SignalTransmitter::GetInstance(),
-				SIGNAL(SignalLoadGF(QString))
-				);
 }
 
 void WaypointList::on_clearWPListButton_clicked()

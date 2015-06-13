@@ -125,7 +125,6 @@ public slots:
 signals:
     void clearPathclicked();
     void createWaypointAtMap(const QPointF coordinate);
-	 void SignalLoadGF(QString qsName);
 
 protected:
     virtual void changeEvent(QEvent *e);

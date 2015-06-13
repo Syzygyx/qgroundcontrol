@@ -74,6 +74,13 @@ QGCMapWidget::QGCMapWidget(QWidget *parent) :
 				 this,
 				 SLOT(loadGeoFenceZones(QString))
 				 );
+
+	 connect(
+				 SignalTransmitter::GetInstance(),
+				 SIGNAL(SignalSaveGF(QString)),
+				 this,
+				 SLOT(saveGeoFenceZones(QString))
+				 );
 }
 
 void QGCMapWidget::guidedActionTriggered()
@@ -700,6 +707,13 @@ void QGCMapWidget::loadGeoFenceZones(QString qsFile)
 			m_liGFItems << pItem;
 		}
 	}
+}
+
+//-----------------------------------------------------------------------------
+
+void QGCMapWidget::saveGeoFenceZones(QString qsFile)
+{
+	m_conGF.Save(qsFile);
 }
 
 //-----------------------------------------------------------------------------

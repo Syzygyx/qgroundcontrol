@@ -20,8 +20,10 @@ public:
 	static SignalTransmitter* GetInstance();
 
 signals:
-	//! Should be emitted when GeoFence file is loaded
+	//! Should be emitted when GeoFence file needs to be loaded
 	void SignalLoadGF(QString qsName);
+	//! Should be emitted when GeoFence file needs to be saved
+	void SignalSaveGF(QString qsName);
 
 private:
 	//! Pointer to the instance
