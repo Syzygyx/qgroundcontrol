@@ -7,6 +7,7 @@
 #include "Waypoint2DIcon.h"
 #include "UASWaypointManager.h"
 #include "QGCMessageBox.h"
+#include "GeoFence/GeoFenceZoneItem.h"
 
 QGCMapWidget::QGCMapWidget(QWidget *parent) :
     mapcontrol::OPMapWidget(parent),
@@ -63,6 +64,8 @@ QGCMapWidget::QGCMapWidget(QWidget *parent) :
     sethomeaction->setText("Set Home Location Here");
     connect(sethomeaction,SIGNAL(triggered()),this,SLOT(setHomeActionTriggered()));
     this->addAction(sethomeaction);
+
+	 loadGeoFenceZones("geofence.txt");
 }
 void QGCMapWidget::guidedActionTriggered()
 {
@@ -340,6 +343,29 @@ void QGCMapWidget::mouseDoubleClickEvent(QMouseEvent* event)
     OPMapWidget::mouseDoubleClickEvent(event);
 }
 
+//-----------------------------------------------------------------------------
+
+void QGCMapWidget::paintEvent(QPaintEvent* pPE)
+{
+	mapcontrol::OPMapWidget::paintEvent(pPE);
+
+	/*
+	core::Point pt = map->FromLatLngToLocal(internals::PointLatLng(45.5, 14.5));
+	QPainter P(viewport());
+	P.setPen(Qt::cyan);
+	P.setBrush(Qt::red);
+	P.drawEllipse(QPoint(pt.X(), pt.Y()), 10, 10);
+	qDebug() << "Ljubljana" << pt.X() << pt.Y();
+	*/
+
+	QPainter P(viewport());
+	for (int i = 0; i < m_liGFItems.count(); i++) {
+		m_liGFItems[i]->RefreshPos();
+		m_liGFItems[i]->paint(&P, 0, 0);
+	}
+}
+
+//-----------------------------------------------------------------------------
 
 /**
  *
@@ -667,6 +693,17 @@ void QGCMapWidget::handleMapWaypointEdit(mapcontrol::WayPointItem* waypoint)
     firingWaypointChange = wp;
 
     emit waypointChanged(wp);
+}
+
+void QGCMapWidget::loadGeoFenceZones(QString qsFile)
+{
+	if (m_conGF.Load(qsFile) == true) {
+		for (int i = 0; i < m_conGF.GetCount(); i++) {
+			GeoFenceZoneItem* pItem = new GeoFenceZoneItem(map, m_conGF.GetZone(i));
+			pItem->setParentItem(map);
+			m_liGFItems << pItem;
+		}
+	}
 }
 
 // WAYPOINT UPDATE FUNCTIONS

@@ -6,7 +6,8 @@
 
 //-----------------------------------------------------------------------------
 
-GeoFenceZone::GeoFenceZone()
+GeoFenceZone::GeoFenceZone() :
+	m_poly()
 {
 	m_dMinAlt = 0.0;
 	m_dMaxAlt = 1000.0;
@@ -16,6 +17,19 @@ GeoFenceZone::GeoFenceZone()
 
 GeoFenceZone::~GeoFenceZone()
 {	}
+
+//-----------------------------------------------------------------------------
+
+GeoFenceZone::GeoFenceZone(const GeoFenceZone& rZone)
+{	Copy(rZone); }
+
+//-----------------------------------------------------------------------------
+
+GeoFenceZone& GeoFenceZone::operator=(const GeoFenceZone& rZone)
+{
+	Copy(rZone);
+	return *this;
+}
 
 //-----------------------------------------------------------------------------
 
@@ -34,7 +48,7 @@ bool GeoFenceZone::Load(QTextStream& ts)
 
 //-----------------------------------------------------------------------------
 
-bool GeoFenceZone::Save(QTextStream& ts, GeoFenceFormat eGFF)
+bool GeoFenceZone::Save(QTextStream& ts, GeoFenceFormat eGFF) const
 {
 	ts.setRealNumberNotation(QTextStream::FixedNotation);
 	ts.setRealNumberPrecision(2);
@@ -169,7 +183,7 @@ QPointF GeoFenceZone::ParsePoint(QString qsText, bool* pbOK)
 
 //-----------------------------------------------------------------------------
 
-void GeoFenceZone::WriteDMS(QTextStream& ts, double dVal)
+void GeoFenceZone::WriteDMS(QTextStream& ts, double dVal) const
 {
 	int iD;
 	int iM;
@@ -187,6 +201,17 @@ void GeoFenceZone::WriteDMS(QTextStream& ts, double dVal)
 	iM = (int)floor(60*(dAbsVal - iD));
 	dSec = 3600.0*(dAbsVal - iD - iM/60.0);
 	ts << iSign*iD << " " << iSign*iM << " " << iSign*dSec;
+}
+
+//-----------------------------------------------------------------------------
+
+void GeoFenceZone::Copy(const GeoFenceZone& rZone)
+{
+	m_dMinAlt = rZone.GetMinAltitude();
+	m_dMaxAlt = rZone.GetMaxAltitude();
+	m_poly.clear();
+	for (int i = 0; i < rZone.GetCount(); i++)
+		Append(rZone.GetPoint(i));
 }
 
 //-----------------------------------------------------------------------------

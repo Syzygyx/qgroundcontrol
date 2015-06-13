@@ -5,6 +5,9 @@
 #include <QTimer>
 #include "opmapcontrol.h"
 
+#include <GeoFence/GeoFenceContainer.h>
+#include <GeoFence/GeoFenceZoneItem.h>
+
 // Choose one default map type
 //#define MAP_DEFAULT_TYPE_BING
 #define MAP_DEFAULT_TYPE_GOOGLE
@@ -135,6 +138,9 @@ public slots:
 protected slots:
     /** @brief Convert a map edit into a QGC waypoint event */
     void handleMapWaypointEdit(WayPointItem* waypoint);
+	 /** @brief Load GeoFenceZones from file and create
+	  *  appropriate graphics items */
+	 void loadGeoFenceZones(QString qsFile);
 
 protected:
     /** @brief Update the highlighting of the currently controlled system */
@@ -146,8 +152,10 @@ protected:
     void mousePressEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
     void mouseDoubleClickEvent(QMouseEvent* event);
+	 //! Does the normal paint plus GeoFence zones
+	 void paintEvent(QPaintEvent* pPE);
 
-    //void contextMenuEvent(QContextMenuEvent *);
+	 //void contextMenuEvent(QContextMenuEvent *);
 
     UASWaypointManager* currWPManager; ///< The current waypoint manager
     bool offlineMode;
@@ -179,6 +187,8 @@ protected:
     bool zoomBlocked;                   ///< Wether zooming is blocked
     UASInterface *uas;                  ///< Currently selected UAS.
 
+	 GeoFenceContainer m_conGF;			 ///< Container of GeoFence zones
+	 QList<GeoFenceZoneItem*> m_liGFItems;	///< List of GeoFenceZone graphics items
 };
 
 #endif // QGCMAPWIDGET_H

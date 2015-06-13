@@ -20,6 +20,10 @@ public:
 	GeoFenceZone();
 	//! Destructor
 	virtual ~GeoFenceZone();
+	//! Copy constructor
+	GeoFenceZone(const GeoFenceZone& rZone);
+	//! Assignment operator
+	GeoFenceZone& operator=(const GeoFenceZone& rZone);
 
 	//! Returns the minimal altitude AMSL
 	double GetMinAltitude() const
@@ -57,7 +61,7 @@ public:
 	virtual bool Load(QTextStream& ts);
 
 	//! Writes zone into a given text stream in given format
-	virtual bool Save(QTextStream& ts, GeoFenceFormat eGFF = gffDecimal);
+	virtual bool Save(QTextStream& ts, GeoFenceFormat eGFF = gffDecimal) const;
 
 protected:
 	//! Reads the altitudes from the text stream, returns true on success
@@ -71,8 +75,11 @@ protected:
 	 */
 	virtual QPointF ParsePoint(QString qsText, bool* pbOK = 0);
 	//! Writes number in DMS format into text string
-	virtual void WriteDMS(QTextStream& ts, double dVal);
+	virtual void WriteDMS(QTextStream& ts, double dVal) const;
 
+private:
+	//! Copies the info from rZone
+	void Copy(const GeoFenceZone& rZone);
 
 private:
 	//! Minimal altitude AMSL [m]

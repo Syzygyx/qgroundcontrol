@@ -389,6 +389,7 @@ MainWindow::MainWindow(QSplashScreen* splashScreen)
 				 );
 
 
+	 /*
 	 // Testing only
 	 QFile f("geofence.txt");
 	 if (f.open(QFile::ReadOnly) == true) {
@@ -411,6 +412,7 @@ MainWindow::MainWindow(QSplashScreen* splashScreen)
 		 f.close();
 	 }
 	 // end testing
+	 */
 }
 
 MainWindow::~MainWindow()

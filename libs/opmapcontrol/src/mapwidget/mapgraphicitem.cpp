@@ -27,8 +27,10 @@
 #include "uavitem.h"
 #include "gpsitem.h"
 #include "homeitem.h"
-#include "mapgraphicitem.h"
 #include "waypointlineitem.h"
+#include "GeoFence/GeoFenceZoneItem.h"
+
+#include "mapgraphicitem.h"
 
 namespace mapcontrol
 {
@@ -121,7 +123,7 @@ namespace mapcontrol
             if(wwww)
                 wwww->RefreshPos();
 
-            emit mapChanged();
+				emit mapChanged();
         }
     }
     void MapGraphicItem::ConstructLastImage(int const& zoomdiff)

@@ -177,9 +177,9 @@ void Waypoint2DIcon::drawIcon()
     }
 
 	 if ((waypoint.isNull() == false) &&
-		  (waypoint->getAction() == (int)MAV_CMD_PAY_DEPLOY_1 ||
-			waypoint->getAction() == (int)MAV_CMD_PAY_DEPLOY_2 ||
-			waypoint->getAction() == (int)MAV_CMD_PAY_DEPLOY_3
+		  (waypoint->getAction() == MAV_CMD_PAY_DEPLOY_1 ||
+			waypoint->getAction() == MAV_CMD_PAY_DEPLOY_2 ||
+			waypoint->getAction() == MAV_CMD_PAY_DEPLOY_3
 			)
 		  ) {
 		 painter.drawPixmap(p.x() - 10, p.y() - 17, PixmapGenerator::GetTearDrop());

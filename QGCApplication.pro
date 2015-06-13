@@ -379,7 +379,9 @@ HEADERS += \
     src/ui/map/PixmapGenerator.h \
     src/ui/map/common_ext.h \
     src/GeoFence/GeoFenceZone.h \
-    src/ui/flightindicators/SizeDef.h
+    src/ui/flightindicators/SizeDef.h \
+    src/GeoFence/GeoFenceContainer.h \
+    src/ui/GeoFence/GeoFenceZoneItem.h
 
 !AndroidBuild {
 HEADERS += \
@@ -530,7 +532,9 @@ SOURCES += \
     src/ui/gauge/QcColorLabelItem.cpp \
     src/uas/StaticUAS.cpp \
     src/ui/map/PixmapGenerator.cpp \
-    src/GeoFence/GeoFenceZone.cpp
+    src/GeoFence/GeoFenceZone.cpp \
+    src/GeoFence/GeoFenceContainer.cpp \
+    src/ui/GeoFence/GeoFenceZoneItem.cpp
 
 
 !AndroidBuild {
