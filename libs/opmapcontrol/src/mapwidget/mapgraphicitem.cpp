@@ -28,7 +28,6 @@
 #include "gpsitem.h"
 #include "homeitem.h"
 #include "waypointlineitem.h"
-#include "GeoFence/GeoFenceZoneItem.h"
 
 #include "mapgraphicitem.h"
 

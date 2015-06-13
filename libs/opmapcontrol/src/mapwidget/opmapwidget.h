@@ -380,9 +380,9 @@ namespace mapcontrol
         void SetShowDiagnostics(bool const& value);
         void SetUavPic(QString UAVPic);
                 QMap<int, UAVItem*> UAVS;
-    private:
-        internals::Core *core;
-        QGraphicsScene mscene;
+	 private:
+		  internals::Core *core;
+		  QGraphicsScene mscene;
         bool useOpenGL;
         GeoCoderStatusCode x;
         MapType y;
@@ -400,7 +400,7 @@ namespace mapcontrol
         void diagRefresh();
         //   WayPointItem* item;//apagar
     protected:
-        MapGraphicItem *map;
+		  MapGraphicItem *map;
         void resizeEvent(QResizeEvent *event);
         void showEvent ( QShowEvent * event );
         void closeEvent(QCloseEvent *event);

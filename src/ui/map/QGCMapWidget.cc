@@ -65,6 +65,8 @@ QGCMapWidget::QGCMapWidget(QWidget *parent) :
     connect(sethomeaction,SIGNAL(triggered()),this,SLOT(setHomeActionTriggered()));
     this->addAction(sethomeaction);
 
+	 connect(map, SIGNAL(mapChanged()), this, SLOT(updateGeoFenceZones()));
+
 	 loadGeoFenceZones("geofence.txt");
 }
 void QGCMapWidget::guidedActionTriggered()
@@ -348,21 +350,6 @@ void QGCMapWidget::mouseDoubleClickEvent(QMouseEvent* event)
 void QGCMapWidget::paintEvent(QPaintEvent* pPE)
 {
 	mapcontrol::OPMapWidget::paintEvent(pPE);
-
-	/*
-	core::Point pt = map->FromLatLngToLocal(internals::PointLatLng(45.5, 14.5));
-	QPainter P(viewport());
-	P.setPen(Qt::cyan);
-	P.setBrush(Qt::red);
-	P.drawEllipse(QPoint(pt.X(), pt.Y()), 10, 10);
-	qDebug() << "Ljubljana" << pt.X() << pt.Y();
-	*/
-
-	QPainter P(viewport());
-	for (int i = 0; i < m_liGFItems.count(); i++) {
-		m_liGFItems[i]->RefreshPos();
-		m_liGFItems[i]->paint(&P, 0, 0);
-	}
 }
 
 //-----------------------------------------------------------------------------
@@ -695,6 +682,8 @@ void QGCMapWidget::handleMapWaypointEdit(mapcontrol::WayPointItem* waypoint)
     emit waypointChanged(wp);
 }
 
+//-----------------------------------------------------------------------------
+
 void QGCMapWidget::loadGeoFenceZones(QString qsFile)
 {
 	if (m_conGF.Load(qsFile) == true) {
@@ -705,6 +694,16 @@ void QGCMapWidget::loadGeoFenceZones(QString qsFile)
 		}
 	}
 }
+
+//-----------------------------------------------------------------------------
+
+void QGCMapWidget::updateGeoFenceZones()
+{
+	for (int i = 0; i < m_liGFItems.count(); i++)
+		m_liGFItems[i]->RefreshPos();
+}
+
+//-----------------------------------------------------------------------------
 
 // WAYPOINT UPDATE FUNCTIONS
 

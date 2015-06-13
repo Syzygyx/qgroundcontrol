@@ -141,6 +141,8 @@ protected slots:
 	 /** @brief Load GeoFenceZones from file and create
 	  *  appropriate graphics items */
 	 void loadGeoFenceZones(QString qsFile);
+	 /** @brief Updates the GeoFenceZone items */
+	 void updateGeoFenceZones();
 
 protected:
     /** @brief Update the highlighting of the currently controlled system */

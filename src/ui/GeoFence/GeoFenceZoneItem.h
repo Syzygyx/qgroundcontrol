@@ -1,6 +1,7 @@
 #ifndef GEOFENCEZONEITEM_H
 #define GEOFENCEZONEITEM_H
 
+#include <QObject>
 #include <QGraphicsItem>
 
 #include "../../mapwidget/mapgraphicitem.h"
@@ -8,9 +9,14 @@
 #include "GeoFence/GeoFenceZone.h"
 
 //! This class is a graphical reprezentation of the entire GeoFenceZone
-class GeoFenceZoneItem : public QGraphicsItem
+class GeoFenceZoneItem : public QObject, public QGraphicsItem
 {
+	Q_OBJECT
+	Q_INTERFACES(QGraphicsItem)
+
 public:
+	//
+	enum { Type = UserType + 213 };
 	//! Constructor
 	GeoFenceZoneItem(mapcontrol::MapGraphicItem* pMap, const GeoFenceZone& rZone);
 	//! Destructor

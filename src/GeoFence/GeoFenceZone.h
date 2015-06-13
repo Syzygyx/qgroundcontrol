@@ -56,6 +56,9 @@ public:
 	//! Removes all points from the zone
 	void Clear()
 	{	m_poly.clear(); }
+	//! Returns const reference to polygon
+	const QPolygonF& GetPoints() const
+	{	return m_poly; }
 
 	//! Loads zone from a given text stream. Returns true on success
 	virtual bool Load(QTextStream& ts);

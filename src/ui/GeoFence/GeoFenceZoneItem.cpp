@@ -5,10 +5,13 @@
 GeoFenceZoneItem::GeoFenceZoneItem(
 		mapcontrol::MapGraphicItem* pMap,
 		const GeoFenceZone& rZone
-		)
+		) :
+	QObject(),
+	QGraphicsItem()
 {
 	m_pMap = pMap;
 	m_zone = rZone;
+	setZValue(100.0);
 
 	RefreshPos();
 }
@@ -36,10 +39,13 @@ void GeoFenceZoneItem::paint(
 	Q_UNUSED(option);
 	Q_UNUSED(widget);
 
+	pP->save();
+	pP->setRenderHints(QPainter::Antialiasing);
 	pP->setPen(Qt::red);
 	pP->setBrush(QColor(255, 64, 32, 64));
 
 	pP->drawPolygon(m_poly);
+	pP->restore();
 }
 
 //-----------------------------------------------------------------------------
@@ -64,7 +70,7 @@ void GeoFenceZoneItem::RefreshPos()
 	m_rect = m_poly.boundingRect();
 	// make it slightly bigger just in case
 	m_rect.adjust(-2, -2, 2, 2);
-	setPos(m_rect.center());
+	QGraphicsItem::prepareGeometryChange();
 }
 
 //-----------------------------------------------------------------------------
