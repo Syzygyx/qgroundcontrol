@@ -81,6 +81,11 @@ public slots:
     void addCurrentPositionWaypoint();
     /** @brief Add a waypoint by mouse click over the map */
 
+	 /** @brief Load GeoFence zones from selected file */
+	 void loadGeoFenceZones();
+	 /** @brief Save GeoFence zones to selected file */
+	 void saveGeoFenceZones();
+
     //Update events
     /** @brief sets statusLabel string */
     void updateStatusLabel(const QString &string);
@@ -120,11 +125,14 @@ public slots:
 signals:
     void clearPathclicked();
     void createWaypointAtMap(const QPointF coordinate);
+	 void SignalLoadGF(QString qsName);
 
 protected:
     virtual void changeEvent(QEvent *e);
 	 //! Rewrites indices
 	 void updateIndices();
+	 //! Create additional GeoFence interface
+	 void setupGeoFence();
 
 protected:
     QMap<Waypoint*, WaypointEditableView*> wpEditableViews;

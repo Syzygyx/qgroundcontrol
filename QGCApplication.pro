@@ -381,7 +381,8 @@ HEADERS += \
     src/GeoFence/GeoFenceZone.h \
     src/ui/flightindicators/SizeDef.h \
     src/GeoFence/GeoFenceContainer.h \
-    src/ui/GeoFence/GeoFenceZoneItem.h
+    src/ui/GeoFence/GeoFenceZoneItem.h \
+    src/core/SignalTransmitter.h
 
 !AndroidBuild {
 HEADERS += \
@@ -534,7 +535,8 @@ SOURCES += \
     src/ui/map/PixmapGenerator.cpp \
     src/GeoFence/GeoFenceZone.cpp \
     src/GeoFence/GeoFenceContainer.cpp \
-    src/ui/GeoFence/GeoFenceZoneItem.cpp
+    src/ui/GeoFence/GeoFenceZoneItem.cpp \
+    src/core/SignalTransmitter.cpp
 
 
 !AndroidBuild {

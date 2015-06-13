@@ -8,6 +8,7 @@
 #include "UASWaypointManager.h"
 #include "QGCMessageBox.h"
 #include "GeoFence/GeoFenceZoneItem.h"
+#include "core/SignalTransmitter.h"
 
 QGCMapWidget::QGCMapWidget(QWidget *parent) :
     mapcontrol::OPMapWidget(parent),
@@ -67,8 +68,14 @@ QGCMapWidget::QGCMapWidget(QWidget *parent) :
 
 	 connect(map, SIGNAL(mapChanged()), this, SLOT(updateGeoFenceZones()));
 
-	 loadGeoFenceZones("geofence.txt");
+	 connect(
+				 SignalTransmitter::GetInstance(),
+				 SIGNAL(SignalLoadGF(QString)),
+				 this,
+				 SLOT(loadGeoFenceZones(QString))
+				 );
 }
+
 void QGCMapWidget::guidedActionTriggered()
 {
 	// commented out, so that destination can be selected even without connection

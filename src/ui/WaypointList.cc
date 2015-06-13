@@ -34,6 +34,7 @@ This file is part of the PIXHAWK project
 #include "WaypointList.h"
 #include "ui_WaypointList.h"
 #include "QGCFileDialog.h"
+#include "core/SignalTransmitter.h"
 
 #include <UASInterface.h>
 #include <UAS.h>
@@ -55,6 +56,7 @@ WaypointList::WaypointList(QWidget *parent, UASWaypointManager* wpm) :
 {
 
     m_ui->setupUi(this);
+	 setupGeoFence();
 
     //EDIT TAB
 
@@ -84,6 +86,8 @@ WaypointList::WaypointList(QWidget *parent, UASWaypointManager* wpm) :
     // SAVE/LOAD WAYPOINTS
     connect(m_ui->saveButton, SIGNAL(clicked()), this, SLOT(saveWaypoints()));
     connect(m_ui->loadButton, SIGNAL(clicked()), this, SLOT(loadWaypoints()));
+
+	 // SAVE/LOAD GEOFENCE ZONES
 
     //connect(UASManager::instance(), SIGNAL(activeUASSet(UASInterface*)), this, SLOT(setUAS(UASInterface*)));
 
@@ -363,6 +367,19 @@ void WaypointList::addCurrentPositionWaypoint() {
     addEditable(true);
 }
 
+void WaypointList::loadGeoFenceZones()
+{
+	QString qsName = QGCFileDialog::getOpenFileName(this, tr("Load GeoFence File"), ".", tr("GeoFence files (*.txt);;All Files (*)"));
+	if (qsName.length() > 0)
+		emit SignalLoadGF(qsName);
+}
+
+void WaypointList::saveGeoFenceZones()
+{
+
+}
+
+
 void WaypointList::updateStatusLabel(const QString &string)
 {
     // Status label in write widget
@@ -629,6 +646,38 @@ void WaypointList::updateIndices()
 	}
 }
 
+void WaypointList::setupGeoFence()
+{
+	// here we build GeoFence interface in 30 minutes, instead
+	// of fighting with stupid Qt Desinger for 1 day
+	QWidget* pW = new QWidget;
+	QGridLayout* pLayout = new QGridLayout(pW);
+	pLayout->setContentsMargins(6, 0, 6, 0);
+
+	QScrollArea* pSA = new QScrollArea;
+
+	pLayout->addWidget(pSA, 0, 0, 1, 5);
+
+	pLayout->setRowStretch(0, 1);
+	pLayout->setColumnStretch(2, 1);
+
+	QPushButton* pb = new QPushButton(tr("Save GFs"));
+	pLayout->addWidget(pb, 1, 0);
+	connect(pb, SIGNAL(clicked()), this, SLOT(saveGeoFenceZones()));
+
+	pb = new QPushButton(tr("Load GFs"));
+	pLayout->addWidget(pb, 1, 1);
+	connect(pb, SIGNAL(clicked()), this, SLOT(loadGeoFenceZones()));
+
+	m_ui->tabWidget->addTab(pW, tr("GeoFence"));
+
+	connect(
+				this,
+				SIGNAL(SignalLoadGF(QString)),
+				SignalTransmitter::GetInstance(),
+				SIGNAL(SignalLoadGF(QString))
+				);
+}
 
 void WaypointList::on_clearWPListButton_clicked()
 {
