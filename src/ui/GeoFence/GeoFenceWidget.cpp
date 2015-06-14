@@ -30,6 +30,7 @@ GeoFenceWidget::~GeoFenceWidget()
 
 void GeoFenceWidget::Update()
 {
+	setEnabled(false);
 	// first clear all the remaining widgets
 	for (int i = 0; i < m_lipEdit.count(); i++) {
 		m_pLayout->removeWidget(m_lipEdit[i]);
@@ -50,6 +51,7 @@ void GeoFenceWidget::Update()
 	}
 
 	setMinimumSize(480, 60*m_rGFC.GetCount() + 10);
+	setEnabled(true);
 	update();
 }
 

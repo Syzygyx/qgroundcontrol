@@ -46,7 +46,14 @@ void GeoFenceZoneItem::paint(
 	pP->setPen(Qt::red);
 	pP->setBrush(QColor(255, 64, 32, 64));
 
+	// first draw the polygon
 	pP->drawPolygon(m_poly);
+
+	// then draw each vertex individually
+	for (int i = 0; i < m_poly.count(); i++) {
+		pP->drawEllipse(m_poly[i], 3, 3);
+	}
+
 	pP->restore();
 }
 
@@ -74,7 +81,7 @@ void GeoFenceZoneItem::RefreshPos()
 
 	m_rect = m_poly.boundingRect();
 	// make it slightly bigger just in case
-	m_rect.adjust(-2, -2, 2, 2);
+	m_rect.adjust(-3, -3, 3, 3);
 	QGraphicsItem::prepareGeometryChange();
 }
 

@@ -653,7 +653,7 @@ void WaypointList::updateIndices()
 void WaypointList::setupGeoFence()
 {
 	// here we build GeoFence interface in 30 minutes, instead
-	// of fighting with stupid Qt Desinger for 1 day
+	// of fighting with stupid Qt Designer for 1 day
 	QWidget* pW = new QWidget;
 	QGridLayout* pLayout = new QGridLayout(pW);
 	pLayout->setContentsMargins(6, 0, 6, 0);
@@ -677,12 +677,6 @@ void WaypointList::setupGeoFence()
 	connect(pb, SIGNAL(clicked()), this, SLOT(loadGeoFenceZones()));
 
 	m_ui->tabWidget->addTab(pW, tr("GeoFence"));
-
-	/*
-	GeoFenceZone* pGFZ = new GeoFenceZone;
-	GeoFenceEdit* pGFE = new GeoFenceEdit(0, pGFZ, this);
-	pSA->setWidget(pGFE);
-	*/
 }
 
 void WaypointList::on_clearWPListButton_clicked()

@@ -145,6 +145,8 @@ protected slots:
 	 void saveGeoFenceZones(QString qsFile);
 	 /** @brief Updates the GeoFenceZone items */
 	 void updateGeoFenceZones();
+	 /** @brief Updates the i-th GeoFenceZone item */
+	 void updateGeoFenceZone(int i);
 
 protected:
     /** @brief Update the highlighting of the currently controlled system */

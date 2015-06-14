@@ -705,6 +705,7 @@ void QGCMapWidget::loadGeoFenceZones(QString qsFile)
 		for (int i = 0; i < conGF.GetCount(); i++) {
 			GeoFenceZoneItem* pItem = new GeoFenceZoneItem(map, i);
 			pItem->setParentItem(map);
+			connect(&conGF, SIGNAL(SignalUpdate(int)), this, SLOT(updateGeoFenceZone(int)));
 			m_liGFItems << pItem;
 		}
 	}
@@ -723,6 +724,14 @@ void QGCMapWidget::updateGeoFenceZones()
 {
 	for (int i = 0; i < m_liGFItems.count(); i++)
 		m_liGFItems[i]->RefreshPos();
+}
+
+//-----------------------------------------------------------------------------
+
+void QGCMapWidget::updateGeoFenceZone(int i)
+{
+	m_liGFItems[i]->RefreshPos();
+	update();
 }
 
 //-----------------------------------------------------------------------------

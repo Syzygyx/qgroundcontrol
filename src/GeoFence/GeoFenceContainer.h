@@ -58,6 +58,8 @@ public slots:
 signals:
 	//! Emitted, when new set of GeoFence zones are loaded and update is needed
 	void SignalRefresh();
+	//! Emitted when i-th GeoFence zone changed
+	void SignalUpdate(int i);
 
 
 protected:
