@@ -11,7 +11,8 @@
 GeoFenceEdit::GeoFenceEdit(int iInd, GeoFenceZone* pZone, QWidget* pParent) :
 	QWidget(pParent)
 {
-	setObjectName("GeoFenceEdit");
+	m_pMapper = new QSignalMapper(this);
+	connect(m_pMapper, SIGNAL(mapped(int)), this, SLOT(ReportPosition(int)));
 	m_iLeftMost = 0;
 	m_iIndex = iInd;
 	m_pZone = pZone;
@@ -67,49 +68,109 @@ void GeoFenceEdit::BuildGUI()
 	plb = new QLabel(tr("Max. alt."));
 	pLayout->addWidget(plb, 2, 1);
 
-	m_psbMinAlt = new QDoubleSpinBox(this);
+	m_psbMinAlt = new QGCDoubleSpinBox(this);
 	m_psbMinAlt->setRange(0.0, 10000.0);
 	m_psbMinAlt->setDecimals(0);
 	m_psbMinAlt->setSuffix("m");
+	connect(m_psbMinAlt, SIGNAL(SignalCurrent()), this, SLOT(ReportCurrent()));
+	connect(m_psbMinAlt, SIGNAL(valueChanged(double)), this, SLOT(ReportMinAlt()));
 	pLayout->addWidget(m_psbMinAlt, 1, 2);
 
-	m_psbMaxAlt = new QDoubleSpinBox(this);
+	m_psbMaxAlt = new QGCDoubleSpinBox(this);
 	m_psbMaxAlt->setRange(0.0, 10000.0);
 	m_psbMaxAlt->setDecimals(0);
 	m_psbMaxAlt->setSuffix("m");
+	connect(m_psbMaxAlt, SIGNAL(SignalCurrent()), this, SLOT(ReportCurrent()));
+	connect(m_psbMaxAlt, SIGNAL(valueChanged(double)), this, SLOT(ReportMaxAlt()));
 	pLayout->addWidget(m_psbMaxAlt, 2, 2);
 
 	QPushButton* pb;
 	pb = new QPushButton("<<");
+	connect(pb, SIGNAL(clicked()), this, SLOT(ReportCurrent()));
 	pLayout->addWidget(pb, 0, 3, 3, 1);
-	QChar ch(0x00b0);
 
-	QDoubleSpinBox* psbPos;
+	QChar ch(0x00b0);
+	QGCDoubleSpinBox* psbPos;
 	for (int i = 0; i < qMin(MAX_LON_LAT, m_pZone->GetCount()); i++) {
 		QLabel* plbVert = new QLabel;
 		plbVert->setText(tr("Vertex %1").arg(m_iLeftMost + i + 1));
 		pLayout->addWidget(plbVert, 0, 4 + i, 1, 1);
 
-		psbPos = new QDoubleSpinBox;
+		psbPos = new QGCDoubleSpinBox;
 		psbPos->setRange(-180.0, 180.0);
 		psbPos->setSuffix(ch);
 		psbPos->setPrefix("lon ");
 		psbPos->setDecimals(10);
 		m_liLongitudes << psbPos;
+		connect(psbPos, SIGNAL(SignalCurrent()), this, SLOT(ReportCurrent()));
+
+		connect(psbPos, SIGNAL(valueChanged(double)), m_pMapper, SLOT(map()));
+		// let's give longitude fields positive indices to accomodate for
+		// the latitude fields to be binded on the same signal mapper
+		m_pMapper->setMapping(psbPos, i+1);
+
 		pLayout->addWidget(psbPos, 1, 4 + i, 1, 1);
 
-		psbPos = new QDoubleSpinBox;
+		psbPos = new QGCDoubleSpinBox;
 		psbPos->setRange(-90.0, 90.0);
 		psbPos->setSuffix(ch);
 		psbPos->setPrefix("lat ");
 		psbPos->setDecimals(10);
-		pLayout->addWidget(psbPos, 2, 4 + i, 1, 1);
 		m_liLatitudes << psbPos;
+		connect(psbPos, SIGNAL(SignalCurrent()), this, SLOT(ReportCurrent()));
+
+		connect(psbPos, SIGNAL(valueChanged(double)), m_pMapper, SLOT(map()));
+		// let's give latitude fields negative indices
+		m_pMapper->setMapping(psbPos, -(i+1));
+
+		pLayout->addWidget(psbPos, 2, 4 + i, 1, 1);
 	}
 
 	pb = new QPushButton(">>");
+	connect(pb, SIGNAL(clicked()), this, SLOT(ReportCurrent()));
 	pLayout->addWidget(pb, 0, 4 + MAX_LON_LAT, 3, 1);
+
 	pLayout->setSizeConstraint(QLayout::SetFixedSize);
+}
+
+//-----------------------------------------------------------------------------
+
+void GeoFenceEdit::ReportCurrent()
+{
+	emit SignalCurrent(m_iIndex);
+}
+
+//-----------------------------------------------------------------------------
+
+void GeoFenceEdit::ReportMinAlt()
+{
+	emit SignalMinAlt(m_iIndex, m_psbMinAlt->value());
+}
+
+//-----------------------------------------------------------------------------
+
+void GeoFenceEdit::ReportMaxAlt()
+{
+	emit SignalMaxAlt(m_iIndex, m_psbMaxAlt->value());
+}
+
+//-----------------------------------------------------------------------------
+
+void GeoFenceEdit::ReportPosition(int iInd)
+{
+	if (iInd > 0) {
+		// longitude changed
+		// this is for 1 bigger than the real index
+		iInd--;
+		emit SignalLon(m_iIndex, iInd, m_liLongitudes[iInd]->value());
+	}	else {
+		// latitude changed
+		// to get the real index, first change the sign
+		iInd = -iInd;
+		// and then it is for 1 bigger than the real index
+		iInd--;
+		emit SignalLat(m_iIndex, iInd, m_liLatitudes[iInd]->value());
+	}
 }
 
 //-----------------------------------------------------------------------------

@@ -33,6 +33,20 @@ GeoFenceZone& GeoFenceZone::operator=(const GeoFenceZone& rZone)
 
 //-----------------------------------------------------------------------------
 
+void GeoFenceZone::SetLatitude(int i, double dLat)
+{
+	m_poly[i].setY(dLat);
+}
+
+//-----------------------------------------------------------------------------
+
+void GeoFenceZone::SetLongitude(int i, double dLon)
+{
+	m_poly[i].setX(dLon);
+}
+
+//-----------------------------------------------------------------------------
+
 bool GeoFenceZone::Load(QTextStream& ts)
 {
 	if (ReadAltitudes(ts) == false)
@@ -59,13 +73,13 @@ bool GeoFenceZone::Save(QTextStream& ts, GeoFenceFormat eGFF) const
 		pt = GetPoint(i);
 		if (eGFF == gffDecimal) {
 			ts.setRealNumberPrecision(17);
-			ts << pt.x() << " " << pt.y() << endl;
+			ts << pt.y() << " " << pt.x() << endl;
 		}	else {
 			ts.setRealNumberPrecision(5);
 			ts << "DMS ";
-			WriteDMS(ts, pt.x());
-			ts << " ";
 			WriteDMS(ts, pt.y());
+			ts << " ";
+			WriteDMS(ts, pt.x());
 			ts << endl;
 		}
 

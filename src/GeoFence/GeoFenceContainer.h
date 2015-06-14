@@ -49,9 +49,16 @@ public:
 	 */
 	bool Save(QString qsName = "");
 
+public slots:
+	//! Sets the longitude for iP-th point of iInd-th zone
+	void SetLongitude(int iInd, int iP, double dLon);
+	//! Sets the latitude for iP-th point of iInd-th zone
+	void SetLatitude(int iInd, int iP, double dLat);
+
 signals:
 	//! Emitted, when new set of GeoFence zones are loaded and update is needed
 	void SignalRefresh();
+
 
 protected:
 	//! List of GeoFence zones

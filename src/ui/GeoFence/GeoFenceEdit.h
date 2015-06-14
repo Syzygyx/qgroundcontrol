@@ -2,9 +2,10 @@
 #define GEOFENCEEDIT_H
 
 #include <QWidget>
-#include <QDoubleSpinBox>
 #include <QLabel>
+#include <QSignalMapper>
 
+#include "QGCDoubleSpinBox.h"
 #include "GeoFence/GeoFenceZone.h"
 
 /** This class is used to show GeoFence parameters and allows user
@@ -34,17 +35,39 @@ private:
 	//! Builds the widget GUI
 	void BuildGUI();
 
+private slots:
+	//! Emits SignalCurrent signal with the m_iIndex parameter
+	void ReportCurrent();
+	//! Emits SignalMinAlt signal with index and minimal altitude
+	void ReportMinAlt();
+	//! Emits SignalMaxAlt signal with index and minimal altitude
+	void ReportMaxAlt();
+	//! Reports latitude or longitude changes
+	void ReportPosition(int iInd);
+
+signals:
+	//! Emitted when one of the subwidgets receives focus or is clicked on or both
+	void SignalCurrent(int iIndex);
+	//! Emitted when min altitude has changed
+	void SignalMinAlt(int iIndex, double dAlt);
+	//! Emitted when max altitude has changed
+	void SignalMaxAlt(int iIndex, double dAlt);
+	//! Emitted when latitude on iP-th point has changed
+	void SignalLat(int iIndex, int iP, double dLat);
+	//! Emitted when longitude on iP-th point has changed
+	void SignalLon(int iIndex, int iP, double dLon);
+
 private:
 	//! Pointer to GeoFenceZone object
 	GeoFenceZone* m_pZone;
 	//! Min altitude line edit
-	QDoubleSpinBox* m_psbMinAlt;
+	QGCDoubleSpinBox* m_psbMinAlt;
 	//! Max altitude line edit
-	QDoubleSpinBox* m_psbMaxAlt;
+	QGCDoubleSpinBox* m_psbMaxAlt;
 	//! List of longitude line edits
-	QList<QDoubleSpinBox*> m_liLongitudes;
+	QList<QGCDoubleSpinBox*> m_liLongitudes;
 	//! List of latitude line edits
-	QList<QDoubleSpinBox*> m_liLatitudes;
+	QList<QGCDoubleSpinBox*> m_liLatitudes;
 	//! Label showing index
 	QLabel* m_plbIndex;
 	//! GeoFenceZone index
@@ -55,6 +78,8 @@ private:
 	QList<QLabel*> m_liplbVert;
 	//! Indicates that this is the current GeoFenceWidget
 	bool m_bCurrent;
+	//! Signal mapper for obtaining lat/lon field index when reporting a change
+	QSignalMapper* m_pMapper;
 };
 
 #endif // GEOFENCEEDIT_H

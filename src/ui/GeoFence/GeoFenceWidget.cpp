@@ -18,7 +18,6 @@ GeoFenceWidget::GeoFenceWidget(QWidget* pParent) :
 	m_pLayout->setContentsMargins(10, 0, 10, 0);
 	m_pLayout->setSpacing(5);
 
-	setAutoFillBackground(true);
 	Update();
 }
 
@@ -43,10 +42,38 @@ void GeoFenceWidget::Update()
 		m_pLayout->addWidget(pGFE);
 		pGFE->Update();
 		m_lipEdit << pGFE;
+		connect(pGFE, SIGNAL(SignalCurrent(int)), this, SLOT(SetCurrent(int)));
+		connect(pGFE, SIGNAL(SignalMinAlt(int,double)), this, SLOT(SetMinAlt(int,double)));
+		connect(pGFE, SIGNAL(SignalMaxAlt(int,double)), this, SLOT(SetMaxAlt(int,double)));
+		connect(pGFE, SIGNAL(SignalLon(int,int,double)), &m_rGFC, SLOT(SetLongitude(int,int,double)));
+		connect(pGFE, SIGNAL(SignalLat(int,int,double)), &m_rGFC, SLOT(SetLatitude(int,int,double)));
 	}
 
 	setMinimumSize(480, 60*m_rGFC.GetCount() + 10);
 	update();
+}
+
+//-----------------------------------------------------------------------------
+
+void GeoFenceWidget::SetCurrent(int iInd)
+{
+	for (int i = 0; i < m_lipEdit.count(); i++)
+		m_lipEdit[i]->SetCurrent(i == iInd);
+	update();
+}
+
+//-----------------------------------------------------------------------------
+
+void GeoFenceWidget::SetMinAlt(int iInd, double dAlt)
+{
+	m_rGFC.GetZone(iInd).SetMinAltitude(dAlt);
+}
+
+//-----------------------------------------------------------------------------
+
+void GeoFenceWidget::SetMaxAlt(int iInd, double dAlt)
+{
+	m_rGFC.GetZone(iInd).SetMaxAltitude(dAlt);
 }
 
 //-----------------------------------------------------------------------------

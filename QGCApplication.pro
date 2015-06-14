@@ -384,7 +384,8 @@ HEADERS += \
     src/ui/GeoFence/GeoFenceZoneItem.h \
     src/ui/GeoFence/GeoFenceEdit.h \
     src/ui/GeoFence/GeoFenceWidget.h \
-    src/core/ModelData.h
+    src/core/ModelData.h \
+    src/ui/GeoFence/QGCDoubleSpinBox.h
 
 !AndroidBuild {
 HEADERS += \
@@ -540,7 +541,8 @@ SOURCES += \
     src/ui/GeoFence/GeoFenceZoneItem.cpp \
     src/ui/GeoFence/GeoFenceEdit.cpp \
     src/ui/GeoFence/GeoFenceWidget.cpp \
-    src/core/ModelData.cpp
+    src/core/ModelData.cpp \
+    src/ui/GeoFence/QGCDoubleSpinBox.cpp
 
 
 !AndroidBuild {

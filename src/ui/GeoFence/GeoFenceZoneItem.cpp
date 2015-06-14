@@ -1,16 +1,18 @@
+#include "core/ModelData.h"
+
 #include "GeoFenceZoneItem.h"
 
 //-----------------------------------------------------------------------------
 
 GeoFenceZoneItem::GeoFenceZoneItem(
 		mapcontrol::MapGraphicItem* pMap,
-		const GeoFenceZone& rZone
+		int iInd
 		) :
 	QObject(),
 	QGraphicsItem()
 {
 	m_pMap = pMap;
-	m_zone = rZone;
+	m_iIndex = iInd;
 	setZValue(100.0);
 
 	RefreshPos();
@@ -55,13 +57,16 @@ void GeoFenceZoneItem::RefreshPos()
 	core::Point pt;
 
 	m_poly.clear();
+
+	const GeoFenceZone& rZone =
+			ModelData::GetInstance()->GetGFC().GetZone(m_iIndex);
 	// Convert all points from lat/lon to a polygon of widget
 	// coordinates and obtain bounding box around it
-	for (int i = 0; i < m_zone.GetCount(); i++) {
+	for (int i = 0; i < rZone.GetCount(); i++) {
 		using namespace internals;
 		pt = m_pMap->FromLatLngToLocal(PointLatLng(
-													 m_zone.GetPoint(i).y(),
-													 m_zone.GetPoint(i).x()
+													 rZone.GetPoint(i).y(),
+													 rZone.GetPoint(i).x()
 													 )
 												 );
 		m_poly << QPoint(pt.X(), pt.Y());

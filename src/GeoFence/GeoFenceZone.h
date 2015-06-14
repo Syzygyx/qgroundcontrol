@@ -37,7 +37,6 @@ public:
 	//! Sets the maximal altitude AMSL
 	void SetMaxAltitude(double dAlt)
 	{	m_dMaxAlt = dAlt; }
-
 	//! Returns the number of zone points
 	int GetCount() const
 	{	return m_poly.count(); }
@@ -59,6 +58,12 @@ public:
 	//! Returns const reference to polygon
 	const QPolygonF& GetPoints() const
 	{	return m_poly; }
+
+	//! Sets the latitude of the i-th point
+	void SetLatitude(int i, double dLat);
+
+	//! Sets the longitude of the i-th point
+	void SetLongitude(int i, double dLon);
 
 	//! Loads zone from a given text stream. Returns true on success
 	virtual bool Load(QTextStream& ts);

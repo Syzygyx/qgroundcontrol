@@ -56,3 +56,18 @@ bool GeoFenceContainer::Save(QString qsName)
 }
 
 //-----------------------------------------------------------------------------
+
+void GeoFenceContainer::SetLongitude(int iInd, int iP, double dLon)
+{
+	GetZone(iInd).SetLongitude(iP, dLon);
+}
+
+//-----------------------------------------------------------------------------
+
+void GeoFenceContainer::SetLatitude(int iInd, int iP, double dLat)
+{
+	GetZone(iInd).SetLatitude(iP, dLat);
+}
+
+//-----------------------------------------------------------------------------
+

@@ -703,7 +703,7 @@ void QGCMapWidget::loadGeoFenceZones(QString qsFile)
 	GeoFenceContainer& conGF = ModelData::GetInstance()->GetGFC();
 	if (conGF.Load(qsFile) == true) {
 		for (int i = 0; i < conGF.GetCount(); i++) {
-			GeoFenceZoneItem* pItem = new GeoFenceZoneItem(map, conGF.GetZone(i));
+			GeoFenceZoneItem* pItem = new GeoFenceZoneItem(map, i);
 			pItem->setParentItem(map);
 			m_liGFItems << pItem;
 		}

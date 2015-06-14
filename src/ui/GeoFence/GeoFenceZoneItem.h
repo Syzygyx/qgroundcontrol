@@ -18,7 +18,7 @@ public:
 	//
 	enum { Type = UserType + 213 };
 	//! Constructor
-	GeoFenceZoneItem(mapcontrol::MapGraphicItem* pMap, const GeoFenceZone& rZone);
+	GeoFenceZoneItem(mapcontrol::MapGraphicItem* pMap, int i);
 	//! Destructor
 	~GeoFenceZoneItem();
 	//! Returns the bounding rect
@@ -32,12 +32,12 @@ public:
 protected:
 	//! Pointer to the map object
 	mapcontrol::MapGraphicItem* m_pMap;
-	//! Reference to the zone
-	GeoFenceZone m_zone;
 	//! Holds the bounding rectangle
 	QRectF m_rect;
 	//! Holds the polygon of points on the screen
 	QPolygon m_poly;
+	//! Zone index
+	int m_iIndex;
 };
 
 #endif // GEOFENCEZONEITEM_H

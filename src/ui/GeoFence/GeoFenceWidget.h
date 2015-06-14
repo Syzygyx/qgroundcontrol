@@ -22,6 +22,12 @@ public:
 public slots:
 	//! Updates the entire widget
 	void Update();
+	//! Sets the current edit widget
+	void SetCurrent(int iInd);
+	//! Sets the minimal altitude for given zone
+	void SetMinAlt(int iInd, double dAlt);
+	//! Sets the maximal altitude for given zone
+	void SetMaxAlt(int iInd, double dAlt);
 
 protected:
 	//! Paints the background
