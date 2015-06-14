@@ -26,6 +26,7 @@ bool GeoFenceContainer::Load(QString qsName)
 			Append(zone);
 
 		f.close();
+		emit SignalRefresh();
 		return true;
 	}
 

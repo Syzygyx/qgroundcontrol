@@ -60,8 +60,8 @@ void GeoFenceZoneItem::RefreshPos()
 	for (int i = 0; i < m_zone.GetCount(); i++) {
 		using namespace internals;
 		pt = m_pMap->FromLatLngToLocal(PointLatLng(
-													 m_zone.GetPoint(i).x(),
-													 m_zone.GetPoint(i).y()
+													 m_zone.GetPoint(i).y(),
+													 m_zone.GetPoint(i).x()
 													 )
 												 );
 		m_poly << QPoint(pt.X(), pt.Y());

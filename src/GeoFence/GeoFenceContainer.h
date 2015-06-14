@@ -1,11 +1,14 @@
 #ifndef GEOFENCECONTAINER_H
 #define GEOFENCECONTAINER_H
 
+#include <QObject>
 #include "GeoFence/GeoFenceZone.h"
 
 //! This class contains a list of GeoFence zones
-class GeoFenceContainer
+class GeoFenceContainer : public QObject
 {
+	Q_OBJECT
+
 public:
 	//! Constructor
 	GeoFenceContainer();
@@ -33,6 +36,9 @@ public:
 	//! Const access to the i-th zone
 	const GeoFenceZone& GetZone(int i) const
 	{	return m_liZones[i]; }
+	//! Full access to the i-th zone
+	GeoFenceZone& GetZone(int i)
+	{	return m_liZones[i]; }
 
 	/** Loads the zones from given file and remembers the filename. Returns true
 	 *  on success
@@ -42,6 +48,10 @@ public:
 	 *  previously loaded file
 	 */
 	bool Save(QString qsName = "");
+
+signals:
+	//! Emitted, when new set of GeoFence zones are loaded and update is needed
+	void SignalRefresh();
 
 protected:
 	//! List of GeoFence zones

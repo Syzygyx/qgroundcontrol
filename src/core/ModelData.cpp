@@ -1,27 +1,29 @@
-#include "SignalTransmitter.h"
+#include "ModelData.h"
 
 //-----------------------------------------------------------------------------
 
-SignalTransmitter::SignalTransmitter() : QObject()
+ModelData::ModelData() :
+	QObject(),
+	m_conGF()
 {	}
 
 //-----------------------------------------------------------------------------
 
-SignalTransmitter::~SignalTransmitter()
+ModelData::~ModelData()
 {	}
 
 //-----------------------------------------------------------------------------
 
-SignalTransmitter* SignalTransmitter::GetInstance()
+ModelData* ModelData::GetInstance()
 {
 	if (s_pInstance == 0)
-		s_pInstance = new SignalTransmitter;
+		s_pInstance = new ModelData;
 	return s_pInstance;
 }
 
 //-----------------------------------------------------------------------------
 
-SignalTransmitter* SignalTransmitter::s_pInstance = 0;
+ModelData* ModelData::s_pInstance = 0;
 
 //-----------------------------------------------------------------------------
 

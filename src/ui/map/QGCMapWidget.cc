@@ -8,7 +8,7 @@
 #include "UASWaypointManager.h"
 #include "QGCMessageBox.h"
 #include "GeoFence/GeoFenceZoneItem.h"
-#include "core/SignalTransmitter.h"
+#include "core/ModelData.h"
 
 QGCMapWidget::QGCMapWidget(QWidget *parent) :
     mapcontrol::OPMapWidget(parent),
@@ -69,14 +69,14 @@ QGCMapWidget::QGCMapWidget(QWidget *parent) :
 	 connect(map, SIGNAL(mapChanged()), this, SLOT(updateGeoFenceZones()));
 
 	 connect(
-				 SignalTransmitter::GetInstance(),
+				 ModelData::GetInstance(),
 				 SIGNAL(SignalLoadGF(QString)),
 				 this,
 				 SLOT(loadGeoFenceZones(QString))
 				 );
 
 	 connect(
-				 SignalTransmitter::GetInstance(),
+				 ModelData::GetInstance(),
 				 SIGNAL(SignalSaveGF(QString)),
 				 this,
 				 SLOT(saveGeoFenceZones(QString))
@@ -700,9 +700,10 @@ void QGCMapWidget::handleMapWaypointEdit(mapcontrol::WayPointItem* waypoint)
 
 void QGCMapWidget::loadGeoFenceZones(QString qsFile)
 {
-	if (m_conGF.Load(qsFile) == true) {
-		for (int i = 0; i < m_conGF.GetCount(); i++) {
-			GeoFenceZoneItem* pItem = new GeoFenceZoneItem(map, m_conGF.GetZone(i));
+	GeoFenceContainer& conGF = ModelData::GetInstance()->GetGFC();
+	if (conGF.Load(qsFile) == true) {
+		for (int i = 0; i < conGF.GetCount(); i++) {
+			GeoFenceZoneItem* pItem = new GeoFenceZoneItem(map, conGF.GetZone(i));
 			pItem->setParentItem(map);
 			m_liGFItems << pItem;
 		}
@@ -713,7 +714,7 @@ void QGCMapWidget::loadGeoFenceZones(QString qsFile)
 
 void QGCMapWidget::saveGeoFenceZones(QString qsFile)
 {
-	m_conGF.Save(qsFile);
+	ModelData::GetInstance()->GetGFC().Save(qsFile);
 }
 
 //-----------------------------------------------------------------------------

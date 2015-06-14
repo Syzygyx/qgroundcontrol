@@ -1,23 +1,29 @@
-#ifndef SIGNALTRANSMITTER_H
-#define SIGNALTRANSMITTER_H
+#ifndef MODELDATA_H
+#define MODELDATA_H
 
 #include <QObject>
 
+#include "GeoFence/GeoFenceContainer.h"
+
 //! This singleton class receives and emits some signals
-class SignalTransmitter : public QObject
+class ModelData : public QObject
 {
 	Q_OBJECT
 
 private:
 	//! Singleton, thus private constructor
-	SignalTransmitter();
+	ModelData();
 
 public:
 	//! Destructor
-	virtual ~SignalTransmitter();
+	virtual ~ModelData();
 
 	//! Returns pointer to the instance
-	static SignalTransmitter* GetInstance();
+	static ModelData* GetInstance();
+
+	//! Returns full access to GeoFence container
+	GeoFenceContainer& GetGFC()
+	{	return m_conGF; }
 
 signals:
 	//! Should be emitted when GeoFence file needs to be loaded
@@ -27,8 +33,10 @@ signals:
 
 private:
 	//! Pointer to the instance
-	static SignalTransmitter* s_pInstance;
+	static ModelData* s_pInstance;
+	//! Object containing GeoFence zones
+	GeoFenceContainer m_conGF;
 };
 
 
-#endif // SIGNALTRANSMITTER_H
+#endif // MODELDATA_H

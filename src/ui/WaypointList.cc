@@ -34,7 +34,7 @@ This file is part of the PIXHAWK project
 #include "WaypointList.h"
 #include "ui_WaypointList.h"
 #include "QGCFileDialog.h"
-#include "core/SignalTransmitter.h"
+#include "core/ModelData.h"
 
 #include <UASInterface.h>
 #include <UAS.h>
@@ -42,6 +42,8 @@ This file is part of the PIXHAWK project
 #include <QDebug>
 #include <QMouseEvent>
 #include <QTextEdit>
+
+#include "GeoFence/GeoFenceWidget.h"
 
 WaypointList::WaypointList(QWidget *parent, UASWaypointManager* wpm) :
     QWidget(parent),
@@ -371,14 +373,14 @@ void WaypointList::loadGeoFenceZones()
 {
 	QString qsName = QGCFileDialog::getOpenFileName(this, tr("Load GeoFence File"), ".", tr("GeoFence files (*.txt);;All Files (*)"));
 	if (qsName.length() > 0)
-		emit SignalTransmitter::GetInstance()->SignalLoadGF(qsName);
+		emit ModelData::GetInstance()->SignalLoadGF(qsName);
 }
 
 void WaypointList::saveGeoFenceZones()
 {
 	QString qsName = QGCFileDialog::getSaveFileName(this, tr("Save GeoFence File"), ".", tr("GeoFence files (*.txt);;All Files (*)"));
 	if (qsName.length() > 0)
-		emit SignalTransmitter::GetInstance()->SignalSaveGF(qsName);
+		emit ModelData::GetInstance()->SignalSaveGF(qsName);
 }
 
 
@@ -658,6 +660,9 @@ void WaypointList::setupGeoFence()
 
 	QScrollArea* pSA = new QScrollArea;
 
+	GeoFenceWidget* pGFW = new GeoFenceWidget;
+	pSA->setWidget(pGFW);
+
 	pLayout->addWidget(pSA, 0, 0, 1, 5);
 
 	pLayout->setRowStretch(0, 1);
@@ -672,6 +677,12 @@ void WaypointList::setupGeoFence()
 	connect(pb, SIGNAL(clicked()), this, SLOT(loadGeoFenceZones()));
 
 	m_ui->tabWidget->addTab(pW, tr("GeoFence"));
+
+	/*
+	GeoFenceZone* pGFZ = new GeoFenceZone;
+	GeoFenceEdit* pGFE = new GeoFenceEdit(0, pGFZ, this);
+	pSA->setWidget(pGFE);
+	*/
 }
 
 void WaypointList::on_clearWPListButton_clicked()

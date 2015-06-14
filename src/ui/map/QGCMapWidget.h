@@ -191,7 +191,6 @@ protected:
     bool zoomBlocked;                   ///< Wether zooming is blocked
     UASInterface *uas;                  ///< Currently selected UAS.
 
-	 GeoFenceContainer m_conGF;			 ///< Container of GeoFence zones
 	 QList<GeoFenceZoneItem*> m_liGFItems;	///< List of GeoFenceZone graphics items
 };
 

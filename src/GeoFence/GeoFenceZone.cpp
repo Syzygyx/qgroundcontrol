@@ -132,15 +132,15 @@ QPointF GeoFenceZone::ParsePoint(QString qsText, bool* pbOK)
 	if (qsl[0].compare("DMS", Qt::CaseInsensitive) == 0) {
 		// DMS format, there have to be 6 numbers after DMS string
 		if (qsl.count() == 7) {
-			// first try reading longitude
-			pt.setX(
+			// first try reading latitude
+			pt.setY(
 					qsl[1].toDouble(&bCheck[0]) +
 					qsl[2].toDouble(&bCheck[1])/60.0 +
 					qsl[3].toDouble(&bCheck[2])/3600.0
 					);
 
-			// then latitude
-			pt.setY(
+			// then longitude
+			pt.setX(
 					qsl[4].toDouble(&bCheck[3]) +
 					qsl[5].toDouble(&bCheck[4])/60.0 +
 					qsl[6].toDouble(&bCheck[5])/3600.0
@@ -160,8 +160,8 @@ QPointF GeoFenceZone::ParsePoint(QString qsText, bool* pbOK)
 	}	else {
 		// decimal format, there have to be 2 numbers total
 		if (qsl.count() == 2) {
-			pt.setX(qsl[0].toDouble(&bCheck[0]));
-			pt.setY(qsl[1].toDouble(&bCheck[1]));
+			pt.setY(qsl[0].toDouble(&bCheck[0]));
+			pt.setX(qsl[1].toDouble(&bCheck[1]));
 
 			// check if any conversion failed
 			if ((bCheck[0] == false) || (bCheck[1] == false)) {
