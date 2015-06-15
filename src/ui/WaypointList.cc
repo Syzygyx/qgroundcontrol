@@ -43,8 +43,6 @@ This file is part of the PIXHAWK project
 #include <QMouseEvent>
 #include <QTextEdit>
 
-#include "GeoFence/GeoFenceWidget.h"
-
 WaypointList::WaypointList(QWidget *parent, UASWaypointManager* wpm) :
     QWidget(parent),
     uas(NULL),
@@ -628,6 +626,13 @@ void WaypointList::removeWaypoint(Waypoint* wp)
         WPM->removeWaypoint(wp->getId());
 }
 
+void WaypointList::mousePressEvent(QMouseEvent* pME)
+{
+	//qDebug() << "WaypointList::mousePressEvent";
+	m_pwGFW->SetCurrent(-1);
+	QWidget::mousePressEvent(pME);
+}
+
 void WaypointList::changeEvent(QEvent *e)
 {
     switch (e->type()) {
@@ -660,8 +665,8 @@ void WaypointList::setupGeoFence()
 
 	QScrollArea* pSA = new QScrollArea;
 
-	GeoFenceWidget* pGFW = new GeoFenceWidget;
-	pSA->setWidget(pGFW);
+	m_pwGFW = new GeoFenceWidget;
+	pSA->setWidget(m_pwGFW);
 
 	pLayout->addWidget(pSA, 0, 0, 1, 5);
 

@@ -108,6 +108,7 @@ void GeoFenceWidget::paintEvent(QPaintEvent* pPE)
 
 void GeoFenceWidget::mousePressEvent(QMouseEvent* pME)
 {
+	m_iCurrent = -1;
 	for (int i = 0; i < m_lipEdit.count(); i++) {
 		if (m_lipEdit[i]->geometry().contains(pME->pos())) {
 			m_lipEdit[i]->SetCurrent();

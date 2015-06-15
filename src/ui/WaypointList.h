@@ -43,6 +43,8 @@ This file is part of the QGROUNDCONTROL project
 #include "WaypointEditableView.h"
 #include "WaypointViewOnlyView.h"
 
+#include "GeoFence/GeoFenceWidget.h"
+
 namespace Ui
 {
 class WaypointList;
@@ -127,6 +129,9 @@ signals:
     void createWaypointAtMap(const QPointF coordinate);
 
 protected:
+	 //! Clears the GeoFenceWidget current item
+	 void mousePressEvent(QMouseEvent* pME);
+
     virtual void changeEvent(QEvent *e);
 	 //! Rewrites indices
 	 void updateIndices();
@@ -148,6 +153,9 @@ protected:
     bool loadFileGlobalWP;
     bool readGlobalWP;
     bool showOfflineWarning;
+
+	 //! Pointer to the GeoFenceWidget object
+	 GeoFenceWidget* m_pwGFW;
 
 private:
     Ui::WaypointList *m_ui;

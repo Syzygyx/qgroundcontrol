@@ -356,7 +356,7 @@ void QGCMapWidget::storeSettings()
 
 void QGCMapWidget::mouseDoubleClickEvent(QMouseEvent* event)
 {
-	 qDebug() << "mouseDoubleClickEvent" << ModelData::GetInstance()->GetGFC().IsGeoFenceMode();
+	 //qDebug() << "mouseDoubleClickEvent" << ModelData::GetInstance()->GetGFC().IsGeoFenceMode();
 	 // check if we are in GeoFence mode
 	 if (ModelData::GetInstance()->GetGFC().IsGeoFenceMode() == true) {
 		 internals::PointLatLng pt = map->FromLocalToLatLng(event->pos().x(), event->pos().y());
