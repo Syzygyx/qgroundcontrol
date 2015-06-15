@@ -141,12 +141,17 @@ protected slots:
 	 /** @brief Load GeoFenceZones from file and create
 	  *  appropriate graphics items */
 	 void loadGeoFenceZones(QString qsFile);
+	 /** @brief Creates a GeoFenceZoneItem for i-th GeoFence zone  and inserts
+	  *  it into list of items. */
+	 void createGeoFenceZoneItem(int i);
 	 /** @brief Saves the GeoFenceZones into given  file */
 	 void saveGeoFenceZones(QString qsFile);
 	 /** @brief Updates the GeoFenceZone items */
 	 void updateGeoFenceZones();
 	 /** @brief Updates the i-th GeoFenceZone item */
 	 void updateGeoFenceZone(int i);
+	 /** @brief Creates GeoFenceZoneItem for the last zone. */
+	 void createLastGeoFenceZoneItem();
 
 protected:
     /** @brief Update the highlighting of the currently controlled system */

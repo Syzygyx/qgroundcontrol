@@ -11,7 +11,14 @@ GeoFenceWidget::GeoFenceWidget(QWidget* pParent) :
 	QWidget(pParent),
 	m_rGFC(ModelData::GetInstance()->GetGFC())
 {
+	m_iCurrent = -1;
 	connect(&m_rGFC, SIGNAL(SignalRefresh()), this, SLOT(Update()));
+	connect(
+				&m_rGFC,
+				SIGNAL(SignalAddPoint(double,double)),
+				this,
+				SLOT(AddPoint(double,double))
+				);
 
 	m_pLayout = new QVBoxLayout(this);
 	m_pLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
@@ -31,6 +38,7 @@ GeoFenceWidget::~GeoFenceWidget()
 void GeoFenceWidget::Update()
 {
 	setEnabled(false);
+	m_iCurrent = -1;
 	// first clear all the remaining widgets
 	for (int i = 0; i < m_lipEdit.count(); i++) {
 		m_pLayout->removeWidget(m_lipEdit[i]);
@@ -38,27 +46,10 @@ void GeoFenceWidget::Update()
 	}
 	m_lipEdit.clear();
 
-	GeoFenceEdit* pGFE;
 	for (int i = 0; i < m_rGFC.GetCount(); i++) {
-		pGFE = new GeoFenceEdit(i, &m_rGFC.GetZone(i));
-		m_pLayout->addWidget(pGFE);
-		pGFE->Update();
-		m_lipEdit << pGFE;
-		connect(pGFE, SIGNAL(SignalCurrent(int)), this, SLOT(SetCurrent(int)));
-		connect(&m_rGFC, SIGNAL(SignalMapCurrent(int)), this, SLOT(SetCurrent(int)));
-		connect(pGFE, SIGNAL(SignalMinAlt(int,double)), this, SLOT(SetMinAlt(int,double)));
-		connect(pGFE, SIGNAL(SignalMaxAlt(int,double)), this, SLOT(SetMaxAlt(int,double)));
-		connect(pGFE, SIGNAL(SignalLon(int,int,double)), &m_rGFC, SLOT(SetLongitude(int,int,double)));
-		connect(pGFE, SIGNAL(SignalLat(int,int,double)), &m_rGFC, SLOT(SetLatitude(int,int,double)));
-		connect(
-					&m_rGFC,
-					SIGNAL(SignalMoved(int,int,double,double)),
-					this,
-					SLOT(MoveVertex(int,int,double,double))
-					);
+		CreateEditwidget(i);
 	}
-
-	setMinimumSize(480, 60*m_rGFC.GetCount() + 10);
+	UpdateMinSize();
 	setEnabled(true);
 	update();
 }
@@ -67,8 +58,9 @@ void GeoFenceWidget::Update()
 
 void GeoFenceWidget::SetCurrent(int iInd)
 {
+	m_iCurrent = iInd;
 	for (int i = 0; i < m_lipEdit.count(); i++)
-		m_lipEdit[i]->SetCurrent(i == iInd);
+		m_lipEdit[i]->SetCurrent(i == m_iCurrent);
 	update();
 }
 
@@ -97,7 +89,6 @@ void GeoFenceWidget::paintEvent(QPaintEvent* pPE)
 
 	QRect rect;
 	QColor clr;
-	qDebug() << "GeoFenceWidget::paintEvent" << m_rGFC.GetCount() << m_lipEdit.count();
 	for (int i = 0; i < m_lipEdit.count(); i++) {
 		rect = m_lipEdit[i]->geometry();
 		rect.adjust(-1, -1, 1, 1);
@@ -120,6 +111,7 @@ void GeoFenceWidget::mousePressEvent(QMouseEvent* pME)
 	for (int i = 0; i < m_lipEdit.count(); i++) {
 		if (m_lipEdit[i]->geometry().contains(pME->pos())) {
 			m_lipEdit[i]->SetCurrent();
+			m_iCurrent = i;
 		}	else {
 			m_lipEdit[i]->SetCurrent(false);
 		}
@@ -131,14 +123,16 @@ void GeoFenceWidget::mousePressEvent(QMouseEvent* pME)
 
 void GeoFenceWidget::showEvent(QShowEvent* pSE)
 {
-	qDebug() << "*** GeoFenceWidget::showEvent";
+	QWidget::showEvent(pSE);
+	m_rGFC.SetGeoFenceMode(true);
 }
 
 //-----------------------------------------------------------------------------
 
 void GeoFenceWidget::hideEvent(QHideEvent* pHE)
 {
-	qDebug() << "*** GeoFenceWidget::hideEvent";
+	QWidget::hideEvent(pHE);
+	m_rGFC.SetGeoFenceMode(false);
 }
 
 //-----------------------------------------------------------------------------
@@ -147,6 +141,60 @@ void GeoFenceWidget::MoveVertex(int iInd, int iP, double dLon, double dLat)
 {
 	m_lipEdit[iInd]->UpdateLocation(iP, dLon, dLat);
 	m_rGFC.SetLocation(iInd, iP, dLon, dLat);
+}
+
+//-----------------------------------------------------------------------------
+
+void GeoFenceWidget::AddPoint(double dLon, double dLat)
+{
+	if (m_iCurrent >= 0 && m_iCurrent < m_rGFC.GetCount()) {
+		// add point to existing (current zone)
+		m_rGFC.GetZone(m_iCurrent).Append(QPointF(dLon, dLat));
+		// make container report the change
+		emit m_rGFC.SignalUpdate(m_iCurrent);
+		// also add lon/lat fields into current zone edit widget
+		m_lipEdit[m_iCurrent]->AddLatestFields();
+	}	else {
+		// create new zone with given point
+		GeoFenceZone zone;
+		zone.Append(QPointF(dLon, dLat));
+		m_rGFC.Append(zone);
+		CreateEditwidget(m_rGFC.GetCount() - 1);
+		UpdateMinSize();
+
+		emit m_rGFC.SignalAddZone();
+	}
+}
+
+//-----------------------------------------------------------------------------
+
+void GeoFenceWidget::CreateEditwidget(int i)
+{
+	GeoFenceEdit* pGFE;
+	pGFE = new GeoFenceEdit(i, &m_rGFC.GetZone(i));
+	m_pLayout->addWidget(pGFE);
+	pGFE->Update();
+	m_lipEdit << pGFE;
+	connect(pGFE, SIGNAL(SignalCurrent(int)), this, SLOT(SetCurrent(int)));
+	connect(&m_rGFC, SIGNAL(SignalMapCurrent(int)), this, SLOT(SetCurrent(int)));
+	connect(pGFE, SIGNAL(SignalMinAlt(int,double)), this, SLOT(SetMinAlt(int,double)));
+	connect(pGFE, SIGNAL(SignalMaxAlt(int,double)), this, SLOT(SetMaxAlt(int,double)));
+	connect(pGFE, SIGNAL(SignalLon(int,int,double)), &m_rGFC, SLOT(SetLongitude(int,int,double)));
+	connect(pGFE, SIGNAL(SignalLat(int,int,double)), &m_rGFC, SLOT(SetLatitude(int,int,double)));
+	connect(
+				&m_rGFC,
+				SIGNAL(SignalMoved(int,int,double,double)),
+				this,
+				SLOT(MoveVertex(int,int,double,double))
+				);
+
+}
+
+//-----------------------------------------------------------------------------
+
+void GeoFenceWidget::UpdateMinSize()
+{
+	setMinimumSize(480, 60*m_rGFC.GetCount() + 10);
 }
 
 //-----------------------------------------------------------------------------

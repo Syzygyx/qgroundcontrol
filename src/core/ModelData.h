@@ -25,12 +25,6 @@ public:
 	GeoFenceContainer& GetGFC()
 	{	return m_conGF; }
 
-signals:
-	//! Should be emitted when GeoFence file needs to be loaded
-	void SignalLoadGF(QString qsName);
-	//! Should be emitted when GeoFence file needs to be saved
-	void SignalSaveGF(QString qsName);
-
 private:
 	//! Pointer to the instance
 	static ModelData* s_pInstance;

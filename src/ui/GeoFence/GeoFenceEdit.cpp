@@ -62,22 +62,29 @@ void GeoFenceEdit::UpdateLocation(int i, double dLon, double dLat)
 
 //-----------------------------------------------------------------------------
 
+void GeoFenceEdit::AddLatestFields()
+{
+	AddFields(m_pZone->GetCount() - 1);
+}
+
+//-----------------------------------------------------------------------------
+
 void GeoFenceEdit::BuildGUI()
 {
 	// we put everything in layout
-	QGridLayout* pLayout = new QGridLayout(this);
+	m_pLayout = new QGridLayout(this);
 
 	m_plbIndex = new QLabel(this);
 	m_plbIndex->setText(QString::number(m_iIndex + 1));
 
-	pLayout->addWidget(m_plbIndex, 0, 0, 3, 1);
+	m_pLayout->addWidget(m_plbIndex, 0, 0, 3, 1);
 
 	QLabel* plb;
 	plb = new QLabel(tr("Min. alt."));
-	pLayout->addWidget(plb, 1, 1);
+	m_pLayout->addWidget(plb, 1, 1);
 
 	plb = new QLabel(tr("Max. alt."));
-	pLayout->addWidget(plb, 2, 1);
+	m_pLayout->addWidget(plb, 2, 1);
 
 	m_psbMinAlt = new QGCDoubleSpinBox(this);
 	m_psbMinAlt->setRange(0.0, 10000.0);
@@ -85,7 +92,7 @@ void GeoFenceEdit::BuildGUI()
 	m_psbMinAlt->setSuffix("m");
 	connect(m_psbMinAlt, SIGNAL(SignalCurrent()), this, SLOT(ReportCurrent()));
 	connect(m_psbMinAlt, SIGNAL(valueChanged(double)), this, SLOT(ReportMinAlt()));
-	pLayout->addWidget(m_psbMinAlt, 1, 2);
+	m_pLayout->addWidget(m_psbMinAlt, 1, 2);
 
 	m_psbMaxAlt = new QGCDoubleSpinBox(this);
 	m_psbMaxAlt->setRange(0.0, 10000.0);
@@ -93,55 +100,67 @@ void GeoFenceEdit::BuildGUI()
 	m_psbMaxAlt->setSuffix("m");
 	connect(m_psbMaxAlt, SIGNAL(SignalCurrent()), this, SLOT(ReportCurrent()));
 	connect(m_psbMaxAlt, SIGNAL(valueChanged(double)), this, SLOT(ReportMaxAlt()));
-	pLayout->addWidget(m_psbMaxAlt, 2, 2);
+	m_pLayout->addWidget(m_psbMaxAlt, 2, 2);
 
+	/*
 	QPushButton* pb;
 	pb = new QPushButton("<<");
 	connect(pb, SIGNAL(clicked()), this, SLOT(ReportCurrent()));
 	pLayout->addWidget(pb, 0, 3, 3, 1);
+	*/
 
-	QChar ch(0x00b0);
-	QGCDoubleSpinBox* psbPos;
-	for (int i = 0; i < qMin(MAX_LON_LAT, m_pZone->GetCount()); i++) {
-		QLabel* plbVert = new QLabel;
-		plbVert->setText(tr("Vertex %1").arg(m_iLeftMost + i + 1));
-		pLayout->addWidget(plbVert, 0, 4 + i, 1, 1);
-
-		psbPos = new QGCDoubleSpinBox;
-		psbPos->setRange(-180.0, 180.0);
-		psbPos->setSuffix(ch);
-		psbPos->setPrefix("lon ");
-		psbPos->setDecimals(10);
-		m_liLongitudes << psbPos;
-		connect(psbPos, SIGNAL(SignalCurrent()), this, SLOT(ReportCurrent()));
-
-		connect(psbPos, SIGNAL(valueChanged(double)), m_pMapper, SLOT(map()));
-		// let's give longitude fields positive indices to accomodate for
-		// the latitude fields to be binded on the same signal mapper
-		m_pMapper->setMapping(psbPos, i+1);
-
-		pLayout->addWidget(psbPos, 1, 4 + i, 1, 1);
-
-		psbPos = new QGCDoubleSpinBox;
-		psbPos->setRange(-90.0, 90.0);
-		psbPos->setSuffix(ch);
-		psbPos->setPrefix("lat ");
-		psbPos->setDecimals(10);
-		m_liLatitudes << psbPos;
-		connect(psbPos, SIGNAL(SignalCurrent()), this, SLOT(ReportCurrent()));
-
-		connect(psbPos, SIGNAL(valueChanged(double)), m_pMapper, SLOT(map()));
-		// let's give latitude fields negative indices
-		m_pMapper->setMapping(psbPos, -(i+1));
-
-		pLayout->addWidget(psbPos, 2, 4 + i, 1, 1);
+	for (int i = 0; i < m_pZone->GetCount(); i++) {
+		AddFields(i);
 	}
 
+	/*
 	pb = new QPushButton(">>");
 	connect(pb, SIGNAL(clicked()), this, SLOT(ReportCurrent()));
 	pLayout->addWidget(pb, 0, 4 + MAX_LON_LAT, 3, 1);
+	*/
 
-	pLayout->setSizeConstraint(QLayout::SetFixedSize);
+	m_pLayout->setSizeConstraint(QLayout::SetFixedSize);
+}
+
+//-----------------------------------------------------------------------------
+
+void GeoFenceEdit::AddFields(int i)
+{
+	QChar ch(0x00b0);
+	QGCDoubleSpinBox* psbPos;
+
+	QLabel* plbVert = new QLabel;
+	plbVert->setText(tr("Vertex %1").arg(m_iLeftMost + i + 1));
+	m_pLayout->addWidget(plbVert, 0, 3 + i, 1, 1);
+
+	psbPos = new QGCDoubleSpinBox;
+	psbPos->setRange(-180.0, 180.0);
+	psbPos->setSuffix(ch);
+	psbPos->setPrefix("lon ");
+	psbPos->setDecimals(10);
+	m_liLongitudes << psbPos;
+	connect(psbPos, SIGNAL(SignalCurrent()), this, SLOT(ReportCurrent()));
+
+	connect(psbPos, SIGNAL(valueChanged(double)), m_pMapper, SLOT(map()));
+	// let's give longitude fields positive indices to accomodate for
+	// the latitude fields to be binded on the same signal mapper
+	m_pMapper->setMapping(psbPos, i+1);
+
+	m_pLayout->addWidget(psbPos, 1, 3 + i, 1, 1);
+
+	psbPos = new QGCDoubleSpinBox;
+	psbPos->setRange(-90.0, 90.0);
+	psbPos->setSuffix(ch);
+	psbPos->setPrefix("lat ");
+	psbPos->setDecimals(10);
+	m_liLatitudes << psbPos;
+	connect(psbPos, SIGNAL(SignalCurrent()), this, SLOT(ReportCurrent()));
+
+	connect(psbPos, SIGNAL(valueChanged(double)), m_pMapper, SLOT(map()));
+	// let's give latitude fields negative indices
+	m_pMapper->setMapping(psbPos, -(i+1));
+
+	m_pLayout->addWidget(psbPos, 2, 3 + i, 1, 1);
 }
 
 //-----------------------------------------------------------------------------

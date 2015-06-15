@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QLabel>
 #include <QSignalMapper>
+#include <QGridLayout>
 
 #include "QGCDoubleSpinBox.h"
 #include "GeoFence/GeoFenceZone.h"
@@ -32,10 +33,14 @@ public slots:
 	void Update();
 	//! Updates the location of i-th point without triggering signals
 	void UpdateLocation(int i, double dLon, double dLat);
+	//! Adds lon/lat fields for last point (should only be called after point was added!)
+	void AddLatestFields();
 
 private:
 	//! Builds the widget GUI
 	void BuildGUI();
+	//! Adds lon/lat fields for i-th vertex
+	void AddFields(int i);
 
 private slots:
 	//! Emits SignalCurrent signal with the m_iIndex parameter
@@ -60,6 +65,8 @@ signals:
 	void SignalLon(int iIndex, int iP, double dLon);
 
 private:
+	//! Main widget layout
+	QGridLayout* m_pLayout;
 	//! Pointer to GeoFenceZone object
 	GeoFenceZone* m_pZone;
 	//! Min altitude line edit

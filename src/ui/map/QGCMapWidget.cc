@@ -69,17 +69,24 @@ QGCMapWidget::QGCMapWidget(QWidget *parent) :
 	 connect(map, SIGNAL(mapChanged()), this, SLOT(updateGeoFenceZones()));
 
 	 connect(
-				 ModelData::GetInstance(),
+				 &ModelData::GetInstance()->GetGFC(),
 				 SIGNAL(SignalLoadGF(QString)),
 				 this,
 				 SLOT(loadGeoFenceZones(QString))
 				 );
 
 	 connect(
-				 ModelData::GetInstance(),
+				 &ModelData::GetInstance()->GetGFC(),
 				 SIGNAL(SignalSaveGF(QString)),
 				 this,
 				 SLOT(saveGeoFenceZones(QString))
+				 );
+
+	 connect(
+				 &ModelData::GetInstance()->GetGFC(),
+				 SIGNAL(SignalAddZone()),
+				 this,
+				 SLOT(createLastGeoFenceZoneItem())
 				 );
 }
 
@@ -342,12 +349,15 @@ void QGCMapWidget::storeSettings()
 
 void QGCMapWidget::mouseDoubleClickEvent(QMouseEvent* event)
 {
-	qDebug() << "mouseDoubleClickEvent" << currWPManager <<
-					UASManager::instance()->getActiveUASWaypointManager();
-    // If a waypoint manager is available
-    if (currWPManager)
+	 qDebug() << "mouseDoubleClickEvent" << ModelData::GetInstance()->GetGFC().IsGeoFenceMode();
+	 // check if we are in GeoFence mode
+	 if (ModelData::GetInstance()->GetGFC().IsGeoFenceMode() == true) {
+		 internals::PointLatLng pt = map->FromLocalToLatLng(event->pos().x(), event->pos().y());
+		 emit ModelData::GetInstance()->GetGFC().SignalAddPoint(pt.Lng(), pt.Lat());
+	 }	else if (currWPManager)
     {
-        // Create new waypoint
+		 // If a waypoint manager is available
+		  // Create new waypoint
         internals::PointLatLng pos = map->FromLocalToLatLng(event->pos().x(), event->pos().y());
         Waypoint* wp = currWPManager->createWaypoint();
         wp->setLatitude(pos.Lat());
@@ -711,19 +721,27 @@ void QGCMapWidget::loadGeoFenceZones(QString qsFile)
 	GeoFenceContainer& conGF = ModelData::GetInstance()->GetGFC();
 	if (conGF.Load(qsFile) == true) {
 		for (int i = 0; i < conGF.GetCount(); i++) {
-			GeoFenceZoneItem* pItem = new GeoFenceZoneItem(map, i);
-			pItem->setParentItem(map);
-			connect(&conGF, SIGNAL(SignalUpdate(int)), this, SLOT(updateGeoFenceZone(int)));
-			connect(pItem, SIGNAL(SignalCurrent(int)), &conGF, SIGNAL(SignalMapCurrent(int)));
-			connect(
-						pItem,
-						SIGNAL(SignalMoved(int,int,double,double)),
-						&conGF,
-						SIGNAL(SignalMoved(int,int,double,double))
-						);
-			m_liGFItems << pItem;
+			createGeoFenceZoneItem(i);
 		}
 	}
+}
+
+//-----------------------------------------------------------------------------
+
+void QGCMapWidget::createGeoFenceZoneItem(int i)
+{
+	GeoFenceContainer& conGF = ModelData::GetInstance()->GetGFC();
+	GeoFenceZoneItem* pItem = new GeoFenceZoneItem(map, i);
+	pItem->setParentItem(map);
+	connect(&conGF, SIGNAL(SignalUpdate(int)), this, SLOT(updateGeoFenceZone(int)));
+	connect(pItem, SIGNAL(SignalCurrent(int)), &conGF, SIGNAL(SignalMapCurrent(int)));
+	connect(
+				pItem,
+				SIGNAL(SignalMoved(int,int,double,double)),
+				&conGF,
+				SIGNAL(SignalMoved(int,int,double,double))
+				);
+	m_liGFItems << pItem;
 }
 
 //-----------------------------------------------------------------------------
@@ -747,6 +765,13 @@ void QGCMapWidget::updateGeoFenceZone(int i)
 {
 	m_liGFItems[i]->RefreshPos();
 	update();
+}
+
+//-----------------------------------------------------------------------------
+
+void QGCMapWidget::createLastGeoFenceZoneItem()
+{
+	createGeoFenceZoneItem(ModelData::GetInstance()->GetGFC().GetCount() - 1);
 }
 
 //-----------------------------------------------------------------------------

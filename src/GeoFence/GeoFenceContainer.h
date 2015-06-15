@@ -66,6 +66,10 @@ public slots:
 	void SetLocation(int iInd, int iP, double dLon, double dLat);
 
 signals:
+	//! Should be emitted when GeoFence file needs to be loaded
+	void SignalLoadGF(QString qsName);
+	//! Should be emitted when GeoFence file needs to be saved
+	void SignalSaveGF(QString qsName);
 	//! Emitted, when new set of GeoFence zones are loaded and update is needed
 	void SignalRefresh();
 	//! Emitted when i-th GeoFence zone changed
@@ -74,6 +78,10 @@ signals:
 	void SignalMapCurrent(int iInd);
 	//! Should be emitted when iP-th vertex of iInd-th zone was moved to a new location
 	void SignalMoved(int iInd, int iP, double dLon, double dLat);
+	//! Emitted when there was a double click on the map with intent to add a point
+	void SignalAddPoint(double dLon, double dLat);
+	//! Emitted when new zone was added by  double click on the map
+	void SignalAddZone();
 
 
 protected:

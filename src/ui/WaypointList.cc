@@ -373,14 +373,14 @@ void WaypointList::loadGeoFenceZones()
 {
 	QString qsName = QGCFileDialog::getOpenFileName(this, tr("Load GeoFence File"), ".", tr("GeoFence files (*.txt);;All Files (*)"));
 	if (qsName.length() > 0)
-		emit ModelData::GetInstance()->SignalLoadGF(qsName);
+		emit ModelData::GetInstance()->GetGFC().SignalLoadGF(qsName);
 }
 
 void WaypointList::saveGeoFenceZones()
 {
 	QString qsName = QGCFileDialog::getSaveFileName(this, tr("Save GeoFence File"), ".", tr("GeoFence files (*.txt);;All Files (*)"));
 	if (qsName.length() > 0)
-		emit ModelData::GetInstance()->SignalSaveGF(qsName);
+		emit ModelData::GetInstance()->GetGFC().SignalSaveGF(qsName);
 }
 
 
