@@ -87,3 +87,11 @@ void GeoFenceZoneItem::RefreshPos()
 
 //-----------------------------------------------------------------------------
 
+void GeoFenceZoneItem::mousePressEvent(QGraphicsSceneMouseEvent *pGSME)
+{
+	QGraphicsItem::mousePressEvent(pGSME);
+	emit SignalCurrent(m_iIndex);
+}
+
+//-----------------------------------------------------------------------------
+

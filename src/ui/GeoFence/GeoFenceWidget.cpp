@@ -44,6 +44,7 @@ void GeoFenceWidget::Update()
 		pGFE->Update();
 		m_lipEdit << pGFE;
 		connect(pGFE, SIGNAL(SignalCurrent(int)), this, SLOT(SetCurrent(int)));
+		connect(&m_rGFC, SIGNAL(SignalMapCurrent(int)), this, SLOT(SetCurrent(int)));
 		connect(pGFE, SIGNAL(SignalMinAlt(int,double)), this, SLOT(SetMinAlt(int,double)));
 		connect(pGFE, SIGNAL(SignalMaxAlt(int,double)), this, SLOT(SetMaxAlt(int,double)));
 		connect(pGFE, SIGNAL(SignalLon(int,int,double)), &m_rGFC, SLOT(SetLongitude(int,int,double)));

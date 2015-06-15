@@ -706,6 +706,7 @@ void QGCMapWidget::loadGeoFenceZones(QString qsFile)
 			GeoFenceZoneItem* pItem = new GeoFenceZoneItem(map, i);
 			pItem->setParentItem(map);
 			connect(&conGF, SIGNAL(SignalUpdate(int)), this, SLOT(updateGeoFenceZone(int)));
+			connect(pItem, SIGNAL(SignalCurrent(int)), &conGF, SIGNAL(SignalMapCurrent(int)));
 			m_liGFItems << pItem;
 		}
 	}

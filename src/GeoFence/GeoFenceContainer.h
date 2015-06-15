@@ -60,6 +60,8 @@ signals:
 	void SignalRefresh();
 	//! Emitted when i-th GeoFence zone changed
 	void SignalUpdate(int i);
+	//! Should be emitted when new current GeoFence zone was selected on the map
+	void SignalMapCurrent(int iInd);
 
 
 protected:

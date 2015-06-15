@@ -30,6 +30,14 @@ public:
 	void RefreshPos();
 
 protected:
+	//! Handles mouse press event. Emits signal SignalCurrent with the index
+	void mousePressEvent(QGraphicsSceneMouseEvent* pGSME);
+
+signals:
+	//! Emitted when user clicked on this item
+	void SignalCurrent(int iInd);
+
+protected:
 	//! Pointer to the map object
 	mapcontrol::MapGraphicItem* m_pMap;
 	//! Holds the bounding rectangle
