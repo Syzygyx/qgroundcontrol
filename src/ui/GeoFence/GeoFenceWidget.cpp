@@ -12,12 +12,25 @@ GeoFenceWidget::GeoFenceWidget(QWidget* pParent) :
 	m_rGFC(ModelData::GetInstance()->GetGFC())
 {
 	m_iCurrent = -1;
+
+	// connect signals for reconstruction of GeoFence edit widgets,
+	// adding point to current zone, making a zone current and moving vertex
+	// through map
+
 	connect(&m_rGFC, SIGNAL(SignalRefresh()), this, SLOT(Update()));
 	connect(
 				&m_rGFC,
 				SIGNAL(SignalAddPoint(double,double)),
 				this,
 				SLOT(AddPoint(double,double))
+				);
+
+	connect(&m_rGFC, SIGNAL(SignalMapCurrent(int)), this, SLOT(SetCurrent(int)));
+	connect(
+				&m_rGFC,
+				SIGNAL(SignalMoved(int,int,double,double)),
+				this,
+				SLOT(MoveVertex(int,int,double,double))
 				);
 
 	m_pLayout = new QVBoxLayout(this);
@@ -37,6 +50,7 @@ GeoFenceWidget::~GeoFenceWidget()
 
 void GeoFenceWidget::Update()
 {
+	// signal to this slot comes from GeoFenceContainer (via WaypointList button)
 	setEnabled(false);
 	m_iCurrent = -1;
 	// first clear all the remaining widgets
@@ -47,7 +61,7 @@ void GeoFenceWidget::Update()
 	m_lipEdit.clear();
 
 	for (int i = 0; i < m_rGFC.GetCount(); i++) {
-		CreateEditwidget(i);
+		CreateEditWidget(i);
 	}
 	UpdateMinSize();
 	setEnabled(true);
@@ -58,6 +72,10 @@ void GeoFenceWidget::Update()
 
 void GeoFenceWidget::SetCurrent(int iInd)
 {
+	// this slot can be triggered via GeoFenceContainer (via selecting zone on map),
+	// via GeoFenceEdit widgets (clicking on its edit boxes) or via
+	// via WaypointList (clicking on empty space)
+	// mousePressEvent does similar thing as this
 	m_iCurrent = iInd;
 	for (int i = 0; i < m_lipEdit.count(); i++)
 		m_lipEdit[i]->SetCurrent(i == m_iCurrent);
@@ -68,6 +86,7 @@ void GeoFenceWidget::SetCurrent(int iInd)
 
 void GeoFenceWidget::SetMinAlt(int iInd, double dAlt)
 {
+	// triggered from GeoFenceEdit
 	m_rGFC.GetZone(iInd).SetMinAltitude(dAlt);
 }
 
@@ -75,6 +94,7 @@ void GeoFenceWidget::SetMinAlt(int iInd, double dAlt)
 
 void GeoFenceWidget::SetMaxAlt(int iInd, double dAlt)
 {
+	// triggered from GeoFenceEdit
 	m_rGFC.GetZone(iInd).SetMaxAltitude(dAlt);
 }
 
@@ -140,6 +160,7 @@ void GeoFenceWidget::hideEvent(QHideEvent* pHE)
 
 void GeoFenceWidget::MoveVertex(int iInd, int iP, double dLon, double dLat)
 {
+	// signal to this slot comes from GeoFenceContainer (via map)
 	m_lipEdit[iInd]->UpdateLocation(iP, dLon, dLat);
 	m_rGFC.SetLocation(iInd, iP, dLon, dLat);
 }
@@ -148,6 +169,7 @@ void GeoFenceWidget::MoveVertex(int iInd, int iP, double dLon, double dLat)
 
 void GeoFenceWidget::AddPoint(double dLon, double dLat)
 {
+	// signal to this slot comes from GeoFenceContainer (via map)
 	if (m_iCurrent >= 0 && m_iCurrent < m_rGFC.GetCount()) {
 		// add point to existing (current zone)
 		m_rGFC.GetZone(m_iCurrent).Append(QPointF(dLon, dLat));
@@ -160,7 +182,7 @@ void GeoFenceWidget::AddPoint(double dLon, double dLat)
 		GeoFenceZone zone;
 		zone.Append(QPointF(dLon, dLat));
 		m_rGFC.Append(zone);
-		CreateEditwidget(m_rGFC.GetCount() - 1);
+		CreateEditWidget(m_rGFC.GetCount() - 1);
 		UpdateMinSize();
 
 		emit m_rGFC.SignalAddZone();
@@ -171,6 +193,7 @@ void GeoFenceWidget::AddPoint(double dLon, double dLat)
 
 void GeoFenceWidget::RemoveZone(int iInd)
 {
+	// triggered from GeoFenceEdit
 	m_rGFC.Remove(iInd);
 	m_lipEdit[iInd]->deleteLater();
 	m_lipEdit.removeAt(iInd);
@@ -183,27 +206,21 @@ void GeoFenceWidget::RemoveZone(int iInd)
 
 //-----------------------------------------------------------------------------
 
-void GeoFenceWidget::CreateEditwidget(int i)
+void GeoFenceWidget::CreateEditWidget(int i)
 {
 	GeoFenceEdit* pGFE;
 	pGFE = new GeoFenceEdit(i, &m_rGFC.GetZone(i));
 	m_pLayout->addWidget(pGFE);
 	pGFE->Update();
 	m_lipEdit << pGFE;
+
+	// connect all the signals from underlying widget pGFE
 	connect(pGFE, SIGNAL(SignalCurrent(int)), this, SLOT(SetCurrent(int)));
-	connect(&m_rGFC, SIGNAL(SignalMapCurrent(int)), this, SLOT(SetCurrent(int)));
 	connect(pGFE, SIGNAL(SignalMinAlt(int,double)), this, SLOT(SetMinAlt(int,double)));
 	connect(pGFE, SIGNAL(SignalMaxAlt(int,double)), this, SLOT(SetMaxAlt(int,double)));
 	connect(pGFE, SIGNAL(SignalLon(int,int,double)), &m_rGFC, SLOT(SetLongitude(int,int,double)));
 	connect(pGFE, SIGNAL(SignalLat(int,int,double)), &m_rGFC, SLOT(SetLatitude(int,int,double)));
 	connect(pGFE, SIGNAL(SignalRemove(int)), this, SLOT(RemoveZone(int)));
-	connect(
-				&m_rGFC,
-				SIGNAL(SignalMoved(int,int,double,double)),
-				this,
-				SLOT(MoveVertex(int,int,double,double))
-				);
-
 }
 
 //-----------------------------------------------------------------------------

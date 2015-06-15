@@ -65,23 +65,44 @@ public slots:
 	void SetLocation(int iInd, int iP, double dLon, double dLat);
 
 signals:
-	//! Should be emitted when GeoFence file needs to be loaded
+	/** Should be emitted when GeoFence file needs to be loaded
+	 * (triggered by WaypointList button, connected to map)
+	 */
 	void SignalLoadGF(QString qsName);
-	//! Should be emitted when GeoFence file needs to be saved
+	/** Should be emitted when GeoFence file needs to be saved
+	 *  (triggered by WaypointList button, connected to map
+	 */
 	void SignalSaveGF(QString qsName);
-	//! Emitted, when new set of GeoFence zones are loaded and update is needed
+	/** Emitted, when new set of GeoFence zones are loaded and update is needed
+	 *  (connected to GeoFenceWidget)
+	 */
 	void SignalRefresh();
-	//! Emitted when i-th GeoFence zone changed
+	//! Emitted when i-th GeoFence zone changed (connected to map widget)
 	void SignalUpdate(int i);
-	//! Should be emitted when new current GeoFence zone was selected on the map
+	/** Should be emitted when new current GeoFence zone was selected on the map
+	 *  (triggered by GeoFenceZoneItem, when user clicks on it on the map, connected
+	 *  to GeoFenceWidget::SetCurrent slot)
+	 */
 	void SignalMapCurrent(int iInd);
-	//! Should be emitted when iP-th vertex of iInd-th zone was moved to a new location
+	/** Should be emitted when iP-th vertex of iInd-th zone was moved to a new location
+	 *  (triggered by GeoFenceZoneItem, when user moves zone vertex on map, connected
+	 * to GeoFenceWidget::MoveVertex)
+	 */
 	void SignalMoved(int iInd, int iP, double dLon, double dLat);
-	//! Emitted when there was a double click on the map with intent to add a point
+	/** Emitted when there was a double click on the map with intent to add a point
+	 *  (triggered by double click on map, connected to GeoFenceWidget::AddPoint slot)
+	 */
 	void SignalAddPoint(double dLon, double dLat);
-	//! Emitted when new zone was added by  double click on the map
+	/** Emitted when new zone was added by  double click on the map
+	 *  (triggered by GeoFenceWidget, when it determines that new zone has to be
+	 *  added due to no current zone selected), connected to map, slot
+	 *  createLastGeoFenceZoneItem)
+	 */
 	void SignalAddZone();
-	//! Emitted when iInd-th zone has been removed
+	/** Emitted when iInd-th zone has been removed
+	 *  (triggered by Remove method <- GeoFenceWidget), connected to map, slot
+	 *  removeGeoFenceZoneItem
+	 */
 	void SignalRemoveZone(int iInd);
 
 

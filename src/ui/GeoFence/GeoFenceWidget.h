@@ -51,7 +51,7 @@ protected slots:
 
 private:
 	//! Creates GeoFenceZone edit widget for i-th zone and appends it to list
-	void CreateEditwidget(int i);
+	void CreateEditWidget(int i);
 	//! Sets the minimum size
 	void UpdateMinSize();
 
