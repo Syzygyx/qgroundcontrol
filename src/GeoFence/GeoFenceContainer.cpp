@@ -15,6 +15,7 @@ GeoFenceContainer::~GeoFenceContainer()
 
 bool GeoFenceContainer::Load(QString qsName)
 {
+	Clear();
 	m_qsFile = qsName;
 	QFile f(m_qsFile);
 	if (f.open(QFile::ReadOnly) == true) {

@@ -34,6 +34,10 @@ protected:
 	void paintEvent(QPaintEvent* pPE);
 	//! Handles mouse press events
 	void mousePressEvent(QMouseEvent* pME);
+	//! Reports that this widget is active
+	void showEvent(QShowEvent* pSE);
+	//! Reports that this widget is not active
+	void hideEvent(QHideEvent* pHE);
 
 protected slots:
 	//! Updates the values in given lon/lat spin boxes without triggering signals

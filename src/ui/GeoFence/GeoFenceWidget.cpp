@@ -36,6 +36,7 @@ void GeoFenceWidget::Update()
 		m_pLayout->removeWidget(m_lipEdit[i]);
 		delete m_lipEdit[i];
 	}
+	m_lipEdit.clear();
 
 	GeoFenceEdit* pGFE;
 	for (int i = 0; i < m_rGFC.GetCount(); i++) {
@@ -96,6 +97,7 @@ void GeoFenceWidget::paintEvent(QPaintEvent* pPE)
 
 	QRect rect;
 	QColor clr;
+	qDebug() << "GeoFenceWidget::paintEvent" << m_rGFC.GetCount() << m_lipEdit.count();
 	for (int i = 0; i < m_lipEdit.count(); i++) {
 		rect = m_lipEdit[i]->geometry();
 		rect.adjust(-1, -1, 1, 1);
@@ -123,6 +125,20 @@ void GeoFenceWidget::mousePressEvent(QMouseEvent* pME)
 		}
 	}
 	update();
+}
+
+//-----------------------------------------------------------------------------
+
+void GeoFenceWidget::showEvent(QShowEvent* pSE)
+{
+	qDebug() << "*** GeoFenceWidget::showEvent";
+}
+
+//-----------------------------------------------------------------------------
+
+void GeoFenceWidget::hideEvent(QHideEvent* pHE)
+{
+	qDebug() << "*** GeoFenceWidget::hideEvent";
 }
 
 //-----------------------------------------------------------------------------

@@ -40,6 +40,13 @@ public:
 	GeoFenceZone& GetZone(int i)
 	{	return m_liZones[i]; }
 
+	//! Returns true, if GeoFence mode is on
+	bool IsGeoFenceMode() const
+	{	return m_bGeoFenceMode; }
+	//! Sets the GeoFenceMode flag
+	void SetGeoFenceMode(bool bVal)
+	{	m_bGeoFenceMode = bVal; }
+
 	/** Loads the zones from given file and remembers the filename. Returns true
 	 *  on success
 	 */
@@ -74,6 +81,8 @@ protected:
 	QList<GeoFenceZone> m_liZones;
 	//! Filename
 	QString m_qsFile;
+	//! Indicates the GeoFence mode
+	bool m_bGeoFenceMode;
 };
 
 #endif // GEOFENCECONTAINER_H
