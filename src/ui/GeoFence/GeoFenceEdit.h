@@ -26,6 +26,9 @@ public:
 	bool IsCurrent() const
 	{	return m_bCurrent; }
 
+	//! Sets the index for this widget
+	void SetIndex(int iInd);
+
 public slots:
 	//! Sets the current flag
 	void SetCurrent(bool bCur = true);
@@ -51,6 +54,8 @@ private slots:
 	void ReportMaxAlt();
 	//! Reports latitude or longitude changes
 	void ReportPosition(int iInd);
+	//! Reports user clicking on button to remove this widget
+	void RequestRemove();
 
 signals:
 	//! Emitted when one of the subwidgets receives focus or is clicked on or both
@@ -63,6 +68,8 @@ signals:
 	void SignalLat(int iIndex, int iP, double dLat);
 	//! Emitted when longitude on iP-th point has changed
 	void SignalLon(int iIndex, int iP, double dLon);
+	//! Emitted when user clicked on remove button
+	void SignalRemove(int iIndex);
 
 private:
 	//! Main widget layout

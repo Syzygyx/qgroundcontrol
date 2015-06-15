@@ -27,9 +27,6 @@ public:
 	//! Sets the zone into i-th position and overwrites the previous content
 	void SetZone(int i, const GeoFenceZone& rZone)
 	{	m_liZones[i] = rZone; }
-	//! Deletes i-th zone
-	void Remove(int i)
-	{	m_liZones.removeAt(i); }
 	//! Removes all the zones
 	void Clear()
 	{	m_liZones.clear(); }
@@ -61,6 +58,8 @@ public slots:
 	void SetLongitude(int iInd, int iP, double dLon);
 	//! Sets the latitude for iP-th point of iInd-th zone
 	void SetLatitude(int iInd, int iP, double dLat);
+	//! Deletes i-th zone
+	void Remove(int i);
 
 	//! Sets the longitude and latitude for iP-th point of iInd-th zone
 	void SetLocation(int iInd, int iP, double dLon, double dLat);
@@ -82,6 +81,8 @@ signals:
 	void SignalAddPoint(double dLon, double dLat);
 	//! Emitted when new zone was added by  double click on the map
 	void SignalAddZone();
+	//! Emitted when iInd-th zone has been removed
+	void SignalRemoveZone(int iInd);
 
 
 protected:

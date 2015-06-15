@@ -1,6 +1,7 @@
 #include <QGridLayout>
 #include <QDoubleValidator>
 #include <QPushButton>
+#include <QToolButton>
 
 #include "GeoFenceEdit.h"
 
@@ -32,6 +33,14 @@ void GeoFenceEdit::SetCurrent(bool bCur)
 {
 	m_bCurrent = bCur;
 	update();
+}
+
+//-----------------------------------------------------------------------------
+
+void GeoFenceEdit::SetIndex(int iInd)
+{
+	m_iIndex = iInd;
+	m_plbIndex->setText(QString::number(m_iIndex + 1));
 }
 
 //-----------------------------------------------------------------------------
@@ -102,6 +111,16 @@ void GeoFenceEdit::BuildGUI()
 	connect(m_psbMaxAlt, SIGNAL(valueChanged(double)), this, SLOT(ReportMaxAlt()));
 	m_pLayout->addWidget(m_psbMaxAlt, 2, 2);
 
+	QToolButton* ptb;
+	ptb = new QToolButton(this);
+	ptb->setMinimumSize(24, 24);
+	ptb->setFocusPolicy(Qt::NoFocus);
+	QIcon icon;
+	icon.addFile(":/res/MinusSign");
+	ptb->setIcon(icon);
+	connect(ptb, SIGNAL(clicked()), this, SLOT(RequestRemove()));
+	m_pLayout->addWidget(ptb, 0, 0);
+
 	/*
 	QPushButton* pb;
 	pb = new QPushButton("<<");
@@ -131,7 +150,7 @@ void GeoFenceEdit::AddFields(int i)
 
 	QLabel* plbVert = new QLabel;
 	plbVert->setText(tr("Vertex %1").arg(m_iLeftMost + i + 1));
-	m_pLayout->addWidget(plbVert, 0, 3 + i, 1, 1);
+	m_pLayout->addWidget(plbVert, 0, 4 + i, 1, 1);
 
 	psbPos = new QGCDoubleSpinBox;
 	psbPos->setRange(-180.0, 180.0);
@@ -146,7 +165,7 @@ void GeoFenceEdit::AddFields(int i)
 	// the latitude fields to be binded on the same signal mapper
 	m_pMapper->setMapping(psbPos, i+1);
 
-	m_pLayout->addWidget(psbPos, 1, 3 + i, 1, 1);
+	m_pLayout->addWidget(psbPos, 1, 4 + i, 1, 1);
 
 	psbPos = new QGCDoubleSpinBox;
 	psbPos->setRange(-90.0, 90.0);
@@ -160,7 +179,7 @@ void GeoFenceEdit::AddFields(int i)
 	// let's give latitude fields negative indices
 	m_pMapper->setMapping(psbPos, -(i+1));
 
-	m_pLayout->addWidget(psbPos, 2, 3 + i, 1, 1);
+	m_pLayout->addWidget(psbPos, 2, 4 + i, 1, 1);
 }
 
 //-----------------------------------------------------------------------------
@@ -201,6 +220,13 @@ void GeoFenceEdit::ReportPosition(int iInd)
 		iInd--;
 		emit SignalLat(m_iIndex, iInd, m_liLatitudes[iInd]->value());
 	}
+}
+
+//-----------------------------------------------------------------------------
+
+void GeoFenceEdit::RequestRemove()
+{
+	emit SignalRemove(m_iIndex);
 }
 
 //-----------------------------------------------------------------------------

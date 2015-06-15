@@ -28,6 +28,9 @@ public:
 
 	//! Calculates the item parameters
 	void RefreshPos();
+	//! Sets the index of the item
+	void SetIndex(int iInd)
+	{	m_iIndex = iInd; }
 
 protected:
 	//! Handles mouse press event. Emits signal SignalCurrent with the index

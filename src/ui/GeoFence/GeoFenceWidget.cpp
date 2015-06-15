@@ -168,6 +168,20 @@ void GeoFenceWidget::AddPoint(double dLon, double dLat)
 
 //-----------------------------------------------------------------------------
 
+void GeoFenceWidget::RemoveZone(int iInd)
+{
+	m_rGFC.Remove(iInd);
+	m_lipEdit[iInd]->deleteLater();
+	m_lipEdit.removeAt(iInd);
+	SetCurrent(-1);
+
+	// update indices
+	for (int i = 0; i < m_lipEdit.count(); i++)
+		m_lipEdit[i]->SetIndex(i);
+}
+
+//-----------------------------------------------------------------------------
+
 void GeoFenceWidget::CreateEditwidget(int i)
 {
 	GeoFenceEdit* pGFE;
@@ -181,6 +195,7 @@ void GeoFenceWidget::CreateEditwidget(int i)
 	connect(pGFE, SIGNAL(SignalMaxAlt(int,double)), this, SLOT(SetMaxAlt(int,double)));
 	connect(pGFE, SIGNAL(SignalLon(int,int,double)), &m_rGFC, SLOT(SetLongitude(int,int,double)));
 	connect(pGFE, SIGNAL(SignalLat(int,int,double)), &m_rGFC, SLOT(SetLatitude(int,int,double)));
+	connect(pGFE, SIGNAL(SignalRemove(int)), this, SLOT(RemoveZone(int)));
 	connect(
 				&m_rGFC,
 				SIGNAL(SignalMoved(int,int,double,double)),

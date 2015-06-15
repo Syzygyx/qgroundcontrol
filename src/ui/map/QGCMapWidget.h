@@ -152,6 +152,8 @@ protected slots:
 	 void updateGeoFenceZone(int i);
 	 /** @brief Creates GeoFenceZoneItem for the last zone. */
 	 void createLastGeoFenceZoneItem();
+	 /** @brief Removes iInd-th GeoFenceZoneItem from the list */
+	 void removeGeoFenceZoneItem(int iInd);
 
 protected:
     /** @brief Update the highlighting of the currently controlled system */

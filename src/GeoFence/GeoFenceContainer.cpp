@@ -74,6 +74,14 @@ void GeoFenceContainer::SetLatitude(int iInd, int iP, double dLat)
 
 //-----------------------------------------------------------------------------
 
+void GeoFenceContainer::Remove(int i)
+{
+	m_liZones.removeAt(i);
+	emit SignalRemoveZone(i);
+}
+
+//-----------------------------------------------------------------------------
+
 void GeoFenceContainer::SetLocation(int iInd, int iP, double dLon, double dLat)
 {
 	GetZone(iInd).SetLongitude(iP, dLon);

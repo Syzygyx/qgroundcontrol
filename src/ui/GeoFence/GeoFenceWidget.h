@@ -46,6 +46,8 @@ protected slots:
 	 *  with given point
 	 */
 	void AddPoint(double dLon, double dLat);
+	//! Removes the iInd-th zone
+	void RemoveZone(int iInd);
 
 private:
 	//! Creates GeoFenceZone edit widget for i-th zone and appends it to list

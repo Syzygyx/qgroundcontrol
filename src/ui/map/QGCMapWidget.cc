@@ -88,6 +88,13 @@ QGCMapWidget::QGCMapWidget(QWidget *parent) :
 				 this,
 				 SLOT(createLastGeoFenceZoneItem())
 				 );
+
+	 connect(
+				 &ModelData::GetInstance()->GetGFC(),
+				 SIGNAL(SignalRemoveZone(int)),
+				 this,
+				 SLOT(removeGeoFenceZoneItem(int))
+				 );
 }
 
 void QGCMapWidget::guidedActionTriggered()
@@ -772,6 +779,20 @@ void QGCMapWidget::updateGeoFenceZone(int i)
 void QGCMapWidget::createLastGeoFenceZoneItem()
 {
 	createGeoFenceZoneItem(ModelData::GetInstance()->GetGFC().GetCount() - 1);
+}
+
+//-----------------------------------------------------------------------------
+
+void QGCMapWidget::removeGeoFenceZoneItem(int iInd)
+{
+	delete m_liGFItems[iInd];
+	m_liGFItems.removeAt(iInd);
+
+	// update the item indices
+	for (int i = 0; i < m_liGFItems.count(); i++)
+		m_liGFItems[i]->SetIndex(i);
+
+	update();
 }
 
 //-----------------------------------------------------------------------------
