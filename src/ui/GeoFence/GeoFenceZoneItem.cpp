@@ -14,6 +14,7 @@ GeoFenceZoneItem::GeoFenceZoneItem(
 	m_pMap = pMap;
 	m_iIndex = iInd;
 	setZValue(100.0);
+	m_iVertex = -1;
 
 	RefreshPos();
 }
@@ -51,7 +52,7 @@ void GeoFenceZoneItem::paint(
 
 	// then draw each vertex individually
 	for (int i = 0; i < m_poly.count(); i++) {
-		pP->drawEllipse(m_poly[i], 3, 3);
+		pP->drawEllipse(m_poly[i], 4, 4);
 	}
 
 	pP->restore();
@@ -81,7 +82,7 @@ void GeoFenceZoneItem::RefreshPos()
 
 	m_rect = m_poly.boundingRect();
 	// make it slightly bigger just in case
-	m_rect.adjust(-3, -3, 3, 3);
+	m_rect.adjust(-4, -4, 4, 4);
 	QGraphicsItem::prepareGeometryChange();
 }
 
@@ -89,8 +90,44 @@ void GeoFenceZoneItem::RefreshPos()
 
 void GeoFenceZoneItem::mousePressEvent(QGraphicsSceneMouseEvent *pGSME)
 {
+	// find if the click is near any vertex
+	for (int i = 0; i < m_poly.count(); i++)
+		if (fabs(pGSME->pos().x() - m_poly[i].x()) <= 4.0 && fabs(pGSME->pos().y() - m_poly[i].y()) <= 4.0) {
+			m_iVertex = i;
+			emit SignalCurrent(m_iIndex);
+			return;
+		}
+
+	// if not near vertex, just check if user clicked inside polygon and make
+	// this zone current
+	QPoint pt((int)round(pGSME->pos().x()), (int)round(pGSME->pos().y()));
+	if (m_poly.containsPoint(pt, Qt::OddEvenFill) == true)
+		emit SignalCurrent(m_iIndex);
+
 	QGraphicsItem::mousePressEvent(pGSME);
-	emit SignalCurrent(m_iIndex);
+}
+
+//-----------------------------------------------------------------------------
+
+void GeoFenceZoneItem::mouseMoveEvent(QGraphicsSceneMouseEvent* pGSME)
+{
+	QGraphicsItem::mouseMoveEvent(pGSME);
+
+	if (m_iVertex >= 0) {
+		internals::PointLatLng pt = m_pMap->FromLocalToLatLng(
+					pGSME->pos().x(),
+					pGSME->pos().y()
+					);
+
+		emit SignalMoved(m_iIndex, m_iVertex, pt.Lng(), pt.Lat());
+	}
+}
+
+//-----------------------------------------------------------------------------
+
+void GeoFenceZoneItem::mouseReleaseEvent(QGraphicsSceneMouseEvent* pGSME)
+{
+	m_iVertex = -1;
 }
 
 //-----------------------------------------------------------------------------

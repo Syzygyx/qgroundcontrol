@@ -49,6 +49,12 @@ void GeoFenceWidget::Update()
 		connect(pGFE, SIGNAL(SignalMaxAlt(int,double)), this, SLOT(SetMaxAlt(int,double)));
 		connect(pGFE, SIGNAL(SignalLon(int,int,double)), &m_rGFC, SLOT(SetLongitude(int,int,double)));
 		connect(pGFE, SIGNAL(SignalLat(int,int,double)), &m_rGFC, SLOT(SetLatitude(int,int,double)));
+		connect(
+					&m_rGFC,
+					SIGNAL(SignalMoved(int,int,double,double)),
+					this,
+					SLOT(MoveVertex(int,int,double,double))
+					);
 	}
 
 	setMinimumSize(480, 60*m_rGFC.GetCount() + 10);
@@ -117,6 +123,14 @@ void GeoFenceWidget::mousePressEvent(QMouseEvent* pME)
 		}
 	}
 	update();
+}
+
+//-----------------------------------------------------------------------------
+
+void GeoFenceWidget::MoveVertex(int iInd, int iP, double dLon, double dLat)
+{
+	m_lipEdit[iInd]->UpdateLocation(iP, dLon, dLat);
+	m_rGFC.SetLocation(iInd, iP, dLon, dLat);
 }
 
 //-----------------------------------------------------------------------------

@@ -55,6 +55,9 @@ public slots:
 	//! Sets the latitude for iP-th point of iInd-th zone
 	void SetLatitude(int iInd, int iP, double dLat);
 
+	//! Sets the longitude and latitude for iP-th point of iInd-th zone
+	void SetLocation(int iInd, int iP, double dLon, double dLat);
+
 signals:
 	//! Emitted, when new set of GeoFence zones are loaded and update is needed
 	void SignalRefresh();
@@ -62,6 +65,8 @@ signals:
 	void SignalUpdate(int i);
 	//! Should be emitted when new current GeoFence zone was selected on the map
 	void SignalMapCurrent(int iInd);
+	//! Should be emitted when iP-th vertex of iInd-th zone was moved to a new location
+	void SignalMoved(int iInd, int iP, double dLon, double dLat);
 
 
 protected:

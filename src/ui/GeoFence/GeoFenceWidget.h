@@ -35,6 +35,10 @@ protected:
 	//! Handles mouse press events
 	void mousePressEvent(QMouseEvent* pME);
 
+protected slots:
+	//! Updates the values in given lon/lat spin boxes without triggering signals
+	void MoveVertex(int iInd, int iP, double dLon, double dLat);
+
 private:
 	//! Pointer to the GeoFenceZones container
 	GeoFenceContainer& m_rGFC;

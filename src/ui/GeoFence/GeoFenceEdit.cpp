@@ -51,6 +51,17 @@ void GeoFenceEdit::Update()
 
 //-----------------------------------------------------------------------------
 
+void GeoFenceEdit::UpdateLocation(int i, double dLon, double dLat)
+{
+	// prevent signals to be sent!
+	blockSignals(true);
+	m_liLongitudes[i]->setValue(dLon);
+	m_liLatitudes[i]->setValue(dLat);
+	blockSignals(false);
+}
+
+//-----------------------------------------------------------------------------
+
 void GeoFenceEdit::BuildGUI()
 {
 	// we put everything in layout

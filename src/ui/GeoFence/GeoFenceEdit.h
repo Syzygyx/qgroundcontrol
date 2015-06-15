@@ -30,6 +30,8 @@ public slots:
 	void SetCurrent(bool bCur = true);
 	//! Updates the edit boxes with zone data
 	void Update();
+	//! Updates the location of i-th point without triggering signals
+	void UpdateLocation(int i, double dLon, double dLat);
 
 private:
 	//! Builds the widget GUI

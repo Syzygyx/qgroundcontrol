@@ -700,6 +700,14 @@ void QGCMapWidget::handleMapWaypointEdit(mapcontrol::WayPointItem* waypoint)
 
 void QGCMapWidget::loadGeoFenceZones(QString qsFile)
 {
+	// remove old items
+	setEnabled(false);
+	for (int i = 0; i < m_liGFItems.count(); i++)
+		delete m_liGFItems[i];
+	m_liGFItems.clear();
+	setEnabled(true);
+
+	// load and create new items
 	GeoFenceContainer& conGF = ModelData::GetInstance()->GetGFC();
 	if (conGF.Load(qsFile) == true) {
 		for (int i = 0; i < conGF.GetCount(); i++) {
@@ -707,6 +715,12 @@ void QGCMapWidget::loadGeoFenceZones(QString qsFile)
 			pItem->setParentItem(map);
 			connect(&conGF, SIGNAL(SignalUpdate(int)), this, SLOT(updateGeoFenceZone(int)));
 			connect(pItem, SIGNAL(SignalCurrent(int)), &conGF, SIGNAL(SignalMapCurrent(int)));
+			connect(
+						pItem,
+						SIGNAL(SignalMoved(int,int,double,double)),
+						&conGF,
+						SIGNAL(SignalMoved(int,int,double,double))
+						);
 			m_liGFItems << pItem;
 		}
 	}

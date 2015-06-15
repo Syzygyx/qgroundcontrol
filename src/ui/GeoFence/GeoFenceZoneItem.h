@@ -32,10 +32,16 @@ public:
 protected:
 	//! Handles mouse press event. Emits signal SignalCurrent with the index
 	void mousePressEvent(QGraphicsSceneMouseEvent* pGSME);
+	//! Handles dragging vertex around the map
+	void mouseMoveEvent(QGraphicsSceneMouseEvent* pGSME);
+	//! Handles mouse release event
+	void mouseReleaseEvent(QGraphicsSceneMouseEvent* pGSME);
 
 signals:
 	//! Emitted when user clicked on this item
 	void SignalCurrent(int iInd);
+	//! Emitted when iP-th vertex has been moved to (dLon, dLat)
+	void SignalMoved(int iInd, int iP, double dLon, double dLat);
 
 protected:
 	//! Pointer to the map object
@@ -46,6 +52,8 @@ protected:
 	QPolygon m_poly;
 	//! Zone index
 	int m_iIndex;
+	//! Index of clicked vertex
+	int m_iVertex;
 };
 
 #endif // GEOFENCEZONEITEM_H

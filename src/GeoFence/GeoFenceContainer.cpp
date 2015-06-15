@@ -73,3 +73,12 @@ void GeoFenceContainer::SetLatitude(int iInd, int iP, double dLat)
 
 //-----------------------------------------------------------------------------
 
+void GeoFenceContainer::SetLocation(int iInd, int iP, double dLon, double dLat)
+{
+	GetZone(iInd).SetLongitude(iP, dLon);
+	GetZone(iInd).SetLatitude(iP, dLat);
+	emit SignalUpdate(iInd);
+}
+
+//-----------------------------------------------------------------------------
+
