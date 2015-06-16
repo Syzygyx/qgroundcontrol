@@ -341,7 +341,7 @@ bool QGCApplication::_initForNormalAppBoot(void)
 
     _createSingletons();
 
-	 PluginLoader::SetFolder(applicationDirPath() + "/../plugins/lib/");
+	 PluginLoader::SetFolder(applicationDirPath() + "/../plugins/");
 
     // Show splash screen
 	 QPixmap splashImage;

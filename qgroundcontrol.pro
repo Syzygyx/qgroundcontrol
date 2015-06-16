@@ -19,8 +19,7 @@
 
 TEMPLATE =  subdirs
 CONFIG  +=  ordered
-SUBDIRS  =  ./QGCLocationPlugin.pro \
-    plugins/ReferenceTechnologies
+SUBDIRS  =  ./QGCLocationPlugin.pro
 SUBDIRS +=  ./QGCApplication.pro
 
 QGCApplication.depends = QGCLocationPlugin
