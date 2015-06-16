@@ -73,7 +73,9 @@ void GeoFenceEdit::UpdateLocation(int i, double dLon, double dLat)
 
 void GeoFenceEdit::AddLatestFields()
 {
-	AddFields(m_pZone->GetCount() - 1);
+	int iLast = m_pZone->GetCount() - 1;
+	AddFields(iLast);
+	UpdateLocation(iLast, m_pZone->GetPoint(iLast).x(), m_pZone->GetPoint(iLast).y());
 }
 
 //-----------------------------------------------------------------------------
