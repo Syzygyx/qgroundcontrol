@@ -74,6 +74,8 @@
 #include "OpalLink.h"
 #endif
 
+#include "core/PluginLoader.h"
+
 
 QGCApplication* QGCApplication::_app = NULL;
 
@@ -339,9 +341,14 @@ bool QGCApplication::_initForNormalAppBoot(void)
 
     _createSingletons();
 
+	 PluginLoader::SetFolder(applicationDirPath() + "/../plugins/lib/");
+
     // Show splash screen
-	 QPixmap splashImage(":/res/resources/full-logo.png");
-    QSplashScreen* splashScreen = new QSplashScreen(splashImage);
+	 QPixmap splashImage;
+	 if (PluginLoader::GetInstance()->GetInterface() != 0)
+		 splashImage = PluginLoader::GetInstance()->GetInterface()->GetSplashPixmap();
+
+	 QSplashScreen* splashScreen = new QSplashScreen(splashImage);
     // Delete splash screen after mainWindow was displayed
     splashScreen->setAttribute(Qt::WA_DeleteOnClose);
     splashScreen->show();

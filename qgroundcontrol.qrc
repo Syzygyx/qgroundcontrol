@@ -159,7 +159,6 @@
         <file alias="SystemLockScreen">resources/SystemLockScreen.svg</file>
         <file alias="SplashScreen">resources/SplashScreen.png</file>
         <file alias="QGroundControlConnect">resources/QGroundControlConnect.svg</file>
-        <file>resources/full-logo.png</file>
     </qresource>
     <qresource prefix="/res/mavs">
         <file alias="Helicopter">resources/mavs/helicopter.svg</file>
