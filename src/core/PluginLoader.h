@@ -22,7 +22,7 @@ public:
 	{	s_qsPath = qsDir; }
 
 	//! Returns pointer to the interface
-	const BrandingInterface* GetInterface() const
+	const BrandingInterface* GetPlugin() const
 	{	return m_pBI; }
 
 private:

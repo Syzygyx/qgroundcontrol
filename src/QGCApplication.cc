@@ -345,8 +345,8 @@ bool QGCApplication::_initForNormalAppBoot(void)
 
     // Show splash screen
 	 QPixmap splashImage;
-	 if (PluginLoader::GetInstance()->GetInterface() != 0)
-		 splashImage = PluginLoader::GetInstance()->GetInterface()->GetSplashPixmap();
+	 if (PluginLoader::GetInstance()->GetPlugin() != 0)
+		 splashImage = PluginLoader::GetInstance()->GetPlugin()->GetSplashPixmap();
 
 	 QSplashScreen* splashScreen = new QSplashScreen(splashImage);
     // Delete splash screen after mainWindow was displayed
