@@ -1,4 +1,0 @@
-#ifndef GAUGEINTERFACE_H
-#define GAUGEINTERFACE_H
-
-#endif // GAUGEINTERFACE_H
