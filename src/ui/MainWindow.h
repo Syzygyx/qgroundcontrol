@@ -336,8 +336,8 @@ private:
     static const char* _pfdDockWidgetName;
     static const char* _hudDockWidgetName;
     static const char* _uasInfoViewDockWidgetName;
-	 static const char* _airspeedIndicatorWidgetName;
-	 /*static const char* _vehicleWidgetName;
+	 /*static const char* _airspeedIndicatorWidgetName;
+	 static const char* _vehicleWidgetName;
 	 static const char* _missionPlanningWidgetName;
 	 static const char* _flightInstrumentsWidgetName;
 	 static const char* _fuelGaugeWidgetName;
@@ -363,8 +363,14 @@ private:
     void _storeCurrentViewState(void);
     void _loadCurrentViewState(void);
 
-    void _createDockWidget(const QString& title, const QString& name, Qt::DockWidgetArea area, QWidget* innerWidget);
+	 void _createDockWidget(
+			 const QString& title,
+			 const QString& name,
+			 Qt::DockWidgetArea area,
+			 QWidget* innerWidget = 0
+			 );
     void _createInnerDockWidget(const QString& widgetName);
+	 QWidget* _createInnerPlugin(const QString& widgetName);
     void _buildCommonWidgets(void);
     void _hideAllHilDockWidgets(void);
     void _hideAllDockWidgets(void);

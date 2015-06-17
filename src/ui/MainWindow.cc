@@ -131,8 +131,8 @@ const char* MainWindow::_hdd2DockWidgetName = "HEAD_DOWN_DISPLAY_2_DOCKWIDGET";
 const char* MainWindow::_pfdDockWidgetName = "PRIMARY_FLIGHT_DISPLAY_DOCKWIDGET";
 const char* MainWindow::_hudDockWidgetName = "HEAD_UP_DISPLAY_DOCKWIDGET";
 const char* MainWindow::_uasInfoViewDockWidgetName = "UAS_INFO_INFOVIEW_DOCKWIDGET";
-const char* MainWindow::_airspeedIndicatorWidgetName = "AIRSPEED_INDICATOR_DOCKWIDGET";
 /*
+const char* MainWindow::_airspeedIndicatorWidgetName = "AIRSPEED_INDICATOR_DOCKWIDGET";
 const char* MainWindow::_vehicleWidgetName = "VEHICLE_DOCKWIDGET";
 const char* MainWindow::_missionPlanningWidgetName = "MISSION_PLANNING_DOCKWIDGET";
 const char* MainWindow::_flightInstrumentsWidgetName = "FLIGHT_INSTRUMENTS_DOCKWIDGET";
@@ -522,8 +522,8 @@ void MainWindow::_buildCommonWidgets(void)
         { _pfdDockWidgetName,               "Primary Flight Display",   Qt::RightDockWidgetArea },
         { _hudDockWidgetName,               "Video Downlink",           Qt::RightDockWidgetArea },
         { _uasInfoViewDockWidgetName,       "Info View",                Qt::LeftDockWidgetArea },
-		  { _airspeedIndicatorWidgetName,     "Airspeed Indicator",       Qt::RightDockWidgetArea},
-		  /*{ _vehicleWidgetName,               "Vehicle View",             Qt::LeftDockWidgetArea},
+		  /*{ _airspeedIndicatorWidgetName,     "Airspeed Indicator",       Qt::RightDockWidgetArea},
+		  { _vehicleWidgetName,               "Vehicle View",             Qt::LeftDockWidgetArea},
 		  { _missionPlanningWidgetName,       "Mission Planning",         Qt::RightDockWidgetArea},
 		  { _flightInstrumentsWidgetName,     "Flight Instruments",       Qt::LeftDockWidgetArea},
 		  { _fuelGaugeWidgetName,             "Fuel Indicator",           Qt::LeftDockWidgetArea},
@@ -539,6 +539,23 @@ void MainWindow::_buildCommonWidgets(void)
         const struct DockWidgetInfo* pDockInfo = &rgDockWidgetInfo[i];
         _createDockWidget(pDockInfo->title, pDockInfo->name, pDockInfo->area, NULL /* no inner widget yet */);
     }
+
+	 // Now check plugins
+	 const GaugeInterface* pGI = PluginLoader::GetInstance()->GetGauges();
+	 if (pGI != 0) {
+		 for (GaugeInterface::GaugeType eGT = GaugeInterface::gtFirst;
+				eGT != GaugeInterface::gtLast;
+				eGT = GaugeInterface::GaugeType(eGT << 1)
+				) {
+			 if (pGI->HasGauge(eGT) == true) {
+				 _createDockWidget(
+							 pGI->GetGaugeTitle(eGT),
+							 pGI->GetGaugeKey(eGT),
+							 Qt::RightDockWidgetArea
+							 );
+			 }
+		 }
+	 }
 }
 
 void MainWindow::_buildPlanView(void)
@@ -665,24 +682,8 @@ void MainWindow::_createInnerDockWidget(const QString& widgetName)
         QGCTabbedInfoView* pInfoView = new QGCTabbedInfoView(this);
         pInfoView->addSource(mavlinkDecoder);
         widget = pInfoView;
-	 } else if (widgetName == _airspeedIndicatorWidgetName) {
-		 if (PluginLoader::GetInstance()->GetGauges() != 0) {
-			 AirspeedIndicator* pAI =
-					 PluginLoader::GetInstance()->GetGauges()->CreateAirspeedIndicator(
-						 0,
-						 120,
-						 AirspeedIndicator::auKnots,
-						 this
-						 );
-			 pAI->Init();
-			 connect(
-						 MessageDispatcher::GetInstance(),
-						 SIGNAL(SignalAirSpeed(double)),
-						 pAI,
-						 SLOT(SetSpeed(double))
-						 );
-			 widget = pAI;
-		 }
+	 } else {
+		 widget = _createInnerPlugin(widgetName);
 	 }
 
 	 /*else if (widgetName == _vehicleWidgetName) {
@@ -762,16 +763,31 @@ void MainWindow::_createInnerDockWidget(const QString& widgetName)
 		 widget = new FlightGearGrabWidget(this);
 	 }*/
 
-	 else {
+	 /*else {
         qWarning() << "Attempt to create unknown Inner Dock Widget" << widgetName;
-    }
+	 }*/
 
     if (widget) {
         QDockWidget* dockWidget = _mapName2DockWidget[widgetName];
         Q_CHECK_PTR(dockWidget);
         widget->setParent(dockWidget);
         dockWidget->setWidget(widget);
-    }
+	 } else {
+		 qWarning() << "Attempt to create unknown Inner Dock Widget" << widgetName;
+	}
+}
+
+QWidget* MainWindow::_createInnerPlugin(const QString& widgetName)
+{
+	const GaugeInterface* pGI = PluginLoader::GetInstance()->GetGauges();
+
+	GaugeInterface::GaugeType eGT;
+
+	eGT = GaugeInterface::gtAirspeedIndicator;
+	if (pGI->HasGauge(eGT) && widgetName == pGI->GetGaugeKey(eGT))
+		return pGI->CreateAirspeedIndicator(this);
+
+	return 0;
 }
 
 void MainWindow::_showHILConfigurationWidgets(void)
