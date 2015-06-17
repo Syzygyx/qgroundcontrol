@@ -3,6 +3,12 @@
 
 #include <QWidget>
 #include "ui/flightindicators/AirspeedIndicator.h"
+#include "ui/flightindicators/AltitudeIndicator.h"
+#include "ui/flightindicators/FuelGauge.h"
+#include "ui/flightindicators/HeadingIndicator.h"
+#include "ui/flightindicators/VerticalSpeedIndicator.h"
+#include "ui/flightindicators/WeightGauge.h"
+#include "ui/flightindicators/FlightInstrumentsWidget.h"
 
 //! This is the interface to gauge providing classes
 class GaugeInterface
@@ -72,6 +78,30 @@ public:
 		}
 	}
 
+	//! Returns the preferred dock widget area
+	Qt::DockWidgetArea GetGaugePos(GaugeType eGT) const
+	{
+		switch (eGT) {
+		case gtFuelGauge:
+		case gtFlightInstruments:
+		case gtWeightGauge:
+			return Qt::LeftDockWidgetArea;
+
+		default:
+			return Qt::RightDockWidgetArea;
+		}
+	}
+
+	//! Returns the gauge indicator for given key
+	GaugeInterface::GaugeType GetType(QString qsKey) const
+	{
+		for (GaugeType eGT = gtFirst; eGT != gtLast; eGT = GaugeType(eGT << 1))
+			if (qsKey == GetGaugeKey(eGT))
+				return eGT;
+
+		return gtLast;
+	}
+
 	//! Returns true, if given gauge is available
 	virtual bool HasGauge(GaugeType eGT) const
 	{	return (GetAvailable() & eGT) > 0; }
@@ -79,8 +109,27 @@ public:
 	//! Returns the GaugeTypes 'or'ed together, indicating which gauges are available
 	virtual int GetAvailable() const = 0;
 
-	//! Creates and returns Airspeed indicator
+	//! Creates and returns airspeed indicator
 	virtual AirspeedIndicator* CreateAirspeedIndicator(QWidget* pParent = 0) const = 0;
+
+	//! Creates and returns altitude indicator
+	virtual AltitudeIndicator* CreateAltitudeIndicator(QWidget* pParent = 0) const = 0;
+
+	//! Creates and returns fuel gauge
+	virtual FuelGauge* CreateFuelGauge(QWidget* pParent = 0) const = 0;
+
+	//! Creates and returns heading indicator
+	virtual HeadingIndicator* CreateHeadingIndicator(QWidget* pParent = 0) const = 0;
+
+	//! Creates and returns vertical speed indicator
+	virtual VerticalSpeedIndicator* CreateVerticalSpeedIndicator(QWidget* pParent = 0) const = 0;
+
+	//! Creates and returns weight gauge
+	virtual WeightGauge* CreateWeightGauge(QWidget* pParent = 0) const = 0;
+
+	//! Creates and returns flight instruments widget
+	virtual FlightInstrumentsWidget* CreateFlightInstruments(QWidget* pParent = 0) const = 0;
+
 };
 
 Q_DECLARE_INTERFACE(GaugeInterface, "org.qt-project.Qt.QGroundControl.GaugeInterface")

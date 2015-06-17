@@ -71,11 +71,11 @@ This file is part of the QGROUNDCONTROL project
 //#include "vehicle/VehicleWidget.h"
 //#include "vehicle/TemperatureGauge.h"
 //#include "planning/MissionPlannerWidget.h"
-//#include "FlightInstrumentsWidget.h"
+#include "FlightInstrumentsWidget.h"
 #include "AirspeedIndicator.h"
-//#include "VerticalSpeedIndicator.h"
-//#include "AltitudeIndicator.h"
-//#include "HeadingIndicator.h"
+#include "VerticalSpeedIndicator.h"
+#include "AltitudeIndicator.h"
+#include "HeadingIndicator.h"
 #include "video/FlightGearGrabWidget.h"
 
 #include "core/MessageDispatcher.h"
@@ -551,7 +551,7 @@ void MainWindow::_buildCommonWidgets(void)
 				 _createDockWidget(
 							 pGI->GetGaugeTitle(eGT),
 							 pGI->GetGaugeKey(eGT),
-							 Qt::RightDockWidgetArea
+							 pGI->GetGaugePos(eGT)
 							 );
 			 }
 		 }
@@ -781,12 +781,60 @@ QWidget* MainWindow::_createInnerPlugin(const QString& widgetName)
 {
 	const GaugeInterface* pGI = PluginLoader::GetInstance()->GetGauges();
 
-	GaugeInterface::GaugeType eGT;
+	if (pGI != 0) {
+		// all possible gauges/indicators
+		AirspeedIndicator* pASI;
+		AltitudeIndicator* pALT;
+		FuelGauge* pFG;
+		HeadingIndicator* pHI;
+		VerticalSpeedIndicator* pVSI;
+		WeightGauge* pWG;
+		FlightInstrumentsWidget* pFIW;
 
-	eGT = GaugeInterface::gtAirspeedIndicator;
-	if (pGI->HasGauge(eGT) && widgetName == pGI->GetGaugeKey(eGT))
-		return pGI->CreateAirspeedIndicator(this);
+		GaugeInterface::GaugeType eGT = pGI->GetType(widgetName);
+		MessageDispatcher* pMD = MessageDispatcher::GetInstance();
 
+		switch (eGT) {
+		case GaugeInterface::gtAirspeedIndicator:
+			pASI = pGI->CreateAirspeedIndicator(this);
+			connect(pMD, SIGNAL(SignalAirSpeed(double)), pASI, SLOT(SetSpeed(double)));
+			return pASI;
+
+		case GaugeInterface::gtAltitudeIndicator:
+			pALT = pGI->CreateAltitudeIndicator(this);
+			connect(pMD, SIGNAL(SignalAltitude(double)), pALT, SLOT(SetAltitude(double)));
+			return pALT;
+
+		case GaugeInterface::gtFuelGauge:
+			pFG = pGI->CreateFuelGauge(this);
+			return pFG;
+
+		case GaugeInterface::gtHeadingIndicator:
+			pHI = pGI->CreateHeadingIndicator(this);
+			connect(pMD, SIGNAL(SignalHeading(double)), pHI, SLOT(SetHeading(double)));
+			return pHI;
+
+		case GaugeInterface::gtVerticalSpeedIndicator:
+			pVSI = pGI->CreateVerticalSpeedIndicator(this);
+			connect(pMD, SIGNAL(SignalVario(double)), pVSI, SLOT(SetVerticalSpeed(double)));
+			return pVSI;
+
+		case GaugeInterface::gtWeightGauge:
+			pWG = pGI->CreateWeightGauge(this);
+			return pWG;
+
+		case GaugeInterface::gtFlightInstruments:
+			pFIW = pGI->CreateFlightInstruments(this);
+			connect(pMD, SIGNAL(SignalAirSpeed(double)), pFIW, SLOT(SetAirspeed(double)));
+			connect(pMD, SIGNAL(SignalAltitude(double)), pFIW, SLOT(SetAltitude(double)));
+			connect(pMD, SIGNAL(SignalVario(double)), pFIW, SLOT(SetVerticalSpeed(double)));
+			connect(pMD, SIGNAL(SignalHeading(double)), pFIW, SLOT(SetHeading(double)));
+			return pFIW;
+
+		default:
+			break;
+		}
+	}
 	return 0;
 }
 
