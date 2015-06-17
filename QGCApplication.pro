@@ -164,6 +164,7 @@ INCLUDEPATH += \
     src/ui/uas \
     src/VehicleSetup \
     src/ViewWidgets \
+    interfaces/ui/gauge \
     interfaces/ui/flightindicators
 
 FORMS += \
@@ -353,20 +354,20 @@ HEADERS += \
     src/ViewWidgets/ParameterEditorWidget.h \
     src/ViewWidgets/ViewWidgetController.h \
     src/Waypoint.h \
-    src/ui/vehicle/VehicleWidget.h \
-    src/ui/vehicle/TemperatureGauge.h \
-    interfaces/ui/flightindicators/DurationGauge.h \
-    interfaces/ui/flightindicators/FuelGauge.h \
-    src/ui/planning/MissionPlannerDataWidget.h \
-    src/ui/planning/MissionPlannerGauges.h \
-    src/ui/planning/MissionPlannerWidget.h \
-    src/ui/planning/QuantityScrollBar.h \
-    interfaces/ui/flightindicators/WeightGauge.h \
-    interfaces/ui/flightindicators/AirspeedIndicator.h \
-    interfaces/ui/flightindicators/VerticalSpeedIndicator.h \
-    interfaces/ui/flightindicators/AltitudeIndicator.h \
-    interfaces/ui/flightindicators/HeadingIndicator.h \
-    interfaces/ui/flightindicators/FlightInstrumentsWidget.h \
+    #src/ui/vehicle/VehicleWidget.h \
+    #src/ui/vehicle/TemperatureGauge.h \
+    #interfaces/ui/flightindicators/DurationGauge.h \
+    #interfaces/ui/flightindicators/FuelGauge.h \
+    #src/ui/planning/MissionPlannerDataWidget.h \
+    #src/ui/planning/MissionPlannerGauges.h \
+    #src/ui/planning/MissionPlannerWidget.h \
+    #src/ui/planning/QuantityScrollBar.h \
+    #interfaces/ui/flightindicators/WeightGauge.h \
+    #interfaces/ui/flightindicators/AirspeedIndicator.h \
+    #interfaces/ui/flightindicators/VerticalSpeedIndicator.h \
+    #interfaces/ui/flightindicators/AltitudeIndicator.h \
+    #interfaces/ui/flightindicators/HeadingIndicator.h \
+    #interfaces/ui/flightindicators/FlightInstrumentsWidget.h \
     src/core/MessageDispatcher.h \
     src/core/net_fdm.hxx \
     src/core/ExternalAppLauncher.h \
@@ -510,12 +511,12 @@ SOURCES += \
     src/ViewWidgets/ParameterEditorWidget.cc \
     src/ViewWidgets/ViewWidgetController.cc \
     src/Waypoint.cc \
-    src/ui/vehicle/VehicleWidget.cpp \
-    src/ui/vehicle/TemperatureGauge.cpp \
-    src/ui/planning/MissionPlannerDataWidget.cpp \
-    src/ui/planning/MissionPlannerGauges.cpp \
-    src/ui/planning/MissionPlannerWidget.cpp \
-    src/ui/planning/QuantityScrollBar.cpp \
+    #src/ui/vehicle/VehicleWidget.cpp \
+    #src/ui/vehicle/TemperatureGauge.cpp \
+    #src/ui/planning/MissionPlannerDataWidget.cpp \
+    #src/ui/planning/MissionPlannerGauges.cpp \
+    #src/ui/planning/MissionPlannerWidget.cpp \
+    #src/ui/planning/QuantityScrollBar.cpp \
     src/core/MessageDispatcher.cpp \
     src/core/ExternalAppLauncher.cpp \
     src/ui/video/FlightGearGrabWidget.cpp \

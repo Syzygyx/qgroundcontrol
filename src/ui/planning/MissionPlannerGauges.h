@@ -2,9 +2,9 @@
 #define MISSIONPLANNERGAUGES_H
 
 #include <QWidget>
-#include "flightindicators/FuelGauge.h"
-#include "flightindicators/WeightGauge.h"
-#include "flightindicators/DurationGauge.h"
+#include "FuelGauge.h"
+#include "WeightGauge.h"
+#include "DurationGauge.h"
 
 //! This class is used to show mission planning gauges
 class MissionPlannerGauges : public QWidget
