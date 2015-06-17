@@ -133,8 +133,7 @@ include(QGCInstaller.pri)
 #
 
 RESOURCES += qgroundcontrol.qrc \
-	     resources/vehicle/Files.qrc \
-	     resources/planning/MissionPlanner.qrc
+	     resources/vehicle/Files.qrc
 
 DEPENDPATH += \
     . \
