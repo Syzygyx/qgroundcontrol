@@ -9,6 +9,8 @@
 #include "ui/flightindicators/VerticalSpeedIndicator.h"
 #include "ui/flightindicators/WeightGauge.h"
 #include "ui/flightindicators/FlightInstrumentsWidget.h"
+#include "ui/video/FlightGearGrabWidget.h"
+
 
 //! This is the interface to gauge providing classes
 class GaugeInterface
@@ -24,7 +26,8 @@ public:
 		gtVerticalSpeedIndicator	= 16,
 		gtWeightGauge					= 32,
 		gtFlightInstruments			= 64,
-		gtLast							= 128,
+		gtFlightGearGrab				= 128,
+		gtLast							= 256,
 	};
 
 public:
@@ -50,6 +53,8 @@ public:
 			return "WEIGHT_GAUGE_DOCKWIDGET";
 		case gtFlightInstruments:
 			return "FLIGHT_INSTRUMENTS_DOCKWIDGET";
+		case gtFlightGearGrab:
+			return "FLIGHT_GEAR_VIDEO_DOCKWIDGET";
 		default:
 			return "";
 		}
@@ -73,6 +78,8 @@ public:
 			return "Total Weight Indicator";
 		case gtFlightInstruments:
 			return "Flight Instruments";
+		case gtFlightGearGrab:
+			return "FlightGear Live Video";
 		default:
 			return "";
 		}
@@ -129,6 +136,9 @@ public:
 
 	//! Creates and returns flight instruments widget
 	virtual FlightInstrumentsWidget* CreateFlightInstruments(QWidget* pParent = 0) const = 0;
+
+	//! Creates and returns FlightGear Live Video widget
+	virtual FlightGearGrabWidget* CreateFlightGearLiveVideo(QWidget* pParent = 0) const = 0;
 
 };
 

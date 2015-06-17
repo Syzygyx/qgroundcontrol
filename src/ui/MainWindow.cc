@@ -76,7 +76,7 @@ This file is part of the QGROUNDCONTROL project
 #include "VerticalSpeedIndicator.h"
 #include "AltitudeIndicator.h"
 #include "HeadingIndicator.h"
-#include "video/FlightGearGrabWidget.h"
+#include "FlightGearGrabWidget.h"
 
 #include "core/MessageDispatcher.h"
 #include "core/PluginLoader.h"
@@ -790,6 +790,7 @@ QWidget* MainWindow::_createInnerPlugin(const QString& widgetName)
 		VerticalSpeedIndicator* pVSI;
 		WeightGauge* pWG;
 		FlightInstrumentsWidget* pFIW;
+		FlightGearGrabWidget* pFGGW;
 
 		GaugeInterface::GaugeType eGT = pGI->GetType(widgetName);
 		MessageDispatcher* pMD = MessageDispatcher::GetInstance();
@@ -830,6 +831,10 @@ QWidget* MainWindow::_createInnerPlugin(const QString& widgetName)
 			connect(pMD, SIGNAL(SignalVario(double)), pFIW, SLOT(SetVerticalSpeed(double)));
 			connect(pMD, SIGNAL(SignalHeading(double)), pFIW, SLOT(SetHeading(double)));
 			return pFIW;
+
+		case GaugeInterface::gtFlightGearGrab:
+			pFGGW = pGI->CreateFlightGearLiveVideo(this);
+			return pFGGW;
 
 		default:
 			break;

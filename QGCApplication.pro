@@ -164,7 +164,8 @@ INCLUDEPATH += \
     src/VehicleSetup \
     src/ViewWidgets \
     interfaces/ui/gauge \
-    interfaces/ui/flightindicators
+    interfaces/ui/flightindicators \
+    interfaces/ui/video
 
 FORMS += \
     src/QGCQmlWidgetHolder.ui \
@@ -370,7 +371,7 @@ HEADERS += \
     src/core/MessageDispatcher.h \
     src/core/net_fdm.hxx \
     src/core/ExternalAppLauncher.h \
-    src/ui/video/FlightGearGrabWidget.h \
+    #interfaces/ui/video/FlightGearGrabWidget.h \
     src/uas/StaticUAS.h \
     src/ui/map/PixmapGenerator.h \
     src/ui/map/common_ext.h \
@@ -518,7 +519,6 @@ SOURCES += \
     #src/ui/planning/QuantityScrollBar.cpp \
     src/core/MessageDispatcher.cpp \
     src/core/ExternalAppLauncher.cpp \
-    src/ui/video/FlightGearGrabWidget.cpp \
     src/uas/StaticUAS.cpp \
     src/ui/map/PixmapGenerator.cpp \
     src/GeoFence/GeoFenceZone.cpp \
