@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>files/GasStation.png</file>
         <file>files/Person.png</file>
         <file>files/rtlogo.png</file>
     </qresource>
