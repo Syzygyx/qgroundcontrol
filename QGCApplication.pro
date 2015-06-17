@@ -164,6 +164,7 @@ INCLUDEPATH += \
     src/ui/uas \
     src/VehicleSetup \
     src/ViewWidgets \
+    interfaces/ui/flightindicators
 
 FORMS += \
     src/QGCQmlWidgetHolder.ui \
@@ -354,32 +355,27 @@ HEADERS += \
     src/Waypoint.h \
     src/ui/vehicle/VehicleWidget.h \
     src/ui/vehicle/TemperatureGauge.h \
-    src/ui/gauge/qcgaugewidget.h \
-    src/ui/flightindicators/DurationGauge.h \
-    src/ui/flightindicators/FuelGauge.h \
+    interfaces/ui/flightindicators/DurationGauge.h \
+    interfaces/ui/flightindicators/FuelGauge.h \
     src/ui/planning/MissionPlannerDataWidget.h \
     src/ui/planning/MissionPlannerGauges.h \
     src/ui/planning/MissionPlannerWidget.h \
-    src/ui/gauge/QcPixmapItem.h \
     src/ui/planning/QuantityScrollBar.h \
-    src/ui/flightindicators/WeightGauge.h \
-    src/ui/flightindicators/AirspeedIndicator.h \
-    src/ui/flightindicators/VerticalSpeedIndicator.h \
-    src/ui/flightindicators/AltitudeIndicator.h \
-    src/ui/gauge/QcRotatedGaugeWidget.h \
-    src/ui/flightindicators/HeadingIndicator.h \
-    src/ui/gauge/QcPolygonItem.h \
-    src/ui/flightindicators/FlightInstrumentsWidget.h \
+    interfaces/ui/flightindicators/WeightGauge.h \
+    interfaces/ui/flightindicators/AirspeedIndicator.h \
+    interfaces/ui/flightindicators/VerticalSpeedIndicator.h \
+    interfaces/ui/flightindicators/AltitudeIndicator.h \
+    interfaces/ui/flightindicators/HeadingIndicator.h \
+    interfaces/ui/flightindicators/FlightInstrumentsWidget.h \
     src/core/MessageDispatcher.h \
     src/core/net_fdm.hxx \
     src/core/ExternalAppLauncher.h \
     src/ui/video/FlightGearGrabWidget.h \
-    src/ui/gauge/QcColorLabelItem.h \
     src/uas/StaticUAS.h \
     src/ui/map/PixmapGenerator.h \
     src/ui/map/common_ext.h \
     src/GeoFence/GeoFenceZone.h \
-    src/ui/flightindicators/SizeDef.h \
+    interfaces/ui/flightindicators/SizeDef.h \
     src/GeoFence/GeoFenceContainer.h \
     src/ui/GeoFence/GeoFenceZoneItem.h \
     src/ui/GeoFence/GeoFenceEdit.h \
@@ -516,26 +512,13 @@ SOURCES += \
     src/Waypoint.cc \
     src/ui/vehicle/VehicleWidget.cpp \
     src/ui/vehicle/TemperatureGauge.cpp \
-    src/ui/gauge/qcgaugewidget.cpp \
-    src/ui/flightindicators/DurationGauge.cpp \
-    src/ui/flightindicators/FuelGauge.cpp \
     src/ui/planning/MissionPlannerDataWidget.cpp \
     src/ui/planning/MissionPlannerGauges.cpp \
     src/ui/planning/MissionPlannerWidget.cpp \
-    src/ui/gauge/QcPixmapItem.cpp \
     src/ui/planning/QuantityScrollBar.cpp \
-    src/ui/flightindicators/WeightGauge.cpp \
-    src/ui/flightindicators/AirspeedIndicator.cpp \
-    src/ui/flightindicators/VerticalSpeedIndicator.cpp \
-    src/ui/flightindicators/AltitudeIndicator.cpp \
-    src/ui/gauge/QcRotatedGaugeWidget.cpp \
-    src/ui/flightindicators/HeadingIndicator.cpp \
-    src/ui/gauge/QcPolygonItem.cpp \
-    src/ui/flightindicators/FlightInstrumentsWidget.cpp \
     src/core/MessageDispatcher.cpp \
     src/core/ExternalAppLauncher.cpp \
     src/ui/video/FlightGearGrabWidget.cpp \
-    src/ui/gauge/QcColorLabelItem.cpp \
     src/uas/StaticUAS.cpp \
     src/ui/map/PixmapGenerator.cpp \
     src/GeoFence/GeoFenceZone.cpp \
