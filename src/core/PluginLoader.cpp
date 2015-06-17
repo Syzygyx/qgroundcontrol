@@ -10,6 +10,7 @@
 PluginLoader::PluginLoader()
 {
 	m_pBI = 0;
+	m_pGI = 0;
 	QDir dir(s_qsPath);
 	QStringList qslFiles = dir.entryList(QDir::Files);
 
@@ -20,9 +21,7 @@ PluginLoader::PluginLoader()
 		QObject* pPlugin = pl.instance();
 		if (pPlugin != 0) {
 			m_pBI = qobject_cast<BrandingInterface*>(pPlugin);
-			// load just first plugin
-			if (m_pBI != 0)
-				return;
+			m_pGI = qobject_cast<GaugeInterface*>(pPlugin);
 		}
 	}
 

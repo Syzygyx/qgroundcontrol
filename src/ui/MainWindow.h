@@ -336,16 +336,17 @@ private:
     static const char* _pfdDockWidgetName;
     static const char* _hudDockWidgetName;
     static const char* _uasInfoViewDockWidgetName;
-	 static const char* _vehicleWidgetName;
+	 static const char* _airspeedIndicatorWidgetName;
+	 /*static const char* _vehicleWidgetName;
 	 static const char* _missionPlanningWidgetName;
 	 static const char* _flightInstrumentsWidgetName;
 	 static const char* _fuelGaugeWidgetName;
 	 static const char* _weightGaugeWidgetName;
-	 static const char* _airspeedIndicatorWidgetName;
 	 static const char* _verticalSpeedIndicatorWidgetName;
 	 static const char* _altitudeIndicatorWidgetName;
 	 static const char* _headingIndicatorWidgetName;
 	 static const char* _flightGearVideoWidgetName;
+	 */
 
     QMap<QString, QDockWidget*>     _mapName2DockWidget;
     QMap<int, QDockWidget*>         _mapUasId2HilDockWidget;

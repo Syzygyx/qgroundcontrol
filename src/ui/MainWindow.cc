@@ -72,13 +72,14 @@ This file is part of the QGROUNDCONTROL project
 //#include "vehicle/TemperatureGauge.h"
 //#include "planning/MissionPlannerWidget.h"
 //#include "FlightInstrumentsWidget.h"
-//#include "AirspeedIndicator.h"
+#include "AirspeedIndicator.h"
 //#include "VerticalSpeedIndicator.h"
 //#include "AltitudeIndicator.h"
 //#include "HeadingIndicator.h"
 #include "video/FlightGearGrabWidget.h"
 
 #include "core/MessageDispatcher.h"
+#include "core/PluginLoader.h"
 
 #include "GeoFence/GeoFenceZone.h"
 
@@ -130,16 +131,18 @@ const char* MainWindow::_hdd2DockWidgetName = "HEAD_DOWN_DISPLAY_2_DOCKWIDGET";
 const char* MainWindow::_pfdDockWidgetName = "PRIMARY_FLIGHT_DISPLAY_DOCKWIDGET";
 const char* MainWindow::_hudDockWidgetName = "HEAD_UP_DISPLAY_DOCKWIDGET";
 const char* MainWindow::_uasInfoViewDockWidgetName = "UAS_INFO_INFOVIEW_DOCKWIDGET";
+const char* MainWindow::_airspeedIndicatorWidgetName = "AIRSPEED_INDICATOR_DOCKWIDGET";
+/*
 const char* MainWindow::_vehicleWidgetName = "VEHICLE_DOCKWIDGET";
 const char* MainWindow::_missionPlanningWidgetName = "MISSION_PLANNING_DOCKWIDGET";
 const char* MainWindow::_flightInstrumentsWidgetName = "FLIGHT_INSTRUMENTS_DOCKWIDGET";
 const char* MainWindow::_fuelGaugeWidgetName = "FUEL_GAUGE_DOCKWIDGET";
 const char* MainWindow::_weightGaugeWidgetName = "WEIGHT_GAUGE_DOCKWIDGET";
-const char* MainWindow::_airspeedIndicatorWidgetName = "AIRSPEED_INDICATOR_DOCKWIDGET";
 const char* MainWindow::_verticalSpeedIndicatorWidgetName = "VERTICAL_SPEED_INDICATOR_DOCKWIDGET";
 const char* MainWindow::_altitudeIndicatorWidgetName = "ALTITDE_INDICATOR_DOCKWIDGET";
 const char* MainWindow::_headingIndicatorWidgetName = "HEADING_INDICATOR_DOCKWIDGET";
 const char* MainWindow::_flightGearVideoWidgetName = "FLIGHT_GEAR_VIDEO_DOCKWIDGET";
+*/
 
 static MainWindow* _instance = NULL;   ///< @brief MainWindow singleton
 
@@ -519,16 +522,16 @@ void MainWindow::_buildCommonWidgets(void)
         { _pfdDockWidgetName,               "Primary Flight Display",   Qt::RightDockWidgetArea },
         { _hudDockWidgetName,               "Video Downlink",           Qt::RightDockWidgetArea },
         { _uasInfoViewDockWidgetName,       "Info View",                Qt::LeftDockWidgetArea },
-		  { _vehicleWidgetName,               "Vehicle View",             Qt::LeftDockWidgetArea},
+		  { _airspeedIndicatorWidgetName,     "Airspeed Indicator",       Qt::RightDockWidgetArea},
+		  /*{ _vehicleWidgetName,               "Vehicle View",             Qt::LeftDockWidgetArea},
 		  { _missionPlanningWidgetName,       "Mission Planning",         Qt::RightDockWidgetArea},
 		  { _flightInstrumentsWidgetName,     "Flight Instruments",       Qt::LeftDockWidgetArea},
 		  { _fuelGaugeWidgetName,             "Fuel Indicator",           Qt::LeftDockWidgetArea},
 		  { _weightGaugeWidgetName,           "Total Weight Indicator",   Qt::LeftDockWidgetArea},
-		  { _airspeedIndicatorWidgetName,     "Airspeed Indicator",       Qt::RightDockWidgetArea},
 		  { _verticalSpeedIndicatorWidgetName,"Vertical Speed Indicator", Qt::RightDockWidgetArea},
 		  { _altitudeIndicatorWidgetName,     "Altitude Indicator",       Qt::RightDockWidgetArea},
 		  { _headingIndicatorWidgetName,      "Heading Indicator",        Qt::RightDockWidgetArea},
-		  { _flightGearVideoWidgetName,       "FlightGear Live Video",    Qt::RightDockWidgetArea},
+		  { _flightGearVideoWidgetName,       "FlightGear Live Video",    Qt::RightDockWidgetArea},*/
 	 };
     static const size_t cDockWidgetInfo = sizeof(rgDockWidgetInfo) / sizeof(rgDockWidgetInfo[0]);
 
@@ -662,8 +665,28 @@ void MainWindow::_createInnerDockWidget(const QString& widgetName)
         QGCTabbedInfoView* pInfoView = new QGCTabbedInfoView(this);
         pInfoView->addSource(mavlinkDecoder);
         widget = pInfoView;
-	 } else if (widgetName == _vehicleWidgetName) {
-		 /*
+	 } else if (widgetName == _airspeedIndicatorWidgetName) {
+		 if (PluginLoader::GetInstance()->GetGauges() != 0) {
+			 AirspeedIndicator* pAI =
+					 PluginLoader::GetInstance()->GetGauges()->CreateAirspeedIndicator(
+						 0,
+						 120,
+						 AirspeedIndicator::auKnots,
+						 this
+						 );
+			 pAI->Init();
+			 connect(
+						 MessageDispatcher::GetInstance(),
+						 SIGNAL(SignalAirSpeed(double)),
+						 pAI,
+						 SLOT(SetSpeed(double))
+						 );
+			 widget = pAI;
+		 }
+	 }
+
+	 /*else if (widgetName == _vehicleWidgetName) {
+
 		 VehicleWidget* pVW = new VehicleWidget(this);
 		 for (int i = 0; i < 7; i++) {
 			TemperatureGauge* pTG = new TemperatureGauge(0, 400);
@@ -679,7 +702,6 @@ void MainWindow::_createInnerDockWidget(const QString& widgetName)
 					 SLOT(SetTempRPM(int,double,double))
 					 );
 		 widget = pVW;
-		 */
 	 } else if (widgetName == _missionPlanningWidgetName) {
 		//widget = new MissionPlannerWidget(this);
 	 } else if (widgetName == _flightInstrumentsWidgetName) {
@@ -690,7 +712,6 @@ void MainWindow::_createInnerDockWidget(const QString& widgetName)
 	 } else if (widgetName == _weightGaugeWidgetName) {
 		//widget = new WeightGauge(200, true, this);
 	 } else if (widgetName == _airspeedIndicatorWidgetName) {
-		 /*
 		 AirspeedIndicator* pAI = new AirspeedIndicator(
 					 0,
 					 50,
@@ -706,9 +727,8 @@ void MainWindow::_createInnerDockWidget(const QString& widgetName)
 					 );
 
 		 widget = pAI;
-		 */
 	 } else if (widgetName == _verticalSpeedIndicatorWidgetName) {
-		 /*VerticalSpeedIndicator* pVSI = new VerticalSpeedIndicator(20.0, this);
+		 VerticalSpeedIndicator* pVSI = new VerticalSpeedIndicator(20.0, this);
 		 connect(
 					 MessageDispatcher::GetInstance(),
 					 SIGNAL(SignalVario(double)),
@@ -717,9 +737,8 @@ void MainWindow::_createInnerDockWidget(const QString& widgetName)
 					 );
 		 pVSI->Init();
 		 widget = pVSI;
-		 */
 	 } else if (widgetName == _altitudeIndicatorWidgetName) {
-		 /*AltitudeIndicator* pAI = new AltitudeIndicator(this);
+		 AltitudeIndicator* pAI = new AltitudeIndicator(this);
 		 pAI->Init();
 		 connect(
 					 MessageDispatcher::GetInstance(),
@@ -728,9 +747,8 @@ void MainWindow::_createInnerDockWidget(const QString& widgetName)
 					 SLOT(SetAltitude(double))
 					 );
 		 widget = pAI;
-		 */
 	 } else if (widgetName == _headingIndicatorWidgetName) {
-		 /*HeadingIndicator* pHI = new HeadingIndicator(this);
+		 HeadingIndicator* pHI = new HeadingIndicator(this);
 		 pHI->Init();
 		 connect(
 					 MessageDispatcher::GetInstance(),
@@ -739,10 +757,10 @@ void MainWindow::_createInnerDockWidget(const QString& widgetName)
 					 SLOT(SetHeading(double))
 					 );
 		 widget = pHI;
-		 */
+
 	 } else if (widgetName == _flightGearVideoWidgetName) {
 		 widget = new FlightGearGrabWidget(this);
-	 }
+	 }*/
 
 	 else {
         qWarning() << "Attempt to create unknown Inner Dock Widget" << widgetName;
