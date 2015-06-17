@@ -1,7 +1,7 @@
 #ifndef QCPOLYGONITEM_H
 #define QCPOLYGONITEM_H
 
-#include <gauge/qcgaugewidget.h>
+#include <qcgaugewidget.h>
 
 /** This class represents an item which is drawn as a polygon, centered and widget center.
  *  Points of this polygon should be given as a fraction (-1.0..1.0).

@@ -1,7 +1,7 @@
 #ifndef AIRSPEEDINDICATOR_H
 #define AIRSPEEDINDICATOR_H
 
-#include "gauge/qcgaugewidget.h"
+#include "qcgaugewidget.h"
 
 //! This indicator shows the airspeed
 class AirspeedIndicator : public QcGaugeWidget

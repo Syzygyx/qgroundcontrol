@@ -1,7 +1,7 @@
 #ifndef ALTITUDEINDICATOR_H
 #define ALTITUDEINDICATOR_H
 
-#include "gauge/qcgaugewidget.h"
+#include "qcgaugewidget.h"
 
 //! This class is used to show altitude in classic altimeter style
 class AltitudeIndicator : public QcGaugeWidget

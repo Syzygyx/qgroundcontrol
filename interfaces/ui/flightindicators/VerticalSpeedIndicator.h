@@ -1,7 +1,7 @@
 #ifndef VERTICALSPEEDINDICATOR_H
 #define VERTICALSPEEDINDICATOR_H
 
-#include "gauge/qcgaugewidget.h"
+#include "qcgaugewidget.h"
 
 //! This indicator shows the vertical speed
 class VerticalSpeedIndicator : public QcGaugeWidget

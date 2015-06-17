@@ -1,7 +1,7 @@
 #ifndef QCCOLORLABELITEM_H
 #define QCCOLORLABELITEM_H
 
-#include "gauge/qcgaugewidget.h"
+#include "qcgaugewidget.h"
 
 //! This class implements a text label with colored background
 class QCGAUGE_DECL QcColorLabelItem : public QcLabelItem

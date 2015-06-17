@@ -1,7 +1,7 @@
 #ifndef HEADINGINDICATOR_H
 #define HEADINGINDICATOR_H
 
-#include "gauge/QcRotatedGaugeWidget.h"
+#include "QcRotatedGaugeWidget.h"
 
 class HeadingIndicator : public QcRotatedGaugeWidget
 {

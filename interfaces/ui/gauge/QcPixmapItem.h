@@ -3,7 +3,7 @@
 
 #include <QPixmap>
 
-#include "gauge/qcgaugewidget.h"
+#include "qcgaugewidget.h"
 
 //! This class implements a pixmap gauge item
 class QCGAUGE_DECL QcPixmapItem : public QcItem

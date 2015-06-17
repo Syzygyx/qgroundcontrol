@@ -1,7 +1,7 @@
 #ifndef WEIGHTGAUGE_H
 #define WEIGHTGAUGE_H
 
-#include "gauge/qcgaugewidget.h"
+#include "qcgaugewidget.h"
 
 //! This class is used to show the weight gauge
 class WeightGauge : public QcGaugeWidget

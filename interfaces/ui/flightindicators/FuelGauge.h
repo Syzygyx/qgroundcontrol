@@ -1,7 +1,7 @@
 #ifndef FUELGAUGE_H
 #define FUELGAUGE_H
 
-#include "gauge/QcPixmapItem.h"
+#include "QcPixmapItem.h"
 
 //! This class is used to show the fuel gauge
 class FuelGauge : public QcGaugeWidget
