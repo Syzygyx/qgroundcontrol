@@ -165,7 +165,8 @@ INCLUDEPATH += \
     interfaces/ui/gauge \
     interfaces/ui/flightindicators \
     interfaces/ui/video \
-    interfaces/ui/vehicle
+    interfaces/ui/vehicle \
+    interfaces/ui/planning
 
 FORMS += \
     src/QGCQmlWidgetHolder.ui \
