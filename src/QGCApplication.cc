@@ -341,7 +341,13 @@ bool QGCApplication::_initForNormalAppBoot(void)
 
     _createSingletons();
 
-	 PluginLoader::SetFolder(applicationDirPath() + "/../plugins/");
+    QString qsPath = applicationDirPath();
+#ifdef Q_OS_WIN32
+    qsPath += "/plugins/";
+#else
+    qsPath += "../plugins/";
+#endif
+     PluginLoader::SetFolder(qsPath);
 
     // Show splash screen
 	 QPixmap splashImage;
