@@ -11,7 +11,7 @@
 #include "ui/flightindicators/FlightInstrumentsWidget.h"
 #include "ui/video/FlightGearGrabWidget.h"
 #include "ui/vehicle/VehicleWidget.h"
-
+#include "ui/planning/MissionPlannerWidget.h"
 
 //! This is the interface to gauge providing classes
 class GaugeInterface
@@ -29,7 +29,8 @@ public:
 		gtFlightInstruments			= 1 << 6,
 		gtFlightGearGrab				= 1 << 7,
 		gtVehicleWidget				= 1 << 8,
-		gtLast							= 1 << 9,
+		gtMissionPlanning				= 1 << 9,
+		gtLast							= 1 << 10
 	};
 
 public:
@@ -59,6 +60,8 @@ public:
 			return "FLIGHT_GEAR_VIDEO_DOCKWIDGET";
 		case gtVehicleWidget:
 			return "VEHICLE_DOCKWIDGET";
+		case gtMissionPlanning:
+			return "MISSION_PLANNING_DOCKWIDGET";
 		default:
 			return "";
 		}
@@ -86,6 +89,8 @@ public:
 			return "FlightGear Live Video";
 		case gtVehicleWidget:
 			return "Vehicle View";
+		case gtMissionPlanning:
+			return "Mission Planning";
 		default:
 			return "";
 		}
@@ -150,6 +155,8 @@ public:
 	//! Creates and returns Vehicle widget
 	virtual VehicleWidget* CreateVehicleWidget(QWidget* pParent = 0) const = 0;
 
+	//! Creates and returns Mission planning widget
+	virtual MissionPlannerWidget* CreateMissionPlanner(QWidget* pParent = 0) const = 0;
 };
 
 Q_DECLARE_INTERFACE(GaugeInterface, "org.qt-project.Qt.QGroundControl.GaugeInterface")

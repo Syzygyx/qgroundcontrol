@@ -792,6 +792,7 @@ QWidget* MainWindow::_createInnerPlugin(const QString& widgetName)
 		FlightInstrumentsWidget* pFIW;
 		FlightGearGrabWidget* pFGGW;
 		VehicleWidget* pVW;
+		MissionPlannerWidget* pMPW;
 
 		GaugeInterface::GaugeType eGT = pGI->GetType(widgetName);
 		MessageDispatcher* pMD = MessageDispatcher::GetInstance();
@@ -846,6 +847,10 @@ QWidget* MainWindow::_createInnerPlugin(const QString& widgetName)
 						SLOT(SetTempRPM(int,double,double))
 						);
 			return pVW;
+
+		case GaugeInterface::gtMissionPlanning:
+			pMPW = pGI->CreateMissionPlanner(this);
+			return pMPW;
 
 		default:
 			break;
