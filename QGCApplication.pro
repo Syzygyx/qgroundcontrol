@@ -132,8 +132,7 @@ include(QGCInstaller.pri)
 # Main QGroundControl portion of project file
 #
 
-RESOURCES += qgroundcontrol.qrc \
-	     resources/vehicle/Files.qrc
+RESOURCES += qgroundcontrol.qrc
 
 DEPENDPATH += \
     . \

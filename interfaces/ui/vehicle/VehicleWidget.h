@@ -4,7 +4,7 @@
 #include <QWidget>
 #include <QSvgRenderer>
 
-#include "gauge/qcgaugewidget.h"
+#include "qcgaugewidget.h"
 
 #define GAUGE_COUNT					7
 

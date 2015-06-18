@@ -1,8 +1,8 @@
 #ifndef TEMPERATUREGAUGE_H
 #define TEMPERATUREGAUGE_H
 
-#include "gauge/qcgaugewidget.h"
-#include "gauge/QcColorLabelItem.h"
+#include "qcgaugewidget.h"
+#include "QcColorLabelItem.h"
 
 //! This gauge is used to show the temperature
 class TemperatureGauge : public QcGaugeWidget

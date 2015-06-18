@@ -25,8 +25,7 @@ PluginLoader::PluginLoader()
 		}
 	}
 
-	// if we arrived here, we didn't find suitable plugin!
-	qWarning() << "WARNING: No specific plugins found!";
+	qDebug() << "Interface loaded" << m_pBI << m_pGI;
 }
 
 //-----------------------------------------------------------------------------

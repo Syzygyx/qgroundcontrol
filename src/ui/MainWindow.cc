@@ -791,6 +791,7 @@ QWidget* MainWindow::_createInnerPlugin(const QString& widgetName)
 		WeightGauge* pWG;
 		FlightInstrumentsWidget* pFIW;
 		FlightGearGrabWidget* pFGGW;
+		VehicleWidget* pVW;
 
 		GaugeInterface::GaugeType eGT = pGI->GetType(widgetName);
 		MessageDispatcher* pMD = MessageDispatcher::GetInstance();
@@ -835,6 +836,16 @@ QWidget* MainWindow::_createInnerPlugin(const QString& widgetName)
 		case GaugeInterface::gtFlightGearGrab:
 			pFGGW = pGI->CreateFlightGearLiveVideo(this);
 			return pFGGW;
+
+		case GaugeInterface::gtVehicleWidget:
+			pVW = pGI->CreateVehicleWidget(this);
+			connect(
+						pMD,
+						SIGNAL(SignalTempRPM(int,double,double)),
+						pVW,
+						SLOT(SetTempRPM(int,double,double))
+						);
+			return pVW;
 
 		default:
 			break;
