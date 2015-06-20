@@ -8,11 +8,11 @@
 # - ant
 #----------------------------------------------------------
 # Update with correct location for these
-export ANDROID_HOME=~/Library/Android/sdk
-export ANDROID_SDK_ROOT=~/Library/Android/sdk
-export ANDROID_NDK_ROOT=~/Library/Android/ndk
+export ANDROID_HOME=/opt/android-sdk-linux
+export ANDROID_SDK_ROOT=/opt/android-sdk-linux
+export ANDROID_NDK_ROOT=/opt/android-ndk-r10c
 export ANDROID_NDK_HOST=darwin-x86_64
-export ANDROID_NDK_PLATFORM=/android-9
+export ANDROID_NDK_PLATFORM=/android-10
 export ANDROID_NDK_TOOLCHAIN_PREFIX=arm-linux-androideabi
 export ANDROID_NDK_TOOLCHAIN_VERSION=4.9
 export ANDROID_NDK_TOOLS_PREFIX=arm-linux-androideabi

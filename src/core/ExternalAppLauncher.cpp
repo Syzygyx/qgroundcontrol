@@ -63,7 +63,8 @@ void ExternalAppLauncher::Launch(
 		QString qsApp,
 		QString qsPar,
 		QString qsUrl,
-		QStringList qslDirs
+		QStringList qslDirs,
+		QString qsName
 		)
 {
 	m_iPath = 0;
@@ -71,6 +72,10 @@ void ExternalAppLauncher::Launch(
 	m_qsApp = qsApp;
 	m_qsPar = qsPar;
 	m_qsUrl = qsUrl;
+	if (qsName.length() == 0)
+		m_qsName = m_qsApp;
+	else
+		m_qsName = qsName;
 
 	if (m_qslDirs[m_iPath].length() > 0)
         m_pProcess->setWorkingDirectory(m_qslDirs[m_iPath]);
@@ -103,15 +108,22 @@ void ExternalAppLauncher::HandleError(QProcess::ProcessError ePE)
 			return;
 		}
 
-		QString qsMsg = tr("Looks like %1 is not installed on this computer. ").arg(m_qsApp);
+		QString qsMsg = tr("Looks like %1 is not installed on this computer. ").arg(m_qsName);
 		if (m_qsUrl.length() > 0)
-			qsMsg += tr("You can download %1 from %2 and install it.").arg(m_qsApp).arg(m_qsUrl);
+			qsMsg += tr("You can download %1 from %2 and install it.").arg(m_qsName).arg(m_qsUrl);
 
-		QMessageBox::warning(
+		qsMsg += tr("\n\nIs %1 already installed on your computer and you would like to find it yourself?").arg(m_qsName);
+
+		QMessageBox::StandardButton sb = (QMessageBox::StandardButton)QMessageBox::warning(
 					0,
 					tr("Failed to launch %1").arg(m_qsApp),
-					qsMsg
+					qsMsg,
+					QMessageBox::Yes,
+					QMessageBox::No
 					);
+
+		if (sb == QMessageBox::Yes)
+			emit SignalFailed();
 	}
 }
 

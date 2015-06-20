@@ -182,7 +182,12 @@ public:
 
     QString getJoystickNameById(int id) const
     {
+#if defined(ANDROID)
+		 Q_UNUSED(id);
+		 return "";
+#else
         return QString(SDL_JoystickName(id));
+#endif
     }
 
     float getCurrentValueForAxis(int axis) const;

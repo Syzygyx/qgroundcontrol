@@ -16,7 +16,13 @@ public:
 	~ExternalAppLauncher();
 
 	//! Launches the application with the given parameters.
-	void Launch(QString qsApp, QString qsPar, QString qsUrl, QStringList qslDirs);
+	void Launch(
+			QString qsApp,
+			QString qsPar,
+			QString qsUrl,
+			QStringList qslDirs,
+			QString qsName = ""
+			);
 	//! Sets the magic string
 	void SetMagicString(QString qsMagic)
 	{	m_qsMagic = qsMagic; }
@@ -34,18 +40,22 @@ signals:
 	void SignalReady();
 	//! Emitted when process has finished
 	void SignalFinished();
+	//! Emitted when process failed to launch
+	void SignalFailed();
 
 private:
 	//! Index of currently used working path
 	int m_iPath;
 	//! List of possible application paths
 	QStringList m_qslDirs;
-	//! External application name
+	//! Name of external application executable
 	QString m_qsApp;
 	//! External application parameters
 	QString m_qsPar;
 	//! External application download page
 	QString m_qsUrl;
+	//! Application real name
+	QString m_qsName;
 	//! When this string is read from app output, SignalReady is emitted
 	QString m_qsMagic;
 	//! Pointer to the process object

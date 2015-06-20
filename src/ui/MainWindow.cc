@@ -27,6 +27,9 @@ This file is part of the QGROUNDCONTROL project
  *   @author Lorenz Meier <mail@qgroundcontrol.org>
  */
 
+#define FLIGHTGEAR_PAR				"--httpd=8080 --native-fdm=socket,in,100,,5600,udp --fdm=null --aircraft=arducopter"
+#define FLIGHTGEAR_URL				"http://www.flightgear.org/"
+
 #include <QSettings>
 #include <QNetworkInterface>
 #include <QDebug>
@@ -381,6 +384,13 @@ MainWindow::MainWindow(QSplashScreen* splashScreen)
 				 MessageDispatcher::GetInstance(),
 				 SLOT(DisableUDP())
 				);
+
+	 connect(
+				 m_pExtAppLauncher,
+				 SIGNAL(SignalFailed()),
+				 this,
+				 SLOT(findFlightGear())
+				 );
 
 	 // this will enable MessageDispatcher to decode messages from MAVLinkDecoder
 	 // and dispatch interesting signals
@@ -1488,7 +1498,6 @@ void MainWindow::setFontSizeFactor(double size) {
 void MainWindow::launchFlightGear()
 {
 	qDebug() << "Trying to launch FlightGear";
-    QString qsPar = "--httpd=8080 --native-fdm=socket,in,100,,5600,udp --fdm=null --aircraft=arducopter";
 	QStringList qslDirs;
 
 #if defined(Q_OS_MACX)
@@ -1500,7 +1509,22 @@ void MainWindow::launchFlightGear()
 	qslDirs << "";
 #endif
 
-	m_pExtAppLauncher->Launch("fgfs", qsPar, "http://www.flightgear.org/", qslDirs);
+	m_pExtAppLauncher->Launch("fgfs", FLIGHTGEAR_PAR, FLIGHTGEAR_URL, qslDirs, "FlightGear");
+}
+
+void MainWindow::findFlightGear()
+{
+	QString qsFile = QGCFileDialog::getOpenFileName(this, tr("Select FlightGear executable"), ".", "fgfs*");
+	if (qsFile.length() > 0) {
+		// Split the file from path
+		QStringList qsl = qsFile.split("/");
+		QString qsApp = qsl.last();
+		qsl.removeLast();
+		QString qsPath = qsl.join("/");
+		QStringList qslDirs;
+		qslDirs << qsPath;
+		m_pExtAppLauncher->Launch(qsApp, FLIGHTGEAR_PAR, FLIGHTGEAR_URL, qslDirs, "FlightGear");
+	}
 }
 
 #ifdef QGC_MOUSE_ENABLED_LINUX

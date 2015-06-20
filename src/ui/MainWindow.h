@@ -205,6 +205,10 @@ protected slots:
 	  * @brief Launches FlightGear with correct parameters, if installed
 	  */
 	 void launchFlightGear();
+	 /**
+		* @brief Asks user to find FlightGear executable herself
+		*/
+	 void findFlightGear();
 
 signals:
     void initStatusChanged(const QString& message, int alignment, const QColor &color);

@@ -104,6 +104,10 @@ DebugBuild {
     CONFIG += console
 }
 
+AndroidBuild {
+    INCLUDEPATH+=/usr/src/SDL2-2.0.3
+}
+
 !AndroidBuild {
 # qextserialport should not be used by general QGroundControl code. Use QSerialPort instead. This is only
 # here to support special case Firmware Upgrade code.
