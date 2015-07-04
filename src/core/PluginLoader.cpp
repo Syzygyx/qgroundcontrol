@@ -25,7 +25,7 @@ PluginLoader::PluginLoader()
 		}
 	}
 
-	qDebug() << "Interface loaded" << m_pBI << m_pGI;
+	qDebug() << "Interface loaded" << m_pBI << m_pGI << s_qsPath;
 }
 
 //-----------------------------------------------------------------------------

@@ -345,7 +345,7 @@ bool QGCApplication::_initForNormalAppBoot(void)
 #ifdef Q_OS_WIN32
     qsPath += "/plugins/";
 #else
-    qsPath += "../plugins/";
+	 qsPath += "/../plugins/";
 #endif
      PluginLoader::SetFolder(qsPath);
 
