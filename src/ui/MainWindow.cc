@@ -694,6 +694,7 @@ void MainWindow::_createInnerDockWidget(const QString& widgetName)
         widget = pInfoView;
 	 } else {
 		 widget = _createInnerPlugin(widgetName);
+		 widget->update();
 	 }
 
 	 /*else if (widgetName == _vehicleWidgetName) {
