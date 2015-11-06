@@ -35,6 +35,7 @@ message(BASEDIR $$BASEDIR DESTDIR $$DESTDIR TARGET $$TARGET)
 
 # QGC QtLocation plugin
 
+contains(DEFINES, LOCATION_PLUGIN) {
 LIBS += -L$${LOCATION_PLUGIN_DESTDIR}
 LIBS += -l$${LOCATION_PLUGIN_NAME}
 
@@ -47,6 +48,8 @@ WindowsBuild {
     DEFINES += DISABLE_XBEE
 }
 
+}
+
 # Qt configuration
 
 CONFIG += qt \
@@ -55,9 +58,7 @@ CONFIG += qt \
 QT += network \
     concurrent \
     gui \
-    location \
     opengl \
-    positioning \
     printsupport \
     qml \
     quick \
@@ -66,6 +67,11 @@ QT += network \
     svg \
     widgets \
     xml \
+
+contains(DEFINES, LOCATION_PLUGIN) {
+QT += location \
+      positioning
+}
 
 !AndroidBuild {
     QT += serialport

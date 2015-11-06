@@ -19,10 +19,15 @@
 
 TEMPLATE =  subdirs
 CONFIG  +=  ordered
-SUBDIRS  =  ./QGCLocationPlugin.pro
+
+contains(DEFINES, LOCATION_PLUGIN) {
+   SUBDIRS  =  ./QGCLocationPlugin.pro
+}
 SUBDIRS +=  ./QGCApplication.pro
 
-QGCApplication.depends = QGCLocationPlugin
+contains(DEFINES, LOCATION_PLUGIN) {
+   QGCApplication.depends = QGCLocationPlugin
+}
 
 message(Qt version $$[QT_VERSION])
 

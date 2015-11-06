@@ -110,7 +110,9 @@ int main(int argc, char *argv[])
 #pragma warning( disable : 4930 4101 )
 #endif
 
-    Q_IMPORT_PLUGIN(QGeoServiceProviderFactoryQGC)
+#ifdef LOCATION_PLUGIN
+	 Q_IMPORT_PLUGIN(QGeoServiceProviderFactoryQGC)
+#endif
 
     bool runUnitTests = false;          // Run unit tests
 
