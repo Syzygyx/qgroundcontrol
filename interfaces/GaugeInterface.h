@@ -11,6 +11,7 @@
 #include "ui/flightindicators/FlightInstrumentsWidget.h"
 #include "ui/video/FlightGearGrabWidget.h"
 #include "ui/vehicle/VehicleWidget.h"
+#include "ui/vehicle/VehicleWidgetFalcon.h"
 #include "ui/planning/MissionPlannerWidget.h"
 
 //! This is the interface to gauge providing classes

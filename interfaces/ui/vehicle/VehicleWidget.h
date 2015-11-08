@@ -30,9 +30,9 @@ public slots:
 
 protected:
 	//! Returns the center of i-th engine
-	QPoint GetCenter(int i) const;
+	virtual QPoint GetCenter(int i) const;
 	//! Returns the size of i-th engine
-	int GetSize(int i) const;
+	virtual int GetSize(int i) const;
 
 	//! Paints the widget
 	void paintEvent(QPaintEvent*);
