@@ -27,7 +27,7 @@ This file is part of the QGROUNDCONTROL project
  *   @author Lorenz Meier <mail@qgroundcontrol.org>
  */
 
-#define FLIGHTGEAR_PAR				"--httpd=8080 --native-fdm=socket,in,100,,5600,udp --fdm=null --aircraft=arducopter"
+#define FLIGHTGEAR_PAR				"--httpd=8080 --native-fdm=socket,in,100,,5600,udp --fdm=null --aircraft=Falcon"
 #define FLIGHTGEAR_URL				"http://www.flightgear.org/"
 
 #include <QSettings>
